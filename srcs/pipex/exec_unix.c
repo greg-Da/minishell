@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_unix.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:54:13 by greg              #+#    #+#             */
-/*   Updated: 2025/03/13 14:38:07 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:51:32 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,9 @@ void	ft_exec(t_prev prev, t_pipex *pip, int i, char **envp)
 	if (pid == 0)
 	{
 		close(pip->fd[0]);
-		// Close the read end of the pipe in the child process
 		ft_exec_child(prev, pip, i, envp);
 	}
-	close(pip->fd[1]); // Close the write end of the pipe in the parent process
+	close(pip->fd[1]);
 	pip->pids_size++;
 	pip->pids = ft_realloc(pip->pids, (pip->pids_size) * sizeof(int),
 			(pip->pids_size + 1) * sizeof(int));
