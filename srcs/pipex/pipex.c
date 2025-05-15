@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/03/13 14:41:28 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:54:22 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ int	pipex(int nmb, char **cmd, char **envp, int *fd)
 	// {
 	// 	printf("cmd : %s\n", cmd[i]);
 	// }
-	printf("%s\n", cmd[0]);
-	printf("%s\n", cmd[1]);
-	printf("fd : %d %d\n", fd[0], fd[1]);
+
 	i = 1;
 	while (++i < nmb - 1)
 	{
