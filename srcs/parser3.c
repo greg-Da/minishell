@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/03/10 16:51:01 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/19 15:21:28 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,26 @@ char *sanitize_str(char *str)
     return trimmed;
 }
 
-char *get_chevron_indices(char *pipe, int index[2])
-{
-    char *chevron;
+// char *get_chevron_indices(char *pipe, int index[2])
+// {
+//     char *chevron_in;
+//     char *chevron_out;
+//     char *last_chevron;
 
-    chevron = ft_strchr(pipe, '<');
-    if (chevron)
-        index[0] = chevron - pipe;
-    else
-        index[0] = 0;
-    chevron = ft_strchr(pipe, '>');
-    if (chevron)
-        index[1] = chevron - pipe;
-    else
-        index[1] = ft_strlen(pipe);
-    return (chevron);
-}
+//     chevron_in = ft_strchr(pipe, '<');
+//     chevron_out = ft_strchr(pipe, '>');
+//     last_chevron = ft_strrchr(pipe, '>');  // Find last occurrence of '>'
+    
+//     if (chevron_in)
+//         index[0] = chevron_in - pipe;
+//     else
+//         index[0] = 0;
+//     if (chevron_out)
+//         index[1] = last_chevron - pipe;  // Use last '>' position
+//     else
+//         index[1] = ft_strlen(pipe);
+
+//     if (last_chevron)
+//         return last_chevron;
+//     return chevron_in;
+// }

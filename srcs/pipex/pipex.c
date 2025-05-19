@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/15 14:54:22 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/19 19:20:02 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_cleanup(t_pipex pipex)
 	if (pipex.here_doc)
 		unlink("here_doc.txt");
 	i = -1;
-	while (pipex.cmd_args[++i])
+	while (pipex.cmd_args && pipex.cmd_args[++i])
 	{
 		j = -1;
 		free(pipex.cmd_path[i]);
@@ -61,7 +61,7 @@ int	pipex(int nmb, char **cmd, char **envp, int *fd)
 	int		i;
 
 	// printf("===============\n");
-	// printf("PLS CHECK : echo ff > txt | echo nope\n");
+	// // printf("PLS CHECK : echo ff > txt | echo nope\n");
 	// i = -1;
 	// printf("fd : %d %d\n", fd[0], fd[1]);
 	// while (cmd[++i])

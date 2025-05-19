@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:21:58 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/03/10 15:40:18 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/19 18:22:04 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		ft_invalid_cmd(t_pipex *pipex, t_prev *prev);
 int			ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void		ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
 int			pipex(int nmb, char **cmd, char **envp, int *fd);
-int			exec_pipex(int *j, t_parser *info, char **envp);
+int			exec_pipex(int j, t_parser *info, char **envp);
 void		init_parser_struct(t_parser *info, char **pipes, int pipe_nb);
 char		*sanitize_str(char *str);
 char		*get_chevron_indices(char *pipe, int index[2]);
