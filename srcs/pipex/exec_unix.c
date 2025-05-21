@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:54:13 by greg              #+#    #+#             */
-/*   Updated: 2025/05/15 15:51:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/21 13:03:12 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,11 @@ void	ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 {
 	while (++prev->i < pipex->cmd_count)
 	{
+
+		printf("cmd : %s\n", pipex->cmd_args[prev->i][0]);
+		if (pipex->cmd_args[prev->i][0] == NULL)
+			continue ;
+
 		if (pipe(pipex->fd) == -1)
 			ft_error("pipe failed");
 		if (prev->in == -1 && pipex->is_invalid_infile > 0)
