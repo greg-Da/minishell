@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_nsplit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:37:29 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/02/17 15:20:31 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:52:12 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	**ft_nsplit(char const *s, char c, size_t limit)
 	}
 	while (s[i] == c)
 		i++;
-	arr[j] = ft_strdup(s + i);
+	arr[j] = ft_strdup((char *)(s + i));
 	if (!arr[j])
 		return (ft_free(arr, j));
 	arr[j + 1] = NULL;

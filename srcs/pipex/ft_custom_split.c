@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/02/17 14:03:17 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:53:33 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	is_echo(const char *str)
 {
 	while (*str == ' ')
 		str++;
-	if (!ft_strncmp(str, "echo", 4))
+	if (!ft_strncmp((char *)str, "echo", 4))
 		return (1);
 	return (0);
 }

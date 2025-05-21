@@ -3,50 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 14:28:33 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/11 14:23:56 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/08 13:56:14 by greg              #+#    #+#             */
+/*   Updated: 2024/11/11 16:14:38 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-static size_t	check_len1(char const *s1)
-{
-	if (!s1)
-		return (0);
-	return (ft_strlen(s1));
-}
+#include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*result;
+	int		len;
 	int		i;
-	size_t	len_s1;
-	size_t	len_s2;
-	size_t	result_len;
+	int		j;
+	char	*str;
 
-	len_s1 = check_len1(s1);
-	len_s2 = check_len1(s2);
-	result_len = len_s1 + len_s2 + 1;
-	result = malloc(result_len);
-	i = 0;
-	if (!result)
+	i = -1;
+	j = -1;
+	len = ft_strlen((char *)s1) + ft_strlen((char *)s2);
+	str = malloc((len + 1) * sizeof(char));
+	if (!str)
 		return (NULL);
-	while (i < (int)result_len - 1)
-	{
-		if (i < (int)len_s1 && s1[i])
-			result[i] = s1[i];
-		else
-			result[i] = s2[i - (int)len_s1];
-		i++;
-	}
-	result[i] = '\0';
-	return (result);
+	while (s1[++i])
+		str[i] = s1[i];
+	while (s2[++j])
+		str[i + j] = s2[j];
+	str[i + j] = '\0';
+	return (str);
 }
-/*
-int main()
-{
-	char *hello = ft_strjoin(NULL, "halo");
-	printf("%s\n", hello);
-}*/
+
+// int main(void)
+// {
+//     char *str = ft_strjoin("salut", "42");
+//     printf("%s", str);
+// }

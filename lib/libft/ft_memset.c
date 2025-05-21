@@ -3,32 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 17:14:15 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/11 14:22:12 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/04 15:29:01 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/11 16:06:10 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_memset(void *s, int c, size_t n)
+void	*ft_memset(void *pnt, int val, int count)
 {
-	int	i;
+	int		i;
+	char	*mem;
 
 	i = 0;
-	while (i < (int)n)
+	mem = (char *)pnt;
+	while (i < count)
 	{
-		*(char *)(s + i) = (char)c;
+		mem[i] = val;
 		i++;
 	}
-	return (s);
+	return ((void *)mem);
 }
-/*
-int main()
-{
-	char *test = malloc(10);
-	ft_strlcpy(test, "hey", 3);
-	printf("%s\n", test);
-	ft_memset(test, 'c', 5);
-	printf("%s\n", test);
-}*/
+
+// void    main()
+// {
+//     char * a = calloc(10, sizeof(char));
+//     char * b = calloc(10, sizeof(char));
+//     ft_memset(a, 2000, 5);
+//     memset(b, 2000, 5);
+//     int i = 0;
+//     while(i < 8)
+//     {
+//         printf("%d", a[i]);
+//         i++;
+//     }
+//     i = 0;
+//     printf("\n");
+//     while(i < 8)
+//     {
+//         printf("%d", b[i]);
+//         i++;
+//     }
+//     free(a);
+//     free(b);
+// }

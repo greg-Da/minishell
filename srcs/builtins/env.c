@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:37 by greg              #+#    #+#             */
-/*   Updated: 2025/02/17 12:38:28 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:47:17 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ft_env(t_pipex *pip)
 	i = 0;
 	while (pip->envp[i])
 	{
-		ft_printf("%s\n", pip->envp[i]);
+		ft_putstr_fd(pip->envp[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
 }

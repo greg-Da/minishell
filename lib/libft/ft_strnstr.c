@@ -3,41 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 18:18:16 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/13 21:12:53 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/04 14:14:41 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/12 13:12:57 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-char	*ft_strnstr(const char *big, const char *little, size_t len)
+char	*ft_strnstr(char *str, char *to_find, int len)
 {
 	int	i;
+	int	j;
+	int	start;
 
 	i = 0;
-	if (len > ft_strlen(big))
-		len = ft_strlen(big);
-	if (little[i] == '\0')
-		return ((char *)big);
-	if (big[i] == '\0')
+	if ((!str || !to_find) && len == 0)
 		return (NULL);
-	while (i < (int)len)
+	if (!to_find[i])
+		return (str);
+	while (str[i])
 	{
-		if (big[i] == little[0] && (i + ft_strlen(little)) <= len)
+		j = 0;
+		if (str[i] == to_find[j])
 		{
-			if (ft_strncmp(big + i, little, ft_strlen(little)) == 0)
+			start = i;
+			while (str[i] == to_find[j] && (len > i || len == -1))
 			{
-				return ((char *)(big + i));
+				i++;
+				if (to_find[++j] == '\0')
+					return (&str[start]);
 			}
 		}
-		i++;
+		i = i - j + 1;
 	}
 	return (NULL);
 }
-/*
-int main()
-{
-	printf("%s\n", ft_strnstr("Tro", "tombola", 20));
-	printf("%s\n", strnstr("Tr", "tombola", 20));
-}*/
+
+// int	main(void)
+// {
+// 	char haystack[30] = "aaabcabcd";
+// 	char needle[10] = "aabc";
+// 	printf("ft V :%s \n", ft_strnstr(haystack, needle, -1));
+// 	printf("ft V :%s \n", strnstr(haystack, needle, -1));
+// 	printf("ft V :%s \n", ft_strnstr(haystack, "abcd", 9));
+// 	printf("ft V :%s \n", ft_strnstr(haystack, "abcd", 9));
+// }

@@ -3,84 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 19:23:27 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/10 19:50:48 by greg             ###   ########.fr       */
+/*   Created: 2024/11/11 11:12:12 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/11 15:58:17 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	calc_size(int n)
+static int	ft_get_ten_pow(int n)
 {
-	int	num;
-	int	result;
+	int	i;
 
-	num = n;
-	result = 0;
-	if (n < 0)
+	i = 1;
+	while (n > 9)
 	{
-		num = -num;
-		result++;
+		n /= 10;
+		i++;
 	}
-	while (num > 9)
-	{
-		num = num / 10;
-		result++;
-	}
-	result++;
-	return (result);
+	return (i);
 }
 
-static int	check(int n)
+static char	*ft_pop_str(char *dest, int nmb, int index)
 {
-	if (n != INT_MIN)
-		return (0);
-	return (1);
-}
-
-static char	*return_error(void)
-{
-	char	*result;
-
-	result = malloc(12);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, "-2147483648", 12);
-	return (result);
+	dest[index] = 0;
+	index--;
+	while (nmb > 9)
+	{
+		dest[index] = '0' + (nmb % 10);
+		nmb /= 10;
+		index--;
+	}
+	dest[index] = '0' + nmb;
+	return (dest);
 }
 
 char	*ft_itoa(int n)
 {
-	int		num;
-	int		i;
-	int		size;
-	char	*result;
+	int		pos;
+	int		len;
+	char	*str;
 
-	if (check(n) == 1)
-		return (return_error());
-	num = n;
-	i = 0;
-	size = calc_size(n);
-	result = malloc(size + 1);
-	if (!result)
-		return (NULL);
+	pos = 0;
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
 	if (n < 0)
-		result[0] = '-';
-	num = ft_abs(num);
-	while (num > 9)
 	{
-		result[(size - 1) - i] = (char)(num % 10) + '0';
-		num = num / 10;
-		i++;
+		pos = 1;
+		n *= -1;
 	}
-	result[(size - 1) - i] = (char)(num % 10) + '0';
-	result[size] = '\0';
-	return (result);
+	len = ft_get_ten_pow(n);
+	str = malloc((len + pos + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	if (pos)
+		str[0] = '-';
+	return (ft_pop_str(str, n, len + pos));
 }
-/*
-int main()
-{
-	printf("%s\n", ft_itoa(-0));
-}*/
+
+// int main(void)
+// {
+//     char *str = ft_itoa(-21);
+//     printf("%s", str);
+//     free(str);
+// }

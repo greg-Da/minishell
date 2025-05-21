@@ -3,38 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 12:22:12 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/11 14:23:26 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/04 13:25:56 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/11 16:13:18 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-char	*ft_strchr(const char *str, int sechar)
+char	*ft_strchr(char *str, int chr)
 {
-	char	*result;
-	int		i;
+	int				i;
+	unsigned char	c;
 
+	c = (unsigned char)chr;
 	i = 0;
-	result = NULL;
-	if (!str)
-		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == (char)sechar)
-		{
-			result = (char *)(str + i);
-			break ;
-		}
+		if (str[i] == c)
+			return (&str[i]);
 		i++;
 	}
-	if (str[i] == (char)sechar)
-		result = (char *)(str + i);
-	return (result);
+	if (str[i] == c)
+		return (&str[i]);
+	return (NULL);
 }
-/*
-int main()
-{
-	printf("%s", ft_strchr("tripouille", 't' + 256));
-}*/
+
+// void main()
+// {
+//     printf("%s", ft_strchr("hello", 'x'));
+// }

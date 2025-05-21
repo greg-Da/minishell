@@ -3,102 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 14:58:09 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/13 20:16:51 by greg             ###   ########.fr       */
+/*   Created: 2024/11/08 14:26:10 by greg              #+#    #+#             */
+/*   Updated: 2024/11/11 16:20:22 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "libft.h"
+#include "libft.h"
 
-static int	ft_chrinstr(int c, const char *s)
+static int	ft_include(char c, const char *set)
 {
 	int	i;
 
 	i = 0;
-	while (i < (int)ft_strlen(s))
+	while (set[i])
 	{
-		if ((int)s[i] == c)
+		if (set[i] == c)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-static size_t	calc_mal(char const *s1, char const *set)
-{
-	int	i;
-	int	result;
-
-	i = 0;
-	result = 0;
-	while (ft_chrinstr(s1[i], set) == 1 && s1[i])
-	{
-		i++;
-		result++;
-	}
-	if (!s1[i])
-		return (result);
-	i = ft_strlen(s1) - 1;
-	while (ft_chrinstr(s1[i], set) == 1 && i >= 0 && s1[i])
-	{
-		i--;
-		result++;
-	}
-	return (result);
-}
-
-static int	check(char const *set)
-{
-	if (set)
-		return (0);
-	return (1);
-}
-
-static char	*return_error(char const *s1)
-{
-	char	*result;
-
-	result = malloc(ft_strlen(s1) + 1);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1, ft_strlen(s1) + 1);
-	result[ft_strlen(s1)] = '\0';
-	return (result);
-}
-
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int		i;
-	int		u;
-	int		size;
-	char	*result;
+	int	i;
+	int	len;
 
-	if (!s1)
-		return (NULL);
-	if (check(set) == 1)
-		return (return_error(s1));
 	i = 0;
-	u = 0;
-	size = (ft_strlen(s1) - calc_mal(s1, set)) + 1;
-	result = malloc(size);
-	while (ft_chrinstr(s1[i], set) == 1 && s1[i])
+	len = ft_strlen((char *)s1) - 1;
+	while (ft_include(s1[i], set))
 		i++;
-	while (u < size - 1)
-	{
-		result[u] = s1[i];
-		i++;
-		u++;
-	}
-	result[u] = '\0';
-	return (result);
+	while (ft_include(s1[len], set))
+		len--;
+	return (ft_substr(s1, (unsigned int)i, (size_t)(len - i + 1)));
 }
-// int main()
+
+// int main(void)
 // {
-// 	char *test = NULL;
-// 	char *rmv = " 	";
-// 	char *nvtest = ft_strtrim(test, rmv);
-// 	printf("%s\n", nvtest);
-// 	free(nvtest);
+//     printf("%s", ft_strtrim("tripouille   xxx", " x"));
 // }

@@ -3,51 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 13:29:46 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/11 15:20:09 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/05 10:40:32 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/11 16:16:27 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+unsigned int	ft_strlcpy(char *dest, char *src, unsigned int n)
 {
-	int	i;
+	unsigned int	i;
+	int				len;
 
 	i = 0;
-	if (size <= 0)
-		return (ft_strlen(src));
-	while ((size_t)i < size - 1 && dst && src[i])
+	len = 0;
+	while (src[len])
+		len++;
+	if (n == 0)
+		return (len);
+	while (src[i] && i < n - 1)
 	{
-		*(char *)(dst + i) = *(char *)(src + i);
+		dest[i] = src[i];
 		i++;
 	}
-	if (i == 0)
-	{
-		dst[i] = '\0';
-		return (ft_strlen(src));
-	}
-	if (dst[i - 1])
-		dst[i] = '\0';
-	return (ft_strlen(src));
+	dest[i] = 0;
+	return (len);
 }
-/*
-int main()
-{
-	char	dstr[10] = {0, 1, 1, 1, 1, 1, 1, 1, 1, 0};
-	char	srcr[10] = {5, 5, 5, 0, 0, 0, 0, 0, 0, 0};
 
-	printf("strlcpy returned %ld\n", ft_strlcpy(dstr, srcr, 5));
-	for (int i = 0; i < 10; i++)
-		printf("%d ", dstr[i]);
-	printf("\n");
-	char test[] = "caacaaa";
-	char dst[] = "poopooo";
-	char testy[] = "caacaaa";
-	char dsty[] = "poopooo";	
-	printf("%zu\n", ft_strlcpy(dst, test, 5));
-	printf("%s\n", dst);
-	printf("%zu\n", strlcpy(dsty, testy, 5));
-	printf("%s\n", dsty);
-}*/
+// int	main(void)
+// {
+// 	char src[] = "coucou";
+// 	char dest[10]; memset(dest, 'A', 10);
+// 	unsigned int t;
+
+// 	t = ft_strlcpy(dest, src, 0);
+// 	printf("dest: %s \n", dest);
+// 	printf("t: %d \n", t);
+// }

@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/21 14:01:00 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/21 15:08:42 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,29 @@ char *get_next_chevron(char *str)
 	return (first);
 }
 
-int process_chevrons(char **pipes, int i, int *fd, char chevron)
+int process_chevrons(char **pipes, int i, int fd[2])
 {
 	char *tmp;
 	char *start;
 	char *filename;
 	char *next_chevron;
 	int append;
+	char chevron;
 
 	tmp = ft_strdup(pipes[i]);
 	if (!tmp)
 		return (-1);
 
 	start = tmp;
-	tmp = ft_strchr(tmp, chevron);
-	if (!tmp)
+	next_chevron = get_next_chevron(tmp);
+	while ((next_chevron))
 	{
-		free(start);
-		return (0);
-	}
-
-	while (tmp)
-	{
+		chevron = *next_chevron;
+		tmp = next_chevron;
 		append = 0;
 		tmp++;
 
-		if (*tmp == chevron)
+		if (*tmp == chevron && chevron == '>')
 		{
 			append = 1;
 			tmp++;
@@ -94,23 +91,16 @@ int process_chevrons(char **pipes, int i, int *fd, char chevron)
 		char *space = ft_strchr(tmp, ' ');
 		if (space && (next_chevron == NULL || space < next_chevron))
 			next_chevron = space;
+
 		if (next_chevron)
-		{
 			filename = ft_substr(tmp, 0, next_chevron - tmp);
-			if (!filename)
-			{
-				free(start);
-				return (-1);
-			}
-		}
 		else
-		{
 			filename = ft_strdup(tmp);
-			if (!filename)
-			{
-				free(start);
-				return (-1);
-			}
+
+		if (!filename)
+		{
+			free(start);
+			return (-1);
 		}
 
 		char *trimmed = ft_strtrim(filename, " ");
@@ -120,33 +110,37 @@ int process_chevrons(char **pipes, int i, int *fd, char chevron)
 		if (!filename || filename[0] == '\0')
 		{
 			if (pipes[i + 1])
-				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", STDERR_FILENO);
+				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 			else
-				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", STDERR_FILENO);
-
+				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 			free(start);
 			free(filename);
-			printf("error\n");
-
 			return (-1);
 		}
 
-		if (*fd != -1 && *fd != STDOUT_FILENO && *fd != STDIN_FILENO)
-			close(*fd);
+		int *current_fd = NULL;
+
+		if (chevron == '<')
+			current_fd = &fd[0];
+		current_fd = &fd[1];
+		
+		
+		if (*current_fd != -1 && *current_fd != STDOUT_FILENO && *current_fd != STDIN_FILENO)
+			close(*current_fd);
 
 		if (chevron == '>')
 		{
 			if (append)
-				*fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				*current_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			else
-				*fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				*current_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		}
 		else if (chevron == '<')
 		{
-			*fd = open(filename, O_RDONLY);
-			if (*fd == -1)
+			*current_fd = open(filename, O_RDONLY);
+			if (*current_fd == -1)
 			{
-				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd("minishell: ", 2);
 				perror(filename);
 				free(start);
 				free(filename);
@@ -154,15 +148,15 @@ int process_chevrons(char **pipes, int i, int *fd, char chevron)
 			}
 		}
 
-		printf("fd : %d\n", *fd);
-		printf("filename : %s\n", filename);
+		// printf("fd[%d] : %d\n", (chevron == '<' ? 0 : 1), *current_fd);
+		// printf("filename : %s\n", filename);
 
 		free(filename);
-
-		next_chevron = ft_strchr(tmp, chevron);
-		if (!next_chevron)
+		
+		if (*current_fd == -1)
 			break;
-		tmp = next_chevron;
+		
+		next_chevron = get_next_chevron(tmp);
 	}
 
 	free(start);
@@ -171,7 +165,7 @@ int process_chevrons(char **pipes, int i, int *fd, char chevron)
 
 int get_files(t_parser *info, int i, char **pipes)
 {
-	if (process_chevrons(pipes, i, &info->fd[0], '<') == -1)
+	if (process_chevrons(pipes, i, info->fd) == -1)
 	{
 		if (info->fd[0] != STDIN_FILENO)
 			close(info->fd[0]);
@@ -179,15 +173,15 @@ int get_files(t_parser *info, int i, char **pipes)
 			close(info->fd[1]);
 		return (-1);
 	}
-	if (process_chevrons(pipes, i, &info->fd[1], '>') == -1)
-	{
-		if (info->fd[0] != STDIN_FILENO)
-			close(info->fd[0]);
-		if (info->fd[1] != STDOUT_FILENO)
-			close(info->fd[1]);
+	// if (process_chevrons(pipes, i, &info->fd[1], '>') == -1)
+	// {
+	// 	if (info->fd[0] != STDIN_FILENO)
+	// 		close(info->fd[0]);
+	// 	if (info->fd[1] != STDOUT_FILENO)
+	// 		close(info->fd[1]);
 
-		return (-1);
-	}
+	// 	return (-1);
+	// }
 	return (1);
 }
 
@@ -248,6 +242,7 @@ int parser(char **pipes, char **envp, int pipe_nb)
 	t_parser info;
 	int pipe_index;
 	int cmd_index;
+	char *trimmed;
 
 	init_parser_struct(&info, pipes, pipe_nb);
 	info.fd[0] = STDIN_FILENO;
@@ -259,7 +254,12 @@ int parser(char **pipes, char **envp, int pipe_nb)
 
 	while (pipes[pipe_index])
 	{
-		ft_strtrim(pipes[pipe_index], " ");
+		trimmed = ft_strtrim(pipes[pipe_index], " ");
+		if (trimmed)
+		{
+			free(pipes[pipe_index]);
+			pipes[pipe_index] = trimmed;
+		}
 
 		if (get_files(&info, pipe_index, pipes) == -1)
 		{
@@ -327,7 +327,13 @@ int handle_cmd(char **envp, t_minish *manager)
 		add_history(input);
 
 	
-	ft_strtrim(input, " ");
+	char *trimmed = ft_strtrim(input, " ");
+    if (trimmed)
+    {
+        free(input);
+        input = trimmed;
+    }
+	
 	if (input[0] == '|' || input[ft_strlen(input)] == '|')
 	{
 		free(input);
