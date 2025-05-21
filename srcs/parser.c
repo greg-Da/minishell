@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/21 15:08:42 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/21 15:39:23 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,13 @@ int process_chevrons(char **pipes, int i, int fd[2])
 			return (-1);
 		}
 
-		char *trimmed = ft_strtrim(filename, " ");
-		free(filename);
-		filename = trimmed;
+		filename =sanitize_str(filename);
+		if (!filename)
+		{
+			free(start);
+			return (-1);
+		}
+		
 
 		if (!filename || filename[0] == '\0')
 		{
@@ -120,9 +124,9 @@ int process_chevrons(char **pipes, int i, int fd[2])
 
 		int *current_fd = NULL;
 
+		current_fd = &fd[1];
 		if (chevron == '<')
 			current_fd = &fd[0];
-		current_fd = &fd[1];
 		
 		
 		if (*current_fd != -1 && *current_fd != STDOUT_FILENO && *current_fd != STDIN_FILENO)
@@ -239,51 +243,61 @@ void get_cmd(t_parser *info, char *pipe, int j)
 
 int parser(char **pipes, char **envp, int pipe_nb)
 {
-	t_parser info;
-	int pipe_index;
-	int cmd_index;
-	char *trimmed;
+    t_parser info;
+    int pipe_index;
+    int cmd_index;
+    char *trimmed;
 
-	init_parser_struct(&info, pipes, pipe_nb);
-	info.fd[0] = STDIN_FILENO;
-	info.fd[1] = STDOUT_FILENO;
-	info.fd[2] = 0;
+    init_parser_struct(&info, pipes, pipe_nb);
+    info.fd[0] = STDIN_FILENO;
+    info.fd[1] = STDOUT_FILENO;
+    info.fd[2] = 0;
 
-	pipe_index = 0;
-	cmd_index = 0;
+    pipe_index = 0;
+    cmd_index = 0;
 
-	while (pipes[pipe_index])
-	{
-		trimmed = ft_strtrim(pipes[pipe_index], " ");
-		if (trimmed)
-		{
-			free(pipes[pipe_index]);
-			pipes[pipe_index] = trimmed;
-		}
+    while (pipes[pipe_index])
+    {
+        char *pipe_copy = ft_strdup(pipes[pipe_index]);
+        if (!pipe_copy)
+        {
+            clean_handle_cmd(&info);
+            return (1);
+        }
 
-		if (get_files(&info, pipe_index, pipes) == -1)
-		{
-			clean_handle_cmd(&info);
-			return (2);
-		}
+        trimmed = sanitize_str(pipe_copy);  // pipe_copy sera libéré par sanitize_str
+        if (!trimmed)
+        {
+            clean_handle_cmd(&info);
+            return (1);
+        }
+        
+        if (get_files(&info, pipe_index, pipes) == -1)
+        {
+            free(trimmed);
+            clean_handle_cmd(&info);
+            return (2);
+        }
 
-		get_cmd(&info, pipes[pipe_index], cmd_index);
-		cmd_index++;
+        get_cmd(&info, pipes[pipe_index], cmd_index);
+        cmd_index++;
 
-		// Execute command immediately if it has redirections
-		if (ft_strchr(pipes[pipe_index], '>'))
-		{
-			info.res = exec_pipex(cmd_index, &info, envp);
-			cmd_index = 0;
-			info.fd[0] = STDIN_FILENO;
-			info.fd[1] = STDOUT_FILENO;
-			info.fd[2] = 0;
-		}
-		pipe_index++;
-	}
+        // Execute command immediately if it has redirections
+        if (ft_strchr(pipes[pipe_index], '>'))
+        {
+            info.res = exec_pipex(cmd_index, &info, envp);
+            cmd_index = 0;
+            info.fd[0] = STDIN_FILENO;
+            info.fd[1] = STDOUT_FILENO;
+            info.fd[2] = 0;
+        }
+        
+        free(trimmed);  // Libérer trimmed après utilisation
+        pipe_index++;
+    }
 
-	// Execute remaining commands if any
-	if (cmd_index > 0)
+    // Execute remaining commands if any
+    if (cmd_index > 0)
 		info.res = exec_pipex(cmd_index, &info, envp);
 
 	clean_handle_cmd(&info);
@@ -327,12 +341,7 @@ int handle_cmd(char **envp, t_minish *manager)
 		add_history(input);
 
 	
-	char *trimmed = ft_strtrim(input, " ");
-    if (trimmed)
-    {
-        free(input);
-        input = trimmed;
-    }
+	input = sanitize_str(input);
 	
 	if (input[0] == '|' || input[ft_strlen(input)] == '|')
 	{

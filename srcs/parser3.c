@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/19 15:21:28 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/21 15:30:19 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ char *sanitize_str(char *str)
 	
 	if (!str)
 		return (NULL);
-	trimmed = ft_strtrim(str, " ");
+	trimmed = ft_strtrim(str, " \t\n\v\f\r");
     free(str);
+    if (!trimmed)
+        return (NULL);
     return trimmed;
 }
 

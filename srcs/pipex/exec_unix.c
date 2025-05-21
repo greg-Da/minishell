@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:54:13 by greg              #+#    #+#             */
-/*   Updated: 2025/05/21 15:02:33 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/21 15:36:31 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 	while (++prev->i < pipex->cmd_count)
 	{
 
-		printf("cmd : %s\n", pipex->cmd_args[prev->i][0]);
+		// printf("cmd : %s\n", pipex->cmd_args[prev->i][0]);
 		if (pipex->cmd_args[prev->i][0] == NULL)
 			continue ;
 
