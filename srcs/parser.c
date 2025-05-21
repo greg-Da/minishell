@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/21 16:16:19 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/21 16:21:10 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,19 @@ int process_chevrons(char **pipes, int i, int fd[2])
 
 		if (!filename || filename[0] == '\0')
 		{
-			if (pipes[i + 1])
+			char *next = tmp;
+			while (*next && *next == ' ')
+				next++;
+
+			if (*next == '>' || *next == '<')
+				ft_putstr_fd("minishell: syntax error near unexpected token `", 2),
+					ft_putchar_fd(*next, 2),
+					ft_putstr_fd("'\n", 2);
+			else if (pipes[i + 1])
 				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 			else
 				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+
 			free(start);
 			free(filename);
 			return (-1);
