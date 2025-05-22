@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/21 15:38:43 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/22 13:16:11 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 
-	printf("TEST TO HANDLE : \n");
-	printf("PLS CHECK : echo test > file test1 \n");
+	init_signals();
+	manager.last_cmd = NULL;
+	manager.last_ex_code = 0;
 
 
 	while (1)
