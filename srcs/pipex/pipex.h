@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:21:58 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/21 12:48:12 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/22 15:13:25 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct s_pipex
 	char	**envp;
 	char	**cmd_path;
 	char	***cmd_args;
-	int		here_doc;
-	int		append;
+	// int		here_doc;
+	// int		append;
 	int		fd[2];
 	int		exit_code;
 	int		cmd_count;

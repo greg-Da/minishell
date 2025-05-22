@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/22 13:38:52 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:26:21 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 	char	*space;
 	char	*next;
 	int		*current_fd;
+	int		here_doc;
+	char	*lim_end;
 
+	here_doc = 0;
 	tmp = ft_strdup(pipes[i]);
 	if (!tmp)
 		return (-1);
@@ -80,6 +83,37 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 		{
 			append = 1;
 			tmp++;
+		}
+		if (*tmp == chevron && chevron == '<')
+		{
+			printf("ICI\n");
+			tmp++;
+			here_doc = 1;
+			while (*tmp && *tmp == ' ')
+				tmp++;
+			lim_end = ft_strchr(tmp, ' ');
+			if (lim_end)
+				filename = ft_substr(tmp, 0, lim_end - tmp);
+			else
+				filename = ft_strdup(tmp);
+			filename = sanitize_str(filename);
+			if (filename && *filename != '\0')
+			{
+				fd[0] = open("here_doc.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+				ft_here_doc(fd[0], filename);
+				free(filename);
+				tmp = lim_end ? lim_end : tmp + ft_strlen(tmp);
+				next_chevron = get_next_chevron(tmp);
+				continue ;
+			}
+			else
+			{
+				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
+					2);
+				free(start);
+				free(filename);
+				return (-1);
+			}
 		}
 		while (*tmp && *tmp == ' ')
 			tmp++;
@@ -102,28 +136,25 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 			free(start);
 			return (-1);
 		}
-		if ((!filename || filename[0] == '\0'))
+		if ((!filename || filename[0] == '\0') && fd[0] != -10)
 		{
 			next = tmp;
 			while (*next && *next == ' ')
 				next++;
-			if (!(*next == *next + 1 && *next == '<'))
+			if ((*next == '>' || *next == '<'))
 			{
-				if ((*next == '>' || *next == '<'))
-				{
-					ft_putstr_fd("minishell: syntax error near unexpected token `",
-						2), ft_putchar_fd(*next, 2), ft_putstr_fd("'\n", 2);
-				}
-				else if (pipes[i + 1])
-					ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
-						2);
-				else
-					ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-						2);
-				free(start);
-				free(filename);
-				return (-1);
+				ft_putstr_fd("minishell: syntax error near unexpected token `",
+					2), ft_putchar_fd(*next, 2), ft_putstr_fd("'\n", 2);
 			}
+			else if (pipes[i + 1])
+				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
+					2);
+			else
+				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
+					2);
+			free(start);
+			free(filename);
+			return (-1);
 		}
 		current_fd = NULL;
 		current_fd = &fd[1];
@@ -131,7 +162,14 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 			current_fd = &fd[0];
 		if (*current_fd != -1 && *current_fd != STDOUT_FILENO
 			&& *current_fd != STDIN_FILENO)
+		{
 			close(*current_fd);
+			if (here_doc)
+			{
+				unlink("here_doc.txt");
+				here_doc = 0;
+			}
+		}
 		if (chevron == '>')
 		{
 			if (append)
@@ -159,6 +197,11 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 		if (*current_fd == -1)
 			break ;
 		next_chevron = get_next_chevron(tmp);
+	}
+	if (here_doc)
+	{
+		unlink("here_doc.txt");
+		here_doc = 0;
 	}
 	free(start);
 	return (0);
