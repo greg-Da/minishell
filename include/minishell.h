@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/19 14:36:10 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/22 13:16:38 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include <pipex.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
+# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
@@ -56,6 +58,7 @@ void		ft_env(t_pipex *pip);
 void		ft_echo(char **cmd);
 void		ft_cd(char **path);
 int			handle_cmd(char **envp, t_minish *manager);
-
+char		*get_input(char *prompt, t_minish *manager);
+void	init_signals(void);
 
 #endif
