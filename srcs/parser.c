@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/22 13:15:48 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/22 13:38:52 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,23 +102,28 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 			free(start);
 			return (-1);
 		}
-		if (!filename || filename[0] == '\0')
+		if ((!filename || filename[0] == '\0'))
 		{
 			next = tmp;
 			while (*next && *next == ' ')
 				next++;
-			if (*next == '>' || *next == '<')
-				ft_putstr_fd("minishell: syntax error near unexpected token `",
-					2), ft_putchar_fd(*next, 2), ft_putstr_fd("'\n", 2);
-			else if (pipes[i + 1])
-				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
-					2);
-			else
-				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-					2);
-			free(start);
-			free(filename);
-			return (-1);
+			if (!(*next == *next + 1 && *next == '<'))
+			{
+				if ((*next == '>' || *next == '<'))
+				{
+					ft_putstr_fd("minishell: syntax error near unexpected token `",
+						2), ft_putchar_fd(*next, 2), ft_putstr_fd("'\n", 2);
+				}
+				else if (pipes[i + 1])
+					ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
+						2);
+				else
+					ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
+						2);
+				free(start);
+				free(filename);
+				return (-1);
+			}
 		}
 		current_fd = NULL;
 		current_fd = &fd[1];
@@ -320,9 +325,8 @@ int	handle_cmd(char **envp, t_minish *manager)
 		free(input);
 		return (0);
 	}
-	input = get_input(">  ", manager);
-	if (*input && (!manager->last_cmd || ft_strcmp(input, manager->last_cmd) != 0))
-    	add_history(input);
+	if (ft_strcmp(input, manager->last_cmd) != 0)
+		add_history(input);
 	input = sanitize_str(input);
 	if (input[0] == '|' || input[ft_strlen(input)] == '|')
 	{
