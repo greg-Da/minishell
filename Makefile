@@ -18,7 +18,8 @@ SRC = srcs/main.c \
 	srcs/builtins/env.c\
 	srcs/builtins/echo.c\
 	srcs/builtins/cd.c\
-	srcs/signals.c 
+	srcs/signals.c\
+	srcs/expand.c
 
 OBJS = ${SRC:.c=.o}
 

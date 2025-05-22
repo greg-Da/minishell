@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/22 13:38:52 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:15:14 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,6 @@ int	process_chevrons(char **pipes, int i, int fd[2])
 				return (-1);
 			}
 		}
-		// printf("fd[%d] : %d\n", (chevron == '<' ? 0 : 1), *current_fd);
-		// printf("filename : %s\n", filename);
 		free(filename);
 		if (*current_fd == -1)
 			break ;
@@ -319,7 +317,12 @@ int	handle_cmd(char **envp, t_minish *manager)
 
 	input = readline(">  ");
 	if (!input)
-		return (0);
+	{
+		write(1, "exit\n", 5);
+		if(manager->last_cmd)
+            free(manager->last_cmd);
+		exit(manager->last_ex_code);
+	}
 	if (*input == '\0')
 	{
 		free(input);
