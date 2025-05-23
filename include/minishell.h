@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/22 13:16:38 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:31:09 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ void		ft_echo(char **cmd);
 void		ft_cd(char **path);
 int			handle_cmd(char **envp, t_minish *manager);
 char		*get_input(char *prompt, t_minish *manager);
-void	init_signals(void);
+void		init_signals(void);
+void        handle_sigint(int sig);
+char	    *expand_variable(char *var_name);
+char        *expand_string(char *input);
+void        expand_all_args(char **args);
 
 #endif

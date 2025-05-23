@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/21 14:53:33 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/22 14:59:56 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,27 @@ int	ft_count_words(char const *s, char c)
 
 void	ft_check_quotes(char **arr, t_custom_split *stru, t_pipex *pipex)
 {
-	if (arr[stru->j][0] == '\'' || arr[stru->j][0] == '\"')
+	char *expanded;
+	char *str = arr[stru->j];
+	int len = ft_strlen(str);
+
+	if ((str[0] == '\'' && str[len - 1] == '\'') ||
+		(str[0] == '"' && str[len - 1] == '"'))
 	{
-		arr[stru->j][ft_strlen(arr[stru->j]) - 1] = 0;
-		ft_strlcpy(arr[stru->j], &arr[stru->j][1], ft_strlen(arr[stru->j]));
+		str[len - 1] = '\0';
+		ft_strlcpy(str, str + 1, len);
 	}
-	if (arr[stru->j][0] == '\"')
-	{
-		free(arr[stru->j]);
-		arr[stru->j] = ft_strdup("{print}");
-	}
-	if (arr[stru->j][0] == '\'')
+
+	if (str[0] == '\'')
 		pipex->exit_code = 1;
+	else
+	{
+		expanded = expand_string(str);
+		free(arr[stru->j]);
+		arr[stru->j] = expanded;
+	}
 }
+
 
 size_t	ft_get_str(const char *s, char c, t_custom_split *stru, char **arr)
 {
