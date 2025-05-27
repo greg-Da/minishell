@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/23 15:12:59 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:31:12 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,16 +245,8 @@ void get_cmd(t_parser *info, char *pipe, int j)
 
 		start = end;
 	}
-n (-1);
-		}
-
-		int *current_fd = NULL;
-
-		current_fd = &fd[1];
-		if (chevron == '<')
-			current_fd = &fd[0];
-
-		if 
+	if (!cmd)
+		cmd = ft_strdup("");
 	info->cmd[j] = sanitize_str(cmd);
 	if (!info->cmd[j])
 	{
@@ -349,7 +341,12 @@ int handle_cmd(char **envp, t_minish *manager)
 
 	input = readline(">  ");
 	if (!input)
-		return (0);
+	{
+		write(1, "exit\n", 5);
+		if (manager->last_cmd)
+			free(manager->last_cmd);
+		exit(manager->last_ex_code);
+	}
 
 	if (*input == '\0')
 	{
