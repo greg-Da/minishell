@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/05/22 14:37:41 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/05/27 15:00:55 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+sig_atomic_t is_in_execution = 0;
+
 void	handle_sigint(int sig)
 {
-	if (sig == SIGINT)
+	write(1, "\n", 1);
+	if (sig == SIGINT && is_in_execution == 0)
 	{
 		(void)sig;
-		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

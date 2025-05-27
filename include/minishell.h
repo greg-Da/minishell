@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/22 15:31:09 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/05/27 14:58:00 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void        handle_sigint(int sig);
 char	    *expand_variable(char *var_name);
 char        *expand_string(char *input);
 void        expand_all_args(char **args);
+extern 		sig_atomic_t is_in_execution;
 
 #endif
