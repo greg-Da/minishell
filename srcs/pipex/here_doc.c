@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/22 15:00:11 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:11:02 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_get_here_doc_line(int fd, char *limiter)
 	char	*end;
 
 	buf = malloc(1000);
-	printf("[%s]\n", limiter);
+	// printf("[%s]\n", limiter);
 	while (1)
 	{
 		write(STDOUT_FILENO, "quote > ", 8);

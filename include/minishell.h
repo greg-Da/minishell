@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/27 14:58:00 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/29 19:13:52 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef struct s_minish
 {
 	int		last_ex_code;
 	char	*last_cmd;
+	char	**envp;
+	
 }			t_minish;
 
 typedef enum e_token
@@ -57,13 +59,16 @@ int			pwd(void);
 void		ft_env(t_pipex *pip);
 void		ft_echo(char **cmd);
 void		ft_cd(char **path);
-int			handle_cmd(char **envp, t_minish *manager);
+int			handle_cmd(t_minish *manager);
 char		*get_input(char *prompt, t_minish *manager);
 void		init_signals(void);
 void        handle_sigint(int sig);
 char	    *expand_variable(char *var_name);
 char        *expand_string(char *input);
 void        expand_all_args(char **args);
+void		ft_export(char ***envp, char *arg);
+void		ft_unset(char ***envp, char *arg);
+char 		**ft_realloc_env(char **envp, char *new_entry);
 extern 		sig_atomic_t is_in_execution;
 
 #endif

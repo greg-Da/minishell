@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:21:58 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/27 14:37:09 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/29 17:31:30 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_parser
 	int		cmd_nb;
 }			t_parser;
 
-void		ft_cleanup(t_pipex pipex);
+void		ft_cleanup(t_pipex *pipex);
 
 void		ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp);
 int			ft_here_doc(int fd, char *limiter);

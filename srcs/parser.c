@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/27 14:55:24 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/29 19:12:03 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void get_cmd(t_parser *info, char *pipe, int j)
 	}
 }
 
-int parser(char **pipes, char **envp, int pipe_nb)
+int parser(char **pipes, int pipe_nb, t_minish *manager)
 {
 	t_parser info;
 	int pipe_index;
@@ -292,9 +292,25 @@ int parser(char **pipes, char **envp, int pipe_nb)
 		get_cmd(&info, pipes[pipe_index], cmd_index);
 		cmd_index++;
 
+		// printf("%d\n", pipe_nb);
+		if ((ft_strncmp(pipes[pipe_index], "export", 6) == 0 
+		|| ft_strncmp(pipes[pipe_index], "unset", 5) == 0) && pipe_nb == 1)
+		{
+			
+			if(ft_strncmp(pipes[pipe_index], "export", 6) == 0)
+				ft_export(&manager->envp, ft_strrchr(trimmed, ' ') + 1);
+			
+			else 
+				ft_unset(&manager->envp, ft_strrchr(trimmed, ' ') + 1);
+			free(trimmed);
+			clean_handle_cmd(&info);
+			return (1);
+		}
+		
+
 		if (ft_strchr(pipes[pipe_index], '>'))
 		{
-			info.res = exec_pipex(cmd_index, &info, envp);
+			info.res = exec_pipex(cmd_index, &info, manager->envp);
 			cmd_index = 0;
 			info.fd[0] = STDIN_FILENO;
 			info.fd[1] = STDOUT_FILENO;
@@ -306,7 +322,7 @@ int parser(char **pipes, char **envp, int pipe_nb)
 	}
 
 	if (cmd_index > 0)
-		info.res = exec_pipex(cmd_index, &info, envp);
+		info.res = exec_pipex(cmd_index, &info, manager->envp);
 
 	clean_handle_cmd(&info);
 	return (info.res);
@@ -325,10 +341,10 @@ int get_pipe_count(char *input)
 			count++;
 		i++;
 	}
-	return (count);
+	return (count + 1);
 }
 
-int handle_cmd(char **envp, t_minish *manager)
+int handle_cmd(t_minish *manager)
 {
 	char *input;
 	char **pipes;
@@ -376,7 +392,7 @@ int handle_cmd(char **envp, t_minish *manager)
 	}
 	
 	is_in_execution = 1;
-	code = parser(pipes, envp, get_pipe_count(input));
+	code = parser(pipes, get_pipe_count(input), manager);
 	is_in_execution = 0;
 
 	i = 0;

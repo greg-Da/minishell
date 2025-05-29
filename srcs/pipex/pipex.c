@@ -3,36 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/23 14:55:50 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:25:41 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_cleanup(t_pipex pipex)
+void	ft_cleanup(t_pipex *pipex)
 {
 	int	i;
 	int	j;
 
 	// close(pipex.in_fd);
 	// close(pipex.out_fd);
-	free(pipex.pids);
-	// if (pipex.here_doc)
+	free(pipex->pids);
+	// if (pipex->here_doc)
 	// 	unlink("here_doc.txt");
 	i = -1;
-	while (pipex.cmd_args && pipex.cmd_args[++i])
+	while (pipex->cmd_args && pipex->cmd_args[++i])
 	{
 		j = -1;
-		free(pipex.cmd_path[i]);
-		while (pipex.cmd_args[i][++j])
-			free(pipex.cmd_args[i][j]);
-		free(pipex.cmd_args[i]);
+		free(pipex->cmd_path[i]);
+		while (pipex->cmd_args[i][++j])
+			free(pipex->cmd_args[i][j]);
+		free(pipex->cmd_args[i]);
 	}
-	free(pipex.cmd_path);
-	free(pipex.cmd_args);
+	free(pipex->cmd_path);
+	free(pipex->cmd_args);
+	
 }
 
 void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
@@ -77,17 +78,20 @@ int	pipex(int nmb, char **cmd, char **envp, int *fd)
 	pipex.in_fd = fd[0];
 	pipex.out_fd = fd[1];
 	pipex.is_invalid_infile = fd[2];
-	pipex.envp = envp;
+	
 	ft_init_struct(&pipex, nmb, cmd, envp);
 	// if (pipex.here_doc)
 	// 	ft_here_doc(pipex.in_fd, cmd[0]);
 	prev.in = pipex.in_fd;
 	prev.i = -1;
-	ft_loop(&pipex, &prev, envp);
+	ft_loop(&pipex, &prev, pipex.envp);
 	i = -1;
 	ft_wait_children(&pipex, prev, i);
-	ft_cleanup(pipex);
+	ft_cleanup(&pipex);
 	if (pipex.exit)
+	{
+		
 		exit(1);
+	}
 	return (pipex.exit_code);
 }
