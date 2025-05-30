@@ -46,11 +46,11 @@ typedef struct s_split
 	int		j;
 }			t_custom_split;
 
-typedef struct s_quotes
+typedef struct s_pip_quotes
 {
 	int		s_quotes;
 	int		d_quotes;
-}			t_quotes;
+}			t_pip_quotes;
 
 typedef struct s_parser
 {
@@ -61,6 +61,8 @@ typedef struct s_parser
 	char	*files[2];
 	char	**cmd;
 	int		cmd_nb;
+
+	int		here_doc;
 }			t_parser;
 
 void		ft_cleanup(t_pipex *pipex);

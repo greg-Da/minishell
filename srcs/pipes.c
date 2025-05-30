@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:32:12 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/05/30 14:01:26 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 15:16:32 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,18 @@ char *first_quotes(char *a, char *b)
     return b;
 }
 
-int check_quotes(char *input, t_quotes *quotes, t_minish *manager)
+int check_quotes(char **input, t_quotes *quotes, t_minish *manager)
 {
     char *d_quotes;
     char *s_quotes;
+    int fd;
 
-    s_quotes = ft_strchr(input, '\'');
-    d_quotes = ft_strchr(input, '"');
+    (void)manager;
+
+    s_quotes = ft_strchr(*input, '\'');
+    d_quotes = ft_strchr(*input, '"');
+
+    printf("input: %s\n", *input);
 
     while (d_quotes || s_quotes)
     {
@@ -38,7 +43,28 @@ int check_quotes(char *input, t_quotes *quotes, t_minish *manager)
         quotes->close = ft_strchr(quotes->open + 1, *quotes->open);
         if (!quotes->close)
         {
-        //    ft_here_doc(manager); // ou autre traitement
+            fd = open("here_doc.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
+            if (*quotes->open == '"')
+                ft_here_doc(fd, "\"");
+            else
+                ft_here_doc(fd, "'");
+
+            char buffer[1000];
+            int b_read = read(fd, buffer, 999);
+            printf("b_read: %d\n", b_read);
+            buffer[b_read] = '\0';
+
+            while (b_read != 0)
+            {
+                printf("ICI\n");
+                char *tmp = ft_strdup(*input);
+                free(*input);
+                *input = ft_strjoin(tmp, buffer);
+                free(tmp);
+                b_read = read(fd, buffer, 999);
+                buffer[b_read] = '\0';
+            }
+            unlink("here_doc.txt");
             return (1);
         }
         s_quotes = ft_strchr(quotes->close + 1, '\'');
@@ -98,18 +124,10 @@ char **get_pipes(char *input, t_minish *manager)
                 free(result);
                 return NULL;
             }
-            strncpy(segment, input + start, seg_len);
-            segment[seg_len] = '\0';
+            ft_strlcpy(segment, input + start, seg_len + 1);
 
-            if (check_quotes(segment, &quotes, manager))
-            {
-                ft_printf("Erreur : quote non fermée dans le segment [%s]\n", segment);
-                free(segment);
-                for (int j = 0; j < idx; j++)
-                    free(result[j]);
-                free(result);
-                return NULL;
-            }
+            check_quotes(&segment, &quotes, manager);
+            printf("%s\n", segment);
 
             result[idx++] = segment;
             start = i + 1;
@@ -127,9 +145,3 @@ char **get_pipes(char *input, t_minish *manager)
 
     return result;
 }
-    
-        
-
-        
-        
-        

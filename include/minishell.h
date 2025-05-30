@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/30 11:36:25 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 14:10:41 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ typedef struct s_quotes
 	
 }	t_quotes;
 
-char **get_pipes(char *input);
+char **get_pipes(char *input, t_minish *manager);
 
 int			pwd(void);
 void		ft_env(t_pipex *pip);
 void		ft_echo(char **cmd);
 void		ft_cd(char **path);
-int			handle_cmd(t_minish *manager);
+int 		handle_cmd(char **envp, t_minish *manager);
 char		*get_input(char *prompt, t_minish *manager);
 void		init_signals(void);
 void        handle_sigint(int sig);

@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/29 19:08:36 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 14:21:53 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int ac, char **av, char **envp)
 
 
 	while (1)
-		manager.last_ex_code = handle_cmd(&manager);
+		manager.last_ex_code = handle_cmd(envp, &manager);
 
 	
 }
