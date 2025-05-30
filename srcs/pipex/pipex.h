@@ -46,11 +46,11 @@ typedef struct s_split
 	int		j;
 }			t_custom_split;
 
-typedef struct s_quotes
+typedef struct s_pip_quotes
 {
 	int		s_quotes;
 	int		d_quotes;
-}			t_quotes;
+}			t_pip_quotes;
 
 typedef struct s_parser
 {

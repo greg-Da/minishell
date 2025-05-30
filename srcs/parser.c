@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/30 13:29:21 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 14:02:26 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char *get_next_chevron(char *str)
 	return (first);
 }
 
-int process_chevrons(char **pipes, int i, int fd[2])
+int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 {
 	char *tmp;
 	char *start;
@@ -79,12 +79,15 @@ int process_chevrons(char **pipes, int i, int fd[2])
 
 		if (*tmp == chevron && chevron == '>')
 		{
-			printf("append\n");
-			printf("tmp : %c\n", *tmp);
 			append = 1;
 			tmp++;
-			printf("tmp : %c\n", *tmp);
-
+		}
+		else if (*tmp == chevron && chevron == '<')
+		{
+			if (info->here_doc)
+				unlink("here_doc.txt");
+			tmp++;
+			info->here_doc = 1;
 		}
 
 		while (*tmp && *tmp == ' ')
@@ -119,7 +122,7 @@ int process_chevrons(char **pipes, int i, int fd[2])
 			char *next = tmp;
 			if (*next == '>' || *next == '<')
 				next++;
-			
+
 			while (*next && *next == ' ')
 				next++;
 
@@ -137,13 +140,11 @@ int process_chevrons(char **pipes, int i, int fd[2])
 			return (-1);
 		}
 
-		int *current_fd = NULL;
-
-		current_fd = &fd[1];
+		int *current_fd = &fd[1];
 		if (chevron == '<')
 			current_fd = &fd[0];
 
-		if (*current_fd != -1 && *current_fd != STDOUT_FILENO && *current_fd != STDIN_FILENO)
+		if (current_fd != NULL && *current_fd != -1 && *current_fd != STDOUT_FILENO && *current_fd != STDIN_FILENO)
 			close(*current_fd);
 
 		if (chevron == '>')
@@ -155,7 +156,14 @@ int process_chevrons(char **pipes, int i, int fd[2])
 		}
 		else if (chevron == '<')
 		{
-			*current_fd = open(filename, O_RDONLY);
+			if (info->here_doc)
+			{
+				*current_fd = open("here_doc.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
+				ft_here_doc(*current_fd, filename);
+			}
+			else
+				*current_fd = open(filename, O_RDONLY);
+
 			if (*current_fd == -1)
 			{
 				ft_putstr_fd("minishell: ", 2);
@@ -183,7 +191,7 @@ int process_chevrons(char **pipes, int i, int fd[2])
 
 int get_files(t_parser *info, int i, char **pipes)
 {
-	if (process_chevrons(pipes, i, info->fd) == -1)
+	if (process_chevrons(pipes, i, info->fd, info) == -1)
 	{
 		if (info->fd[0] != STDIN_FILENO)
 			close(info->fd[0]);
@@ -373,12 +381,11 @@ int handle_cmd(char **envp, t_minish *manager)
 		return (2);
 	}
 
-	
 	// check_if_between(strchr("| > < $"), check_q())
 
-	pipes = get_pipes(input);
+	// pipes = get_pipes(input);
 
-	// pipes = ft_split(input, '|');
+	pipes = ft_split(input, '|');
 	if (!pipes)
 	{
 		free(input);

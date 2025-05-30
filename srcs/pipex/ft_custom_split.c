@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/30 10:15:46 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 13:33:31 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_count_words(char const *s, char c)
 {
 	int			count;
 	int			in_word;
-	t_quotes	quotes;
+	t_pip_quotes	quotes;
 	const char	*start;
 
 	ft_set_to_zero(&count, &in_word, &quotes.d_quotes, &quotes.s_quotes);

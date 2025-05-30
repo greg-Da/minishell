@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/02/14 17:20:36 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 13:33:41 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_next_occurence(char const *s, char c, int index)
 {
-	t_quotes	quotes;
+	t_pip_quotes	quotes;
 
 	quotes.s_quotes = 0;
 	quotes.d_quotes = 0;
