@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/30 13:24:44 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 13:28:41 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ typedef struct s_tokenized
 	char	**split_input;
 	t_token	*tokens;
 }			t_tokenized;
+
+typedef struct s_quotes
+{
+	char *input;
+	char *open;
+	char *close;
+	
+}	t_quotes;
+
+char **get_pipes(char *input);
 
 int			pwd(void);
 void		ft_env(t_pipex *pip);

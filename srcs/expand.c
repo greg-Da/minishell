@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/05/22 15:12:54 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/05/30 10:11:59 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*expand_variable(char *var_name)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
 }
-void	expand_all_args(char **args)
+void	expand_all_args(char **args)  
 {
 	int		i = 0;
 	char	*expanded;

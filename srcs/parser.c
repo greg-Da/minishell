@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/30 13:23:27 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 13:29:21 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,7 +373,12 @@ int handle_cmd(char **envp, t_minish *manager)
 		return (2);
 	}
 
-	pipes = ft_split(input, '|');
+	
+	// check_if_between(strchr("| > < $"), check_q())
+
+	pipes = get_pipes(input);
+
+	// pipes = ft_split(input, '|');
 	if (!pipes)
 	{
 		free(input);
