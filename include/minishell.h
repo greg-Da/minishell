@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/29 19:14:15 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 11:36:25 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ typedef struct s_tokenized
 	char	**split_input;
 	t_token	*tokens;
 }			t_tokenized;
+
+typedef struct s_quotes
+{
+	char *input;
+	char *open;
+	char *close;
+	
+}	t_quotes;
+
+char **get_pipes(char *input);
 
 int			pwd(void);
 void		ft_env(t_pipex *pip);

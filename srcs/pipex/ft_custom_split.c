@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/22 14:59:56 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/05/30 10:15:46 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_pipex *pipex)
 	char *expanded;
 	char *str = arr[stru->j];
 	int len = ft_strlen(str);
+
+	printf("Checking quotes in: '%s'\n", str);
 
 	if ((str[0] == '\'' && str[len - 1] == '\'') ||
 		(str[0] == '"' && str[len - 1] == '"'))
