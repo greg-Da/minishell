@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/30 15:04:11 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 19:32:50 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 int	ft_here_doc(int fd, char *limiter)
 {
@@ -23,7 +22,7 @@ int	ft_here_doc(int fd, char *limiter)
 	// printf("[%s]\n", limiter);
 	while (1)
 	{
-		write(STDOUT_FILENO, "quote > ", 8);
+		write(STDOUT_FILENO, "here_doc > ", 11);
 		b_read = read(STDIN_FILENO, buf, 999);
 		if (b_read == -1)
 			ft_error("read failure");
@@ -36,5 +35,6 @@ int	ft_here_doc(int fd, char *limiter)
 			ft_error("write failure");
 	}
 	free(buf);
+	close(fd);
 	return (0);
 }

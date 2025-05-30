@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/30 13:33:31 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 20:11:47 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,23 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_pipex *pipex)
 {
 	char *expanded;
 	char *str = arr[stru->j];
-	int len = ft_strlen(str);
 
 	printf("Checking quotes in: '%s'\n", str);
 
-	if ((str[0] == '\'' && str[len - 1] == '\'') ||
-		(str[0] == '"' && str[len - 1] == '"'))
-	{
-		str[len - 1] = '\0';
-		ft_strlcpy(str, str + 1, len);
-	}
-
+	// If the string starts with a single quote, set exit_code and skip expansion
 	if (str[0] == '\'')
+	{
 		pipex->exit_code = 1;
+	}
 	else
 	{
 		expanded = expand_string(str);
 		free(arr[stru->j]);
 		arr[stru->j] = expanded;
 	}
+
+	// Remove all quotes (single and double) from the string
+	arr[stru->j] = remove_quotes(arr[stru->j]);
 }
 
 

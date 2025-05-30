@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/30 14:11:03 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 20:05:55 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,9 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 		{
 			if (info->here_doc)
 			{
-				*current_fd = open("here_doc.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
+				*current_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
 				ft_here_doc(*current_fd, filename);
+				*current_fd = open("here_doc.txt", O_RDONLY, 0644);
 			}
 			else
 				*current_fd = open(filename, O_RDONLY);
@@ -347,6 +348,29 @@ int get_pipe_count(char *input)
 	return (count);
 }
 
+int is_unclosed_quotes(char *input)
+{
+	int i;
+	int single_quote;
+	int double_quote;
+
+	i = 0;
+	single_quote = 0;
+	double_quote = 0;
+
+	while (input[i])
+	{
+		if (input[i] == '\'' && double_quote == 0)
+			single_quote = ft_abs(single_quote - 1);
+		else if (input[i] == '"' && single_quote == 0)
+			double_quote = ft_abs(double_quote - 1);
+		i++;
+	}
+	if (single_quote || double_quote)
+		return (1);
+	return (0);
+}
+
 int handle_cmd(char **envp, t_minish *manager)
 {
 	char *input;
@@ -360,7 +384,7 @@ int handle_cmd(char **envp, t_minish *manager)
 		write(1, "exit\n", 5);
 		if (manager->last_cmd)
 			free(manager->last_cmd);
-		exit(manager->last_ex_code);
+		exit(1);
 	}
 
 	if (*input == '\0')
@@ -369,21 +393,34 @@ int handle_cmd(char **envp, t_minish *manager)
 		return (0);
 	}
 
-	if (ft_strcmp(input, manager->last_cmd) != 0)
-		add_history(input);
+	int is_unclosed = is_unclosed_quotes(input);
 
+	
+	if ((ft_strcmp(input, manager->last_cmd) != 0 || ft_strchr(input, '\n')) && !is_unclosed)
+	add_history(input);
+	
+	if (is_unclosed)
+	{
+		check_quotes(&input, manager);
+        add_history(input);
+	}
+	free(manager->last_cmd);
+	manager->last_cmd = ft_strdup(input);
+	
 	input = sanitize_str(input);
 
-	if (input[0] == '|' || input[ft_strlen(input)] == '|')
-	{
-		free(input);
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", STDERR_FILENO);
-		return (2);
-	}
+	// if (input[0] == '|' || input[ft_strlen(input)] == '|')
+	// {
+	// 	free(input);
+	// 	ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", STDERR_FILENO);
+	// 	return (2);
+	// }
 
-	pipes = get_pipes(input, manager);
 
-	//pipes = ft_split(input, '|');
+	pipes = get_pipes(input);
+
+
+	// pipes = ft_split(input, '|');
 	if (!pipes)
 	{
 		free(input);
@@ -395,6 +432,14 @@ int handle_cmd(char **envp, t_minish *manager)
 		free(pipes);
 		free(input);
 		return (0);
+	}
+
+	if (strncmp(input, "exit", 4) == 0)
+	{
+		if (manager->last_cmd)
+			free(manager->last_cmd);
+		free(input);
+		exit(0);
 	}
 
 	code = parser(pipes, envp, get_pipe_count(input));

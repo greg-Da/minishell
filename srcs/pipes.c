@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:32:12 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/05/30 15:16:32 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 20:00:58 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,124 +24,154 @@ char *first_quotes(char *a, char *b)
     return b;
 }
 
-int check_quotes(char **input, t_quotes *quotes, t_minish *manager)
+int ft_quote_heredoc(int fd, char quote_char)
+{
+    int b_read;
+    char *buf;
+    char *tmp;
+
+    buf = malloc(1000);
+    if (!buf)
+        return (-1);
+
+    while (1)
+    {
+        write(STDOUT_FILENO, "quote > ", 8);
+        b_read = read(STDIN_FILENO, buf, 999);
+        if (b_read == -1)
+            ft_error("read failure");
+        buf[b_read] = '\0';
+
+        char *end_quote = ft_strchr(buf, quote_char);
+        if (end_quote)
+        {
+            tmp = ft_strjoin(buf, "\n");
+            if (write(fd, tmp, b_read) == -1)
+            {
+                free(tmp);
+                ft_error("write failure");
+            }
+            free(tmp);
+            break;
+        }
+
+        if (b_read > 0)
+        {
+            tmp = ft_strjoin(buf, "\n");
+            if (write(fd, tmp, b_read) == -1)
+            {
+                free(tmp);
+                ft_error("write failure");
+            }
+            free(tmp);
+        }
+    }
+    free(buf);
+    close(fd);
+    return (0);
+}
+
+void close_quotes(t_quotes *quotes, char **input)
+{
+    int fd;
+    char *cmd;
+    char buffer[1000];
+    int b_read;
+    char *tmp;
+
+
+    fd = open("quotes.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
+    if (*quotes->open == '"')
+        ft_quote_heredoc(fd, '"');
+    else
+        ft_quote_heredoc(fd, '\'');
+
+    open("quotes.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
+
+
+    b_read = read(fd, buffer, 999);
+    // printf("b_read: %d\n", b_read);
+    buffer[b_read] = '\0';
+
+    tmp = ft_strjoin(quotes->open, "\n");
+    cmd = ft_substr(*input, 0, ft_strlen(*input) - ft_strlen(quotes->open));
+
+    while (b_read != 0)
+    {
+        free(*input);
+        *input = ft_strjoin(tmp, buffer);
+        free(tmp);
+        b_read = read(fd, buffer, 999);
+        buffer[b_read] = '\0';
+        tmp = ft_strdup(*input);
+    }
+    free(tmp);
+    tmp = ft_strjoin(cmd, *input);
+    free(*input);
+    *input = ft_strjoin(tmp, "\n");
+    free(tmp);
+    free(cmd);
+    unlink("quotes.txt");
+}
+
+int check_quotes(char **input, t_minish *manager)
 {
     char *d_quotes;
     char *s_quotes;
-    int fd;
+    t_quotes quotes;
 
     (void)manager;
 
     s_quotes = ft_strchr(*input, '\'');
     d_quotes = ft_strchr(*input, '"');
 
-    printf("input: %s\n", *input);
+    printf("*input: %s\n", *input);
 
     while (d_quotes || s_quotes)
     {
-        quotes->open = first_quotes(s_quotes, d_quotes);
-        quotes->close = ft_strchr(quotes->open + 1, *quotes->open);
-        if (!quotes->close)
+        quotes.open = first_quotes(s_quotes, d_quotes);
+        quotes.close = ft_strchr(quotes.open + 1, *quotes.open);
+        if (!quotes.close)
         {
-            fd = open("here_doc.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
-            if (*quotes->open == '"')
-                ft_here_doc(fd, "\"");
-            else
-                ft_here_doc(fd, "'");
+            close_quotes(&quotes, input);
 
-            char buffer[1000];
-            int b_read = read(fd, buffer, 999);
-            printf("b_read: %d\n", b_read);
-            buffer[b_read] = '\0';
-
-            while (b_read != 0)
-            {
-                printf("ICI\n");
-                char *tmp = ft_strdup(*input);
-                free(*input);
-                *input = ft_strjoin(tmp, buffer);
-                free(tmp);
-                b_read = read(fd, buffer, 999);
-                buffer[b_read] = '\0';
-            }
-            unlink("here_doc.txt");
             return (1);
         }
-        s_quotes = ft_strchr(quotes->close + 1, '\'');
-        d_quotes = ft_strchr(quotes->close + 1, '"');
+        s_quotes = ft_strchr(quotes.close + 1, '\'');
+        d_quotes = ft_strchr(quotes.close + 1, '"');
     }
     return (0);
 }
 
-int is_quote(char c)
+char **get_pipes(char *input)
 {
-    return (c == '\'' || c == '"');
-}
+    int i = 0, start = 0, count = 0;
+    int j = 0;
+    char **pipes = NULL;
 
-char **get_pipes(char *input, t_minish *manager)
-{
-    int i = 0, start = 0, idx = 0, count = 0;
-    char quote_char = 0;
-    int len = strlen(input);
-    char **result = NULL;
-    t_quotes quotes;
-
-    while (i < len)
+    while (input[i])
     {
-        if (is_quote(input[i]))
-        {
-            quote_char = input[i];
-            i++;
-            while (i < len && input[i] != quote_char)
-                i++;
-        }
-        else if (input[i] == '|')
-        {
+        if (input[i] == '|' && !(is_between_quotes(input, i, '"') || is_between_quotes(input, i, '\'')))
             count++;
-        }
         i++;
     }
-    count++;
-
-    result = malloc(sizeof(char *) * (count + 1));
-    if (!result)
+    pipes = malloc(sizeof(char *) * (count + 2));
+    if (!pipes)
         return NULL;
 
     i = 0;
-    start = 0;
-    idx = 0;
-    quote_char = 0;
-    while (i <= len)
+    j = 0;
+    while (input[i])
     {
-        if (i == len || (input[i] == '|' && quote_char == 0))
+        if (input[i] == '|' && !(is_between_quotes(input, i, '"') || is_between_quotes(input, i, '\'')))
         {
-            int seg_len = i - start;
-            char *segment = malloc(seg_len + 1);
-            if (!segment)
-            {
-                for (int j = 0; j < idx; j++)
-                    free(result[j]);
-                free(result);
-                return NULL;
-            }
-            ft_strlcpy(segment, input + start, seg_len + 1);
-
-            check_quotes(&segment, &quotes, manager);
-            printf("%s\n", segment);
-
-            result[idx++] = segment;
+            pipes[j++] = ft_substr(input, start, i - start);
             start = i + 1;
-        }
-        else if (is_quote(input[i]))
-        {
-            if (quote_char == 0)
-                quote_char = input[i];
-            else if (quote_char == input[i])
-                quote_char = 0;
         }
         i++;
     }
-    result[idx] = NULL;
-
-    return result;
+    // Last segment
+    pipes[j++] = ft_substr(input, start, i - start);
+    pipes[j] = NULL;
+    return pipes;
 }

@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/30 13:56:52 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 17:37:49 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,9 @@ int	pipex(int nmb, char **cmd, char **envp, int *fd)
 	i = -1;
 	ft_wait_children(&pipex, prev, i);
 	ft_cleanup(&pipex);
-	if (pipex.exit)
-	{
-		
-		exit(1);
-	}
+	// if (pipex.exit)
+	// {
+	// 	exit(1);
+	// }
 	return (pipex.exit_code);
 }

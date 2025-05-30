@@ -22,6 +22,7 @@ SRC = srcs/main.c \
 	srcs/builtins/unset.c\
 	srcs/signals.c\
 	srcs/pipes.c\
+	srcs/utils.c\
 	srcs/expand.c
 
 
