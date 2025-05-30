@@ -4,5 +4,6 @@
         "minishell.h": "c",
         "stdint.h": "c",
         "stdio.h": "c"
-    }
+    },
+    "makefile.configureOnOpen": false
 }

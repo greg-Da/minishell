@@ -6,40 +6,36 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/05/29 18:45:46 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 09:25:55 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_unset(char ***envp, char *arg)
+void	ft_unset(char ***envp, char *name)
 {
-	int i = 1;
-	int j, k;
-	char *name;
+	int i = 0;
+	int len;
 
-	while (*envp[i])
+	if (!envp || !*envp || !name)
+		return;
+
+	len = strlen(name);
+	while ((*envp)[i])
 	{
-		name = arg;
-		j = 0;
-		while (*envp[j])
+		if (strncmp((*envp)[i], name, len) == 0 && (*envp)[i][len] == '=')
 		{
-			if (ft_strncmp(*envp[j], name, ft_strlen(name)) == 0 &&
-				*envp[j][ft_strlen(name)] == '=')
+			free((*envp)[i]);
+			while ((*envp)[i + 1])
 			{
-				free(*envp[j]);
-				k = j;
-				while (*envp[k])
-				{
-					
-                    *envp[k] = *envp[k + 1];
-					k++;
-				}
+				(*envp)[i] = (*envp)[i + 1];
+				i++;
 			}
-			else
-				j++;
+			(*envp)[i] = NULL;
+			break;
 		}
-		i++;
+		else
+			i++;
 	}
 }
 
