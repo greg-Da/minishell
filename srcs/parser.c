@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/30 10:31:51 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 13:21:42 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,13 +344,6 @@ int get_pipe_count(char *input)
 	return (count + 1);
 }
 
-// char **check_q()
-// {
-// 	strchr(str, '\'')
-
-// 	return (char[2] = {f_quote, s_quote})
-// }
-
 int handle_cmd(t_minish *manager)
 {
 	char *input;
@@ -384,12 +377,9 @@ int handle_cmd(t_minish *manager)
 		return (2);
 	}
 
-	
-	// check_if_between(strchr("| > < $"), check_q())
-
 	pipes = get_pipes(input);
 
-	// pipes = ft_split(input, '|');
+	//pipes = ft_split(input, '|');
 	if (!pipes)
 	{
 		free(input);
