@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/29 19:12:03 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/05/30 13:23:27 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,12 @@ int process_chevrons(char **pipes, int i, int fd[2])
 
 		if (*tmp == chevron && chevron == '>')
 		{
+			printf("append\n");
+			printf("tmp : %c\n", *tmp);
 			append = 1;
 			tmp++;
+			printf("tmp : %c\n", *tmp);
+
 		}
 
 		while (*tmp && *tmp == ' ')
@@ -113,6 +117,9 @@ int process_chevrons(char **pipes, int i, int fd[2])
 		if (!filename || filename[0] == '\0')
 		{
 			char *next = tmp;
+			if (*next == '>' || *next == '<')
+				next++;
+			
 			while (*next && *next == ' ')
 				next++;
 
@@ -158,6 +165,10 @@ int process_chevrons(char **pipes, int i, int fd[2])
 				return (-1);
 			}
 		}
+
+		// printf("fd[%d] : %d\n", (chevron == '<' ? 0 : 1), *current_fd);
+		// printf("filename : %s\n", filename);
+
 		free(filename);
 
 		if (*current_fd == -1)
@@ -251,7 +262,7 @@ void get_cmd(t_parser *info, char *pipe, int j)
 	}
 }
 
-int parser(char **pipes, int pipe_nb, t_minish *manager)
+int parser(char **pipes, char **envp, int pipe_nb)
 {
 	t_parser info;
 	int pipe_index;
@@ -292,25 +303,9 @@ int parser(char **pipes, int pipe_nb, t_minish *manager)
 		get_cmd(&info, pipes[pipe_index], cmd_index);
 		cmd_index++;
 
-		// printf("%d\n", pipe_nb);
-		if ((ft_strncmp(pipes[pipe_index], "export", 6) == 0 
-		|| ft_strncmp(pipes[pipe_index], "unset", 5) == 0) && pipe_nb == 1)
-		{
-			
-			if(ft_strncmp(pipes[pipe_index], "export", 6) == 0)
-				ft_export(&manager->envp, ft_strrchr(trimmed, ' ') + 1);
-			
-			else 
-				ft_unset(&manager->envp, ft_strrchr(trimmed, ' ') + 1);
-			free(trimmed);
-			clean_handle_cmd(&info);
-			return (1);
-		}
-		
-
 		if (ft_strchr(pipes[pipe_index], '>'))
 		{
-			info.res = exec_pipex(cmd_index, &info, manager->envp);
+			info.res = exec_pipex(cmd_index, &info, envp);
 			cmd_index = 0;
 			info.fd[0] = STDIN_FILENO;
 			info.fd[1] = STDOUT_FILENO;
@@ -322,7 +317,7 @@ int parser(char **pipes, int pipe_nb, t_minish *manager)
 	}
 
 	if (cmd_index > 0)
-		info.res = exec_pipex(cmd_index, &info, manager->envp);
+		info.res = exec_pipex(cmd_index, &info, envp);
 
 	clean_handle_cmd(&info);
 	return (info.res);
@@ -341,10 +336,10 @@ int get_pipe_count(char *input)
 			count++;
 		i++;
 	}
-	return (count + 1);
+	return (count);
 }
 
-int handle_cmd(t_minish *manager)
+int handle_cmd(char **envp, t_minish *manager)
 {
 	char *input;
 	char **pipes;
@@ -355,10 +350,11 @@ int handle_cmd(t_minish *manager)
 	if (!input)
 	{
 		write(1, "exit\n", 5);
-		if(manager->last_cmd)
-            free(manager->last_cmd);
+		if (manager->last_cmd)
+			free(manager->last_cmd);
 		exit(manager->last_ex_code);
 	}
+
 	if (*input == '\0')
 	{
 		free(input);
@@ -390,10 +386,8 @@ int handle_cmd(t_minish *manager)
 		free(input);
 		return (0);
 	}
-	
-	is_in_execution = 1;
-	code = parser(pipes, get_pipe_count(input), manager);
-	is_in_execution = 0;
+
+	code = parser(pipes, envp, get_pipe_count(input));
 
 	i = 0;
 	while (pipes[i])

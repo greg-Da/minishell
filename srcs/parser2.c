@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/05/21 12:48:19 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 13:26:00 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	init_parser_struct(t_parser *info, char **pipes, int pipe_nb)
 	while (pipes[i])
 		i++;
 	info->cmd_nb = pipe_nb;
+	info->here_doc = 0;
 	info->cmd = ft_calloc(i + 2, sizeof(char *));
 }
 
@@ -101,6 +102,9 @@ void	clean_after_pipex(t_parser *info)
 	if (info->fd[1] != STDOUT_FILENO)
 		close(info->fd[1]);
 	info->fd[0] = open(info->files[1], O_RDWR);
+	if (info->here_doc)
+		unlink("here_doc.txt");
+	
 }
 
 int	exec_pipex(int cmd_index, t_parser *info, char **envp)

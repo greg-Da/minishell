@@ -61,6 +61,8 @@ typedef struct s_parser
 	char	*files[2];
 	char	**cmd;
 	int		cmd_nb;
+
+	int		here_doc;
 }			t_parser;
 
 void		ft_cleanup(t_pipex *pipex);

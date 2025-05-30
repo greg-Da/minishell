@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/29 19:14:15 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 13:24:44 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			pwd(void);
 void		ft_env(t_pipex *pip);
 void		ft_echo(char **cmd);
 void		ft_cd(char **path);
-int			handle_cmd(t_minish *manager);
+int 		handle_cmd(char **envp, t_minish *manager);
 char		*get_input(char *prompt, t_minish *manager);
 void		init_signals(void);
 void        handle_sigint(int sig);
