@@ -40,8 +40,16 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
-	dup2(prev.in, STDIN_FILENO);
-	dup2(prev.out, STDOUT_FILENO);
+	if (prev.in != STDIN_FILENO)
+	{
+		dup2(prev.in, STDIN_FILENO);
+		close(prev.in);
+	}
+	if (prev.out != STDOUT_FILENO)
+	{
+		dup2(prev.out, STDOUT_FILENO);
+		close(prev.out);
+	}
 	if (is_builtins(pip->cmd_args[i][0]))
 	{
 		if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
