@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 15:05:07 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/02 15:57:37 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ int handle_cmd(char **envp, t_minish *manager)
 	int is_unclosed;
 
 	input = get_input_line(manager);
+
+	if (!input)
+		return (0);
 
 	is_unclosed = is_unclosed_quotes(input);
 	maybe_add_history(&input, manager, is_unclosed);
