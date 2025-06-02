@@ -3,29 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 19:40:48 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/12 23:24:08 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/11 13:47:18 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/11 16:02:05 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*result;
+	t_list	*res;
 
-	if (!content)
+	res = malloc(1 * sizeof(t_list));
+	if (!res)
 		return (NULL);
-	result = malloc(sizeof(t_list));
-	result->content = content;
-	result->next = NULL;
-	return (result);
+	res->content = content;
+	res->next = 0;
+	return (res);
 }
-/*
-int main()
-{
-	t_list	*test;
-	test = ft_lstnew("hey");
-	printf("%s\n", (char *)test->content);
-}*/

@@ -3,36 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 19:19:37 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/14 17:35:19 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/04 16:49:45 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/11 15:56:41 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*ft_calloc(int count, size_t size)
 {
-	void	*result;
+	void	*mem;
 
-	if (size && nmemb > SIZEE_MAX / size)
+	if (count != 0 && size > SIZE_MAX / count)
 		return (NULL);
-	result = malloc(nmemb * size);
-	if (!result)
-		return (NULL);
-	ft_bzero(result, size * nmemb);
-	return (result);
-}
-/*
-int main()
-{
-	int i;
-
-	i = 0;
-	int *test = ft_calloc(4, sizeof(int));
-	while (i < 4)
+	mem = malloc(count * size);
+	if (!mem)
 	{
-		printf("%d\n", test[i]);
-		i++;
+		return (NULL);
 	}
-}*/
+	ft_bzero(mem, size * count);
+	return ((void *)mem);
+}
+
+// void	main()
+// {
+//     int *a = ft_calloc(10, sizeof(int));
+//     int i = 0;
+//     while (i < 10)
+//     {
+//         printf("%d", a[i]);
+//         i++;
+//     }
+//     free(a);
+// }

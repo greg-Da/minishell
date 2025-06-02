@@ -3,38 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 19:44:55 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/11 14:23:34 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/04 12:49:21 by gdalmass          #+#    #+#             */
+/*   Updated: 2025/05/21 14:52:02 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(char *src)
 {
+	char	*str;
 	int		i;
-	int		size;
-	char	*result;
+	int		length;
 
 	i = 0;
-	size = (int)ft_strlen(s);
-	result = malloc((size * sizeof(char)) + 1);
-	if (!result)
+	length = ft_strlen(src) + 1;
+	str = malloc (length * sizeof(char));
+	if (!str)
 		return (NULL);
-	while (i < size)
+	while (src[i])
 	{
-		result[i] = s[i];
+		str[i] = src[i];
 		i++;
 	}
-	result[i] = '\0';
-	return (result);
+	str[i] = '\0';
+	return (str);
 }
-/*
-int main()
-{
-	char *test = "Bien jouer, tu sais allouer!";
-	char *f1 = ft_strdup(test);
-	char *f2 = strdup(test);
-	printf("my func: %s\nreal func: %s\n", f1, f2);
-}*/
+
+// int	main(void)
+// {
+// 	char	*t;
+// 	char	d[] = "abc";
+// 	t = ft_strdup(d);
+// 	printf("%s", t);
+// 	free(t);
+// }

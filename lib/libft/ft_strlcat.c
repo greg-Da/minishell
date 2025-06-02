@@ -3,51 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 14:08:05 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/11 16:57:45 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/05 10:47:39 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/12 13:17:44 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+unsigned int	ft_strlcat(char *dest, char *src, unsigned int nb)
 {
-	int		i;
-	int		c;
-	size_t	dlen;
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	len_dest;
+	unsigned int	len_src;
 
-	i = 0;
-	c = 0;
-	dlen = ft_strlen(dst);
-	while (dst[i])
-		i++;
-	while (src[c] && ((size_t)i + 1) < size)
+	len_dest = 0;
+	while (dest && dest[len_dest])
+		len_dest++;
+	len_src = 0;
+	while (src[len_src])
+		len_src++;
+	if (nb == 0)
+		return (len_src);
+	if (nb <= len_dest)
+		return (nb + len_src);
+	i = len_dest;
+	j = 0;
+	while (src[j] && i < nb - 1)
 	{
-		dst[i] = src[c];
-		c++;
+		dest[i] = src[j];
+		j++;
 		i++;
 	}
-	if ((size_t)i < size)
-		dst[i] = '\0';
-	if (size <= dlen)
-		return (ft_strlen(src) + size);
-	else
-		return (ft_strlen(src) + dlen);
+	dest[i] = '\0';
+	return (len_dest + len_src);
 }
-/*
-int main()
-{
-	char *test = malloc(15);
-	ft_memset(test, 0, 15);
-	ft_memset(test, 'r', 15);
-	char *ti = "lorem ipsum dolor sit amet";
-	printf("%zu\n", ft_strlcat(test, ti, 0));
-	printf("%s\n", test);
-	char *testi = malloc(15);
-	ft_memset(testi, 0, 15);
-	ft_memset(testi, 'r', 15);
-	char *tii = "lorem ipsum dolor sit amet";
-	printf("%zu\n", strlcat(testi, tii, 0));
-	printf("%s\n", testi);
-}*/
+
+// int main() {
+//     char *d = calloc(10, 1);
+//     char s[] = "Salut";
+//     strcpy(d, "Bonjour");
+//     printf("%ld \n", strlcat(d, "Salut", 10));
+//     printf("%s", d);
+//     return 0;
+// }

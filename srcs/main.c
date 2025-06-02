@@ -6,11 +6,12 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/15 14:55:44 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 17:48:11 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
 
 int	main(int ac, char **av, char **envp)
 {
@@ -19,9 +20,33 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 
-	printf("TEST TO HANDLE : \n");
+	init_signals();
+	manager.last_cmd = NULL;
+	manager.last_ex_code = 0;
+
+	int i = -1;
+	while (envp[++i])
+	;
+	manager.envp = malloc(sizeof(char *) * (i + 1));
+	if (!manager.envp)
+	{
+		perror("malloc");
+		return (EXIT_FAILURE);
+	}
+	i = -1;
+	while (envp[++i])
+	{
+		manager.envp[i] = ft_strdup(envp[i]);
+		if (!manager.envp[i])
+		{
+			perror("ft_strdup");
+			return (EXIT_FAILURE);
+		}
+	}
+	manager.envp[i] = NULL;
 
 	while (1)
 		manager.last_ex_code = handle_cmd(envp, &manager);
 
+	
 }

@@ -3,20 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:42:37 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/02/20 13:23:11 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:05:41 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*ft_get_cmd_path(char **arr, char *cmd)
+static void ft_free_array(char **arr)
 {
-	int		i;
-	char	*path;
-	char	*tmp;
+	int i;
+
+	if (!arr)
+		return;
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
+char *ft_get_cmd_path(char **arr, char *cmd)
+{
+	int i;
+	char *path;
+	char *tmp;
 
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
@@ -34,10 +46,10 @@ char	*ft_get_cmd_path(char **arr, char *cmd)
 	return (NULL);
 }
 
-char	*ft_get_path_env(char **envp)
+char *ft_get_path_env(char **envp)
 {
-	int		i;
-	char	*path;
+	int i;
+	char *path;
 
 	i = 0;
 	path = NULL;
@@ -48,7 +60,7 @@ char	*ft_get_path_env(char **envp)
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			path = envp[i] + 5;
-			break ;
+			break;
 		}
 		i++;
 	}
@@ -57,40 +69,70 @@ char	*ft_get_path_env(char **envp)
 	return (path);
 }
 
-void	ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
+void ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
 {
-	int		i;
-	char	**path_arr;
+	int i;
+	char **path_arr;
 
+	if (!cmd || !*cmd)
+	{
+		pip->cmd_count = 0;
+		pip->cmd_args = NULL;
+		pip->cmd_path = NULL;
+		return;
+	}
 	pip->cmd_count = nmb;
 	path_arr = ft_split(ft_get_path_env(envp), ':');
+	if (!path_arr)
+		return;
 	pip->cmd_args = malloc((pip->cmd_count + 1) * sizeof(char **));
+	if (!pip->cmd_args)
+	{
+		ft_free_array(path_arr);
+		return;
+	}
 	pip->cmd_path = malloc((pip->cmd_count + 1) * sizeof(char *));
+	if (!pip->cmd_path)
+	{
+		free(pip->cmd_args);
+		ft_free_array(path_arr);
+		return;
+	}
 	pip->cmd_args[pip->cmd_count] = NULL;
 	pip->cmd_path[pip->cmd_count] = NULL;
 	i = -1;
-	while (++i < (pip->cmd_count))
+	while (++i < pip->cmd_count && cmd[i])
 	{
 		pip->cmd_args[i] = ft_custom_split(cmd[i], 32, pip);
-		pip->cmd_path[i] = ft_get_cmd_path(path_arr, pip->cmd_args[i][0]);
+		if (pip->cmd_args[i] && pip->cmd_args[i][0])
+			pip->cmd_path[i] = ft_get_cmd_path(path_arr, pip->cmd_args[i][0]);
+		else
+			pip->cmd_path[i] = NULL;
 	}
-	i = -1;
-	while (path_arr[++i])
-		free(path_arr[i]);
-	free(path_arr);
+	ft_free_array(path_arr);
 }
 
-void	ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp)
+void ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp)
 {
-	pipex->here_doc = 0;
-	if (pipex->in_fd == -10)
-	{
-		pipex->here_doc = 1;
-		pipex->in_fd = open("here_doc.txt", O_RDWR | O_CREAT, 0666);
-	}
+	// pipex->here_doc = 0;
+	pipex->cmd_args = NULL;
+	pipex->cmd_path = NULL;
+	pipex->pids = NULL;
+	// if (pipex->in_fd == -10)
+	// {
+	//     pipex->here_doc = 1;
+	//     pipex->in_fd = open("here_doc.txt", O_RDWR | O_CREAT, 0666);
+	//     if (pipex->in_fd == -1)
+	//         return ;
+	// }
 	pipex->exit_code = 0;
 	pipex->exit = 0;
 	pipex->pids_size = 0;
 	pipex->pids = malloc(sizeof(int));
+
+	pipex->envp = envp;
+
+	if (!pipex->pids)
+		return;
 	ft_init_part2(pipex, nmb, cmd, envp);
 }

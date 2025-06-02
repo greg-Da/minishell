@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:54:13 by greg              #+#    #+#             */
-/*   Updated: 2025/05/15 15:51:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/29 17:5:28 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,16 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
-	dup2(prev.in, STDIN_FILENO);
-	dup2(prev.out, STDOUT_FILENO);
+	if (prev.in != STDIN_FILENO)
+	{
+		dup2(prev.in, STDIN_FILENO);
+		close(prev.in);
+	}
+	if (prev.out != STDOUT_FILENO)
+	{
+		dup2(prev.out, STDOUT_FILENO);
+		close(prev.out);
+	}
 	if (is_builtins(pip->cmd_args[i][0]))
 	{
 		if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
@@ -89,6 +97,9 @@ void	ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 {
 	while (++prev->i < pipex->cmd_count)
 	{
+		// printf("cmd : %s\n", pipex->cmd_args[prev->i][0]);
+		if (pipex->cmd_args[prev->i][0] == NULL)
+			continue ;
 		if (pipe(pipex->fd) == -1)
 			ft_error("pipe failed");
 		if (prev->in == -1 && pipex->is_invalid_infile > 0)

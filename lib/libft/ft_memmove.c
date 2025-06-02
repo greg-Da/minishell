@@ -3,35 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 14:37:42 by dfeve             #+#    #+#             */
-/*   Updated: 2024/11/12 18:46:45 by dfeve            ###   ########.fr       */
+/*   Created: 2024/11/05 10:29:49 by gdalmass          #+#    #+#             */
+/*   Updated: 2024/11/12 13:09:58 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memmove(void *dest, void *src, int size)
 {
-	int	i;
+	int		i;
+	char	*ndest;
+	char	*nsrc;
 
-	if (dest > src)
+	if (!dest && !src)
+		return (NULL);
+	i = -1;
+	ndest = (char *)dest;
+	nsrc = (char *)src;
+	if (ndest > nsrc && ndest < nsrc + size)
 	{
-		i = (int)n - 1;
-		while (i >= 0)
-		{
-			*(unsigned char *)(dest + i) = *(unsigned char *)(src + i);
-			i--;
-		}
+		while (size > ++i)
+			ndest[(size - 1) - i] = nsrc[(size - 1) - i];
 	}
 	else
 	{
-		i = 0;
-		while (i < (int)n)
-		{
-			*(unsigned char *)(dest + i) = *(unsigned char *)(src + i);
-			i++;
-		}
+		while (size > ++i)
+			ndest[i] = nsrc[i];
 	}
-	return (dest);
+	return ((void *)dest);
 }

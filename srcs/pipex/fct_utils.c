@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fct_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/02/14 17:20:36 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/30 14:08:46 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_next_occurence(char const *s, char c, int index)
 {
-	t_quotes	quotes;
+	t_pip_quotes	quotes;
 
 	quotes.s_quotes = 0;
 	quotes.d_quotes = 0;

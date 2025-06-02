@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:21:58 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/03/10 15:40:18 by greg             ###   ########.fr       */
+/*   Updated: 2025/05/29 17:31:30 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct s_pipex
 	char	**envp;
 	char	**cmd_path;
 	char	***cmd_args;
-	int		here_doc;
-	int		append;
+	// int		here_doc;
+	// int		append;
 	int		fd[2];
 	int		exit_code;
 	int		cmd_count;
@@ -46,11 +46,11 @@ typedef struct s_split
 	int		j;
 }			t_custom_split;
 
-typedef struct s_quotes
+typedef struct s_pip_quotes
 {
 	int		s_quotes;
 	int		d_quotes;
-}			t_quotes;
+}			t_pip_quotes;
 
 typedef struct s_parser
 {
@@ -61,9 +61,11 @@ typedef struct s_parser
 	char	*files[2];
 	char	**cmd;
 	int		cmd_nb;
+
+	int		here_doc;
 }			t_parser;
 
-void		ft_cleanup(t_pipex pipex);
+void		ft_cleanup(t_pipex *pipex);
 
 void		ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp);
 int			ft_here_doc(int fd, char *limiter);
@@ -77,11 +79,11 @@ void		ft_invalid_cmd(t_pipex *pipex, t_prev *prev);
 int			ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void		ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
 int			pipex(int nmb, char **cmd, char **envp, int *fd);
-int			exec_pipex(int *j, t_parser *info, char **envp);
+int			exec_pipex(int cmd_index, t_parser *info, char **envp);
 void		init_parser_struct(t_parser *info, char **pipes, int pipe_nb);
 char		*sanitize_str(char *str);
 char		*get_chevron_indices(char *pipe, int index[2]);
-int		get_outfile(t_parser *info, char **pipes, int i);
+int			get_outfile(t_parser *info, char **pipes, int i);
 int			get_infile(t_parser *info, char **pipes, int i, int j);
 int			is_builtins(char *str);
 

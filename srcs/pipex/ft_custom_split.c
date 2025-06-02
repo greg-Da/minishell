@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/02/17 14:03:17 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:11:47 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_count_words(char const *s, char c)
 {
 	int			count;
 	int			in_word;
-	t_quotes	quotes;
+	t_pip_quotes	quotes;
 	const char	*start;
 
 	ft_set_to_zero(&count, &in_word, &quotes.d_quotes, &quotes.s_quotes);
@@ -49,19 +49,27 @@ int	ft_count_words(char const *s, char c)
 
 void	ft_check_quotes(char **arr, t_custom_split *stru, t_pipex *pipex)
 {
-	if (arr[stru->j][0] == '\'' || arr[stru->j][0] == '\"')
+	char *expanded;
+	char *str = arr[stru->j];
+
+	printf("Checking quotes in: '%s'\n", str);
+
+	// If the string starts with a single quote, set exit_code and skip expansion
+	if (str[0] == '\'')
 	{
-		arr[stru->j][ft_strlen(arr[stru->j]) - 1] = 0;
-		ft_strlcpy(arr[stru->j], &arr[stru->j][1], ft_strlen(arr[stru->j]));
-	}
-	if (arr[stru->j][0] == '\"')
-	{
-		free(arr[stru->j]);
-		arr[stru->j] = ft_strdup("{print}");
-	}
-	if (arr[stru->j][0] == '\'')
 		pipex->exit_code = 1;
+	}
+	else
+	{
+		expanded = expand_string(str);
+		free(arr[stru->j]);
+		arr[stru->j] = expanded;
+	}
+
+	// Remove all quotes (single and double) from the string
+	arr[stru->j] = remove_quotes(arr[stru->j]);
 }
+
 
 size_t	ft_get_str(const char *s, char c, t_custom_split *stru, char **arr)
 {
@@ -78,7 +86,7 @@ int	is_echo(const char *str)
 {
 	while (*str == ' ')
 		str++;
-	if (!ft_strncmp(str, "echo", 4))
+	if (!ft_strncmp((char *)str, "echo", 4))
 		return (1);
 	return (0);
 }
