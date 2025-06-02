@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 16:02:42 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:42:16 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int handle_cmd(char **envp, t_minish *manager)
 
 	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
 		handle_exit(input, manager);
-
+	if(strncmp(input, "echo $?", 7) == 0 && manager->nb_cmds == 1)
+		display_exit_code(input, *manager);
 	code = parser(pipes, envp, get_pipe_count(input));
 	free_pipes(pipes);
 	free(input);

@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/02 15:46:14 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:36:55 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,25 @@ char	*expand_string(char *input)
 	}
 	result[j] = '\0';
 	return (ft_strdup(result));
+}
+char *display_exit_code(char *input, t_minish manager)
+{
+	char	result[1024] = {0};
+	char	var_name[256];
+	char	*var_value;
+	int		i = 0, j = 0, k;
+	
+	if (input[i] == '$' && input[i + 1] == '?' && input[i + 2] == '\0')
+	{
+		i += 2;
+		var_value = ft_itoa(manager.last_ex_code);
+		if (var_value)
+		{
+			ft_strlcat(result, var_value, sizeof(result));
+			j += ft_strlen(var_value);
+			free(var_value);
+		}
+	}
 }
 
 
