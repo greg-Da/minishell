@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/05/29 19:14:15 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 15:43:04 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void update_env(char ***envp, char *arg)
     }
     while ((*envp)[i])
     {
-		// printf("Checking env[%d]: %s\n", i, (*envp)[i]);
-		// printf("Comparing with arg: %s\n", arg);
         if ((*envp)[i] != NULL && ft_strncmp((*envp)[i], arg, len) == 0 && (*envp)[i][len] == '=')
         {
             free((*envp)[i]);
@@ -50,11 +48,9 @@ static void update_env(char ***envp, char *arg)
         }
         i++;
     }
-    // Ajoute la nouvelle variable
     char **new_env = ft_realloc_env(*envp, arg);
     if (!new_env)
         return;
-    // Libère l'ancien tableau
     i = 0;
     while ((*envp)[i])
         free((*envp)[i++]);
