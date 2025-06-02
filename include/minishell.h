@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/02 13:41:54 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/02 15:04:54 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_minish
 	char *last_cmd;
 	char **envp;
 	int add_history;
+	int nb_cmds;
 
 } t_minish;
 
@@ -64,7 +65,7 @@ typedef struct s_quotes
 
 } t_quotes;
 
-char **get_pipes(char *input);
+char **get_pipes(char *input, t_minish *manager);
 int get_files(t_parser *info, int i, char **pipes);
 char *extract_filename(char *tmp, char *next_chevron);
 int handle_filename_error(char **pipes, int i, char *tmp, char *start);
