@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 16:02:42 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:41:27 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int get_pipe_count(char *input)
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '|')
+		if (input[i] == '|' && is_between_quotes(input, i, '\'') == 0 && is_between_quotes(input, i, '"') == 0)
 			count++;
 		i++;
 	}
