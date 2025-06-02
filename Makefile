@@ -6,7 +6,6 @@ NAME = minishell
 SRC = srcs/main.c \
 	srcs/parser.c \
 	srcs/parser2.c \
-	srcs/parser3.c \
 	srcs/pipex/pipex.c\
 	srcs/pipex/here_doc.c\
 	srcs/pipex/ft_custom_split.c\
@@ -23,6 +22,11 @@ SRC = srcs/main.c \
 	srcs/signals.c\
 	srcs/pipes.c\
 	srcs/utils.c\
+	srcs/interface.c\
+	srcs/heredoc_quotes.c\
+	srcs/quotes.c\
+	srcs/chevron.c\
+	srcs/chevron2.c\
 	srcs/expand.c
 
 

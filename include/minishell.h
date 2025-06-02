@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/05/30 20:01:14 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/02 13:41:54 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,15 @@ typedef struct s_quotes
 } t_quotes;
 
 char **get_pipes(char *input);
+int get_files(t_parser *info, int i, char **pipes);
+char *extract_filename(char *tmp, char *next_chevron);
+int handle_filename_error(char **pipes, int i, char *tmp, char *start);
+int open_chevron_fd(char chevron, int *current_fd, char *filename, t_parser *info, int append);
+
+int is_unclosed_quotes(char *input);
+int parser(char **pipes, char **envp, int pipe_nb);
+char *get_res_size(char *str);
+void close_quotes(t_quotes *quotes, char **input);
 
 int pwd(void);
 void ft_env(t_pipex *pip);
@@ -84,5 +93,6 @@ extern sig_atomic_t is_in_execution;
 int check_quotes(char **input, t_minish *manager);
 int is_between_quotes(char *str, int index, char quote);
 char *remove_quotes(char *str);
+void free_pipes(char **pipes);
 
 #endif
