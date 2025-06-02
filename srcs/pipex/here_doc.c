@@ -6,35 +6,51 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/02 17:35:57 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 17:54:40 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_here_doc(int fd, char *limiter)
+int	ft_here_doc(int write_fd, char *delim)
 {
-	int		b_read;
-	char	*buf;
-	char	*end;
+	int		pid;
+	int		status;
+	char	*line;
 
-	buf = malloc(1000);
-	// printf("[%s]\n", limiter);
-	while (1)
+	pid = fork();
+	if (pid == 0)
 	{
-		write(STDOUT_FILENO, "here_doc > ", 11);
-		b_read = read(STDIN_FILENO, buf, 999);
-		if (b_read == -1)
-			ft_error("read failure");
-		buf[b_read] = '\0';
-		end = ft_strchr(buf, '\n');
-		if (end && (end - buf) == ft_strlen(limiter) && ft_strncmp(buf, limiter,
-				(end - buf)) == 0)
-			break ;
-		if (write(fd, buf, b_read) == -1)
-			ft_error("write failure");
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_DFL);
+
+		while (1)
+		{
+			line = readline("> ");
+			if (!line || ft_strcmp(line, delim) == 0)
+			{
+				printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delim);
+				free(line);
+				exit(0);
+			}
+			ft_putendl_fd(line, write_fd);
+			free(line);
+		}
 	}
-	free(buf);
-	close(fd);
+	else if (pid > 0)
+	{
+		signal(SIGINT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		signal(SIGINT, handle_sigint);
+
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			close(write_fd);
+			unlink("here_doc.txt");
+			return (1);
+		}
+	}
 	return (0);
 }
+

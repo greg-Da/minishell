@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/02 17:23:56 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 17:48:46 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 {
 	char *expanded;
 	char *str = arr[stru->j];
-
-	printf("Checking quotes in: '%s'\n", str);
-
-	// If the string starts with a single quote, set exit_code and skip expansion
 	if (str[0] == '\'')
 	{
 		return;
@@ -65,8 +61,6 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 		free(arr[stru->j]);
 		arr[stru->j] = expanded;
 	}
-
-	// Remove all quotes (single and double) from the string
 	arr[stru->j] = remove_quotes(arr[stru->j]);
 }
 

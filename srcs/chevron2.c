@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 13:41:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/02 17:43:08 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,32 @@ int open_chevron_fd(char chevron, int *current_fd, char *filename, t_parser *inf
     }
     else if (chevron == '<')
     {
-        if (info->here_doc)
-        {
-            *current_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
-            ft_here_doc(*current_fd, filename);
-            *current_fd = open("here_doc.txt", O_RDONLY, 0644);
-        }
-        else
-            *current_fd = open(filename, O_RDONLY);
-        if (*current_fd == -1)
-        {
-            ft_putstr_fd("minishell: ", 2);
-            perror(filename);
-            return (-1);
-        }
+	    if (info->here_doc)
+	    {
+		    int temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		    if (temp_fd == -1)
+		    {
+			    perror("open");
+			    return (-1);
+		    }
+		    if (ft_here_doc(temp_fd, filename))
+		    {
+			    close(temp_fd);
+			    return (-1);
+		    }
+		    close(temp_fd);
+		    *current_fd = open("here_doc.txt", O_RDONLY);
+	    }
+	    else
+	    {
+		    *current_fd = open(filename, O_RDONLY);
+	    }
+	    if (*current_fd == -1)
+	    {
+		    ft_putstr_fd("minishell: ", 2);
+		    perror(filename);
+		    return (-1);
+	    }
     }
     return (0);
 }
