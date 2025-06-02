@@ -39,19 +39,27 @@ int check_new_line_flag(char **cmd, int *i)
 
 void ft_echo(char **cmd)
 {
-	int new_line;
-	int i;
+    int new_line;
+    int i;
 
-	i = 0;
-	new_line = check_new_line_flag(cmd, &i);
-	while (check_new_line_flag(cmd, &i) == 0)
-		;
-	cmd[1] = remove_quotes(cmd[1]);
-	while (cmd[1][i])
-	{
-		ft_putchar_fd(cmd[1][i], 1);
-		i++;
-	}
-	if (new_line)
-		write(1, "\n", 1);
+    i = 0;
+    new_line = check_new_line_flag(cmd, &i);
+    while (check_new_line_flag(cmd, &i) == 0)
+        ;
+
+    if (!cmd[1])
+    {
+        if (new_line)
+            write(1, "\n", 1);
+        return;
+    }
+
+    cmd[1] = remove_quotes(cmd[1]);
+    while (cmd[1][i])
+    {
+        ft_putchar_fd(cmd[1][i], 1);
+        i++;
+    }
+    if (new_line)
+        write(1, "\n", 1);
 }
