@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 13:07:51 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/02 15:25:06 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,6 @@ void get_cmd(t_parser *info, char *pipe, int j)
 		}
 		else
 			cmd = part;
-		if (!cmd)
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
 		start = end;
 	}
 	if (!cmd)
