@@ -6,13 +6,13 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:32:12 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/02 14:33:57 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:02:52 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char **get_pipes_size(char *input)
+char **get_pipes_size(char *input, t_minish *manager)
 {
     int i = 0;
     int count = 0;
@@ -24,7 +24,8 @@ char **get_pipes_size(char *input)
             count++;
         i++;
     }
-    pipes = malloc(sizeof(char *) * (count + 2));
+    manager->nb_cmds = count + 1;
+    pipes = malloc(sizeof(char *) * (manager->nb_cmds + 1));
     if (!pipes)
         return NULL;
     return (pipes);
@@ -62,9 +63,9 @@ static char **validate_pipes(char **pipes, char *input)
     return pipes;
 }
 
-char **get_pipes(char *input)
+char **get_pipes(char *input, t_minish *manager)
 {
-    char **pipes = get_pipes_size(input);
+    char **pipes = get_pipes_size(input, manager);
     fill_pipes_array(pipes, input);
     return validate_pipes(pipes, input);
 }

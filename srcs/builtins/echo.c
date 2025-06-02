@@ -41,6 +41,7 @@ void ft_echo(char **cmd)
 {
     int new_line;
     int i;
+    char *tmp;
 
     i = 0;
     new_line = check_new_line_flag(cmd, &i);
@@ -54,7 +55,11 @@ void ft_echo(char **cmd)
         return;
     }
 
-    cmd[1] = remove_quotes(cmd[1]);
+    tmp = expand_string(cmd[1]);
+
+    free(cmd[1]);
+    cmd[1] = remove_quotes(tmp);
+    
     while (cmd[1][i])
     {
         ft_putchar_fd(cmd[1][i], 1);

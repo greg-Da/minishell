@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 14:59:52 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:02:42 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ int handle_cmd(char **envp, t_minish *manager)
 
 	input = get_input_line(manager);
 
+	if (!input)
+		return (0);
+
 	is_unclosed = is_unclosed_quotes(input);
 	maybe_add_history(&input, manager, is_unclosed);
 
@@ -80,9 +83,9 @@ int handle_cmd(char **envp, t_minish *manager)
 	manager->last_cmd = ft_strdup(input);
 
 	input = sanitize_str(input);
-	pipes = get_pipes(input);
+	pipes = get_pipes(input, manager);
 
-	if (strncmp(input, "exit", 4) == 0)
+	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
 		handle_exit(input, manager);
 
 	code = parser(pipes, envp, get_pipe_count(input));

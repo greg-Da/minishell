@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 15:25:42 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 16:02:50 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,6 @@ void get_cmd(t_parser *info, char *pipe, int j)
 		}
 		else
 			cmd = part;
-		if (!cmd)
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
 		start = end;
 	}
 	if (!cmd)
