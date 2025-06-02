@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:42:37 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/29 18:05:41 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 17:24:42 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
 	i = -1;
 	while (++i < pip->cmd_count && cmd[i])
 	{
-		pip->cmd_args[i] = ft_custom_split(cmd[i], 32, pip);
+		pip->cmd_args[i] = ft_custom_split(cmd[i], 32, &pip->manager);
 		if (pip->cmd_args[i] && pip->cmd_args[i][0])
 			pip->cmd_path[i] = ft_get_cmd_path(path_arr, pip->cmd_args[i][0]);
 		else

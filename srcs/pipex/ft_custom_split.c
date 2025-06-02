@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/02 16:32:33 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 17:23:56 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_count_words(char const *s, char c)
 	return (count);
 }
 
-void	ft_check_quotes(char **arr, t_custom_split *stru, t_pipex *pipex)
+void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 {
 	char *expanded;
 	char *str = arr[stru->j];
@@ -57,11 +57,11 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_pipex *pipex)
 	// If the string starts with a single quote, set exit_code and skip expansion
 	if (str[0] == '\'')
 	{
-		pipex->exit_code = 1;
+		return;
 	}
 	else
 	{
-		expanded = expand_string(str);
+		expanded = expand_string(str, manager);
 		free(arr[stru->j]);
 		arr[stru->j] = expanded;
 	}
@@ -91,7 +91,7 @@ int	is_echo(const char *str)
 	return (0);
 }
 
-char	**ft_custom_split(char const *s, char c, t_pipex *pipex)
+char	**ft_custom_split(char const *s, char c, t_minish *manager)
 {
 	t_custom_split	stru;
 	char			**arr;
@@ -110,7 +110,7 @@ char	**ft_custom_split(char const *s, char c, t_pipex *pipex)
 	while (++stru.j < stru.count)
 	{
 		next = ft_get_str(s, c, &stru, arr);
-		ft_check_quotes(arr, &stru, pipex);
+		ft_check_quotes(arr, &stru, manager);
 		if (!arr[stru.j])
 			return (ft_free(arr, stru.j));
 		arr[stru.j] = ft_remove_slash(arr[stru.j], ft_strlen(arr[stru.j]));

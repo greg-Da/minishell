@@ -37,7 +37,7 @@ int check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-void ft_echo(char **cmd)
+void ft_echo(char **cmd, t_minish *manager)
 {
     int new_line;
     int i;
@@ -55,7 +55,7 @@ void ft_echo(char **cmd)
         return;
     }
 
-    tmp = expand_string(cmd[1]);
+    tmp = expand_string(cmd[1], manager);
 
     free(cmd[1]);
     cmd[1] = remove_quotes(tmp);

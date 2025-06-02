@@ -4,7 +4,8 @@
         "minishell.h": "c",
         "stdint.h": "c",
         "stdio.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "wait.h": "c"
     },
     "makefile.configureOnOpen": false
 }

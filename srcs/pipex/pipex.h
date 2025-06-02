@@ -14,6 +14,10 @@
 # define PIPEX_H
 # define VAR_FILE "t.txt"
 
+#include "../../include/minish_types.h"
+
+typedef struct s_minish t_minish;
+
 typedef struct s_pipex
 {
 	int		*pids;
@@ -30,6 +34,7 @@ typedef struct s_pipex
 	int		cmd_count;
 	int		is_invalid_infile;
 	int		exit;
+	t_minish manager;
 }			t_pipex;
 
 typedef struct s_prev
@@ -70,7 +75,7 @@ void		ft_cleanup(t_pipex *pipex);
 void		ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp);
 int			ft_here_doc(int fd, char *limiter);
 void		ft_error(char *str);
-char		**ft_custom_split(char const *s, char c, t_pipex *pipex);
+char	**ft_custom_split(char const *s, char c, t_minish *manager);
 char		**ft_free(char **arr, int j);
 size_t		ft_next_occurence(char const *s, char c, int index);
 char		*ft_remove_slash(char *str, int len);

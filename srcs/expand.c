@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/02 16:36:55 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 17:30:57 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,68 +20,75 @@ char	*expand_variable(char *var_name)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
 }
-void	expand_all_args(char **args)  
+void	expand_all_args(char **args, t_minish *manager)  
 {
 	int		i = 0;
 	char	*expanded;
 
 	while (args && args[i])
 	{
-		expanded = expand_string(args[i]);
+		expanded = expand_string(args[i], manager);
 		free(args[i]);
 		args[i] = expanded;
 		i++;
 	}
 }
 
-char	*expand_string(char *input)
+char *expand_string(char *input, t_minish *manager)
 {
-	char	result[1024] = {0};
-	char	var_name[256];
+	char	result[2048] = {0};
+	char	var_name[256] = {0};
 	char	*var_value;
 	int		i = 0, j = 0, k;
 
 	while (input[i])
 	{
-		if (input[i] == '$' && (ft_isalpha(input[i + 1]) || input[i + 1] == '_'))
+		if (input[i] == '$')
 		{
 			i++;
-			k = 0;
-			while (ft_isalnum(input[i]) || input[i] == '_')
-				var_name[k++] = input[i++];
-			var_name[k] = '\0';
-			var_value = expand_variable(var_name);
-			if (var_value)
+			if (input[i] == '?')
 			{
-				ft_strlcat(result, var_value, sizeof(result));
-				j += ft_strlen(var_value);
-				free(var_value);
+				var_value = ft_itoa(manager->last_ex_code);
+				if (var_value)
+				{
+					size_t len = ft_strlen(var_value);
+					if ((size_t)(j + len) < sizeof(result))
+						ft_strlcpy(result + j, var_value, sizeof(result) - j);
+					j += len;
+					free(var_value);
+				}
+				i++;
+			}
+			else if (ft_isalpha(input[i]) || input[i] == '_')
+			{
+				k = 0;
+				while ((ft_isalnum(input[i]) || input[i] == '_') && k < 255)
+					var_name[k++] = input[i++];
+				var_name[k] = '\0';
+				var_value = expand_variable(var_name);
+				if (var_value)
+				{
+					size_t len = ft_strlen(var_value);
+					if ((size_t)(j + len) < sizeof(result))
+						ft_strlcpy(result + j, var_value, sizeof(result) - j);
+					j += len;
+					free(var_value);
+				}
+			}
+			else
+			{
+				if ((size_t)(j + 1) < sizeof(result))
+					result[j++] = '$';
+				if (input[i] && (size_t)(j + 1) < sizeof(result))
+					result[j++] = input[i++];
 			}
 		}
 		else
-			result[j++] = input[i++];
-	}
-	result[j] = '\0';
-	return (ft_strdup(result));
-}
-char *display_exit_code(char *input, t_minish manager)
-{
-	char	result[1024] = {0};
-	char	var_name[256];
-	char	*var_value;
-	int		i = 0, j = 0, k;
-	
-	if (input[i] == '$' && input[i + 1] == '?' && input[i + 2] == '\0')
-	{
-		i += 2;
-		var_value = ft_itoa(manager.last_ex_code);
-		if (var_value)
 		{
-			ft_strlcat(result, var_value, sizeof(result));
-			j += ft_strlen(var_value);
-			free(var_value);
+			if ((size_t)(j + 1) < sizeof(result))
+				result[j++] = input[i++];
 		}
 	}
+	result[j] = '\0';
+	return ft_strdup(result);
 }
-
-

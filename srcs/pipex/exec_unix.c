@@ -57,7 +57,7 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 		else if (!ft_strncmp(pip->cmd_args[i][0], "env", 3))
 			ft_env(pip);
 		else if (!ft_strncmp(pip->cmd_args[i][0], "echo", 4))
-			ft_echo(pip->cmd_args[i]);
+			ft_echo(pip->cmd_args[i], &pip->manager);
 		default_std(std);
 		exit(0);
 	}

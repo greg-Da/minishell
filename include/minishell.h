@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/02 16:42:45 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/02 17:25:15 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-typedef struct s_minish
-{
-	int last_ex_code;
-	char *last_cmd;
-	char **envp;
-	int add_history;
-	int nb_cmds;
-
-} t_minish;
+#include "minish_types.h"
 
 typedef enum e_token
 {
@@ -78,16 +69,15 @@ void close_quotes(t_quotes *quotes, char **input);
 
 int pwd(void);
 void ft_env(t_pipex *pip);
-void ft_echo(char **cmd);
+void ft_echo(char **cmd, t_minish *manager);
 void ft_cd(char **path);
 int handle_cmd(char **envp, t_minish *manager);
 char *get_input(char *prompt, t_minish *manager);
 void init_signals(void);
 void handle_sigint(int sig);
 char *expand_variable(char *var_name);
-char	*expand_string(char *input);
-void expand_all_args(char **args);
-char *display_exit_code(char *input, t_minish manager);
+char *expand_string(char *input, t_minish *manager);
+void	expand_all_args(char **args, t_minish *manager);
 void ft_export(char ***envp, char *arg);
 void ft_unset(char ***envp, char *arg);
 char **ft_realloc_env(char **envp, char *new_entry);
