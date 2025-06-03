@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:42 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:23:16 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ char	*expand_string(char *input, t_minish *manager)
 	char	result[2048] = {0};
 	char	var_name[256] = {0};
 	char	*var_value;
-	int		i = 0, j;
-	size_t	len;
+	int		i, j, k;
 	size_t	len;
 
-	i = 0, j = 0, k;
+	i = 0, j = 0, k = 0;
 	while (input[i])
 	{
 		if (input[i] == '$')
