@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:47 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:40:52 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	main(int ac, char **av, char **envp)
 	manager.envp[i] = NULL;
 	while (1)
 	{
-		manager.last_ex_code = handle_cmd(manager.envp, &manager);
+		manager.last_ex_code = handle_cmd(&manager);
+		printf("exit code: %d\n", manager.last_ex_code);
+
 	}
 }

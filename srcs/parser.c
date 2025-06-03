@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:50 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:36:33 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	handle_pipe_failure(t_parser *info, char *trimmed)
 	return (2);
 }
 
-static int	process_single_pipe(t_parser *info, char **pipes, char **envp,
+static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		int *cmd_index, int pipe_index)
 {
 	char	*pipe_copy;
@@ -117,7 +117,7 @@ static int	process_single_pipe(t_parser *info, char **pipes, char **envp,
 	(*cmd_index)++;
 	if (ft_strchr(pipes[pipe_index], '>'))
 	{
-		info->res = exec_pipex(*cmd_index, info, envp);
+		info->res = exec_pipex(*cmd_index, info, manager);
 		*cmd_index = 0;
 		info->fd[0] = STDIN_FILENO;
 		info->fd[1] = STDOUT_FILENO;
@@ -134,7 +134,7 @@ static void	reset_parser_fds(t_parser *info)
 	info->fd[2] = 0;
 }
 
-int	parser(char **pipes, char **envp, int pipe_nb)
+int	parser(char **pipes, t_minish *manager, int pipe_nb)
 {
 	t_parser	info;
 	int			pipe_index;
@@ -146,14 +146,15 @@ int	parser(char **pipes, char **envp, int pipe_nb)
 	reset_parser_fds(&info);
 	while (pipes[pipe_index])
 	{
-		info.res = process_single_pipe(&info, pipes, envp, &cmd_index,
+		info.res = process_single_pipe(&info, pipes, manager, &cmd_index,
 				pipe_index);
 		if (info.res)
 			return (info.res);
 		pipe_index++;
 	}
 	if (cmd_index > 0)
-		info.res = exec_pipex(cmd_index, &info, envp);
+		info.res = exec_pipex(cmd_index, &info, manager);
+	
 	clean_handle_cmd(&info);
 	return (info.res);
 }

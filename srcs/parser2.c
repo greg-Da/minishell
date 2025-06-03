@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:53 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:36:40 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	clean_after_pipex(t_parser *info)
 	}
 }
 
-int	exec_pipex(int cmd_index, t_parser *info, char **envp)
+int	exec_pipex(int cmd_index, t_parser *info, t_minish *manager)
 {
 	int	i;
 	int	code;
 
-	code = pipex(cmd_index, info->cmd, envp, info->fd);
+	code = pipex(cmd_index, info->cmd, manager, info->fd);
 	clean_after_pipex(info);
 	i = 0;
 	while (info->cmd[i])

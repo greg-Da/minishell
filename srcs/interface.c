@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:47 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:32:31 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*get_input_line(t_minish *manager)
 	return (input);
 }
 
-int	handle_cmd(char **envp, t_minish *manager)
+int	handle_cmd(t_minish *manager)
 {
 	char	*input;
 	char	**pipes;
@@ -84,7 +84,7 @@ int	handle_cmd(char **envp, t_minish *manager)
 	pipes = get_pipes(input, manager);
 	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
 		handle_exit(input, manager);
-	code = parser(pipes, envp, get_pipe_count(input));
+	code = parser(pipes, manager, get_pipe_count(input));
 	free_pipes(pipes);
 	free(input);
 	return (code);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/03 08:19:48 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:38:37 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int					open_chevron_fd(char chevron, int *current_fd,
 						char *filename, t_parser *info, int append);
 
 int					is_unclosed_quotes(char *input);
-int					parser(char **pipes, char **envp, int pipe_nb);
+int					parser(char **pipes, t_minish *manager, int pipe_nb);
 char				*get_res_size(char *str);
 void				close_quotes(t_quotes *quotes, char **input);
 
@@ -73,7 +73,7 @@ int					pwd(void);
 void				ft_env(t_pipex *pip);
 void				ft_echo(char **cmd, t_minish *manager);
 void				ft_cd(char **path);
-int					handle_cmd(char **envp, t_minish *manager);
+int					handle_cmd(t_minish *manager);
 char				*get_input(char *prompt, t_minish *manager);
 void				init_signals(void);
 void				handle_sigint(int sig);

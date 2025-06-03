@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:42:37 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:25 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:40:14 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_get_path_env(char **envp)
 	return (path);
 }
 
-void	ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
+void	ft_init_part2(t_pipex *pip, int nmb, char **cmd)
 {
 	int		i;
 	char	**path_arr;
@@ -82,7 +82,7 @@ void	ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
 		return ;
 	}
 	pip->cmd_count = nmb;
-	path_arr = ft_split(ft_get_path_env(envp), ':');
+	path_arr = ft_split(ft_get_path_env(pip->envp), ':');
 	if (!path_arr)
 		return ;
 	pip->cmd_args = malloc((pip->cmd_count + 1) * sizeof(char **));
@@ -103,7 +103,7 @@ void	ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
 	i = -1;
 	while (++i < pip->cmd_count && cmd[i])
 	{
-		pip->cmd_args[i] = ft_custom_split(cmd[i], 32, &pip->manager);
+		pip->cmd_args[i] = ft_custom_split(cmd[i], 32, pip->manager);
 		if (pip->cmd_args[i] && pip->cmd_args[i][0])
 			pip->cmd_path[i] = ft_get_cmd_path(path_arr, pip->cmd_args[i][0]);
 		else
@@ -112,12 +112,13 @@ void	ft_init_part2(t_pipex *pip, int nmb, char **cmd, char **envp)
 	ft_free_array(path_arr);
 }
 
-void	ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp)
+void	ft_init_struct(t_pipex *pipex, int nmb, char **cmd, t_minish *manager)
 {
 	// pipex->here_doc = 0;
 	pipex->cmd_args = NULL;
 	pipex->cmd_path = NULL;
 	pipex->pids = NULL;
+	pipex->manager = manager;
 	// if (pipex->in_fd == -10)
 	// {
 	//     pipex->here_doc = 1;
@@ -129,8 +130,8 @@ void	ft_init_struct(t_pipex *pipex, int nmb, char **cmd, char **envp)
 	pipex->exit = 0;
 	pipex->pids_size = 0;
 	pipex->pids = malloc(sizeof(int));
-	pipex->envp = envp;
+	pipex->envp = manager->envp;
 	if (!pipex->pids)
 		return ;
-	ft_init_part2(pipex, nmb, cmd, envp);
+	ft_init_part2(pipex, nmb, cmd);
 }

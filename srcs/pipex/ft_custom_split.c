@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/03 08:19:24 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 11:25:49 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 	}
 	else
 	{
+		printf("Expanding: %d\n", manager->last_ex_code);
 		expanded = expand_string(str, manager);
 		free(arr[stru->j]);
 		arr[stru->j] = expanded;

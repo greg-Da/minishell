@@ -34,7 +34,7 @@ typedef struct s_pipex
 	int					cmd_count;
 	int					is_invalid_infile;
 	int					exit;
-	t_minish			manager;
+	t_minish			*manager;
 }						t_pipex;
 
 typedef struct s_prev
@@ -72,8 +72,7 @@ typedef struct s_parser
 
 void					ft_cleanup(t_pipex *pipex);
 
-void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd,
-							char **envp);
+void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd, t_minish *manager);
 int						ft_here_doc(int fd, char *limiter);
 void					ft_error(char *str);
 char					**ft_custom_split(char const *s, char c,
@@ -85,8 +84,8 @@ int						ft_create_outfile(int here_doc, char *file);
 void					ft_invalid_cmd(t_pipex *pipex, t_prev *prev);
 int						ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void					ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
-int						pipex(int nmb, char **cmd, char **envp, int *fd);
-int						exec_pipex(int cmd_index, t_parser *info, char **envp);
+int						pipex(int nmb, char **cmd, t_minish *manager, int *fd);
+int						exec_pipex(int cmd_index, t_parser *info, t_minish *manager);
 void					init_parser_struct(t_parser *info, char **pipes,
 							int pipe_nb);
 char					*sanitize_str(char *str);
