@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/02 17:30:57 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:42 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 char	*expand_variable(char *var_name)
 {
-	char	*value = getenv(var_name);
+	char	*value;
 
+	value = getenv(var_name);
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
 }
-void	expand_all_args(char **args, t_minish *manager)  
+void	expand_all_args(char **args, t_minish *manager)
 {
-	int		i = 0;
+	int		i;
 	char	*expanded;
 
+	i = 0;
 	while (args && args[i])
 	{
 		expanded = expand_string(args[i], manager);
@@ -34,13 +36,16 @@ void	expand_all_args(char **args, t_minish *manager)
 	}
 }
 
-char *expand_string(char *input, t_minish *manager)
+char	*expand_string(char *input, t_minish *manager)
 {
 	char	result[2048] = {0};
 	char	var_name[256] = {0};
 	char	*var_value;
-	int		i = 0, j = 0, k;
+	int		i = 0, j;
+	size_t	len;
+	size_t	len;
 
+	i = 0, j = 0, k;
 	while (input[i])
 	{
 		if (input[i] == '$')
@@ -51,7 +56,7 @@ char *expand_string(char *input, t_minish *manager)
 				var_value = ft_itoa(manager->last_ex_code);
 				if (var_value)
 				{
-					size_t len = ft_strlen(var_value);
+					len = ft_strlen(var_value);
 					if ((size_t)(j + len) < sizeof(result))
 						ft_strlcpy(result + j, var_value, sizeof(result) - j);
 					j += len;
@@ -68,7 +73,7 @@ char *expand_string(char *input, t_minish *manager)
 				var_value = expand_variable(var_name);
 				if (var_value)
 				{
-					size_t len = ft_strlen(var_value);
+					len = ft_strlen(var_value);
 					if ((size_t)(j + len) < sizeof(result))
 						ft_strlcpy(result + j, var_value, sizeof(result) - j);
 					j += len;
@@ -90,5 +95,5 @@ char *expand_string(char *input, t_minish *manager)
 		}
 	}
 	result[j] = '\0';
-	return ft_strdup(result);
+	return (ft_strdup(result));
 }

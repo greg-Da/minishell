@@ -6,27 +6,25 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/02 16:45:59 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:47 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-
 int	main(int ac, char **av, char **envp)
 {
-	t_minish manager;
+	t_minish	manager;
+	int			i;
 
 	(void)ac;
 	(void)av;
-
 	init_signals();
 	manager.last_cmd = NULL;
 	manager.last_ex_code = 0;
-
-	int i = -1;
+	i = -1;
 	while (envp[++i])
-	;
+		;
 	manager.envp = malloc(sizeof(char *) * (i + 1));
 	if (!manager.envp)
 	{
@@ -44,12 +42,8 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 	manager.envp[i] = NULL;
-
-
 	while (1)
 	{
 		manager.last_ex_code = handle_cmd(manager.envp, &manager);
 	}
-
-	
 }

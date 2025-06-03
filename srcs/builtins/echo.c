@@ -12,9 +12,9 @@
 
 #include "../../include/minishell.h"
 
-int check_new_line_flag(char **cmd, int *i)
+int	check_new_line_flag(char **cmd, int *i)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = *i;
 	if (!ft_strncmp("-n", &cmd[1][*i], 2))
@@ -37,34 +37,30 @@ int check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-void ft_echo(char **cmd, t_minish *manager)
+void	ft_echo(char **cmd, t_minish *manager)
 {
-    int new_line;
-    int i;
-    char *tmp;
+	int		new_line;
+	int		i;
+	char	*tmp;
 
-    i = 0;
-    new_line = check_new_line_flag(cmd, &i);
-    while (check_new_line_flag(cmd, &i) == 0)
-        ;
-
-    if (!cmd[1])
-    {
-        if (new_line)
-            write(1, "\n", 1);
-        return;
-    }
-
-    tmp = expand_string(cmd[1], manager);
-
-    free(cmd[1]);
-    cmd[1] = remove_quotes(tmp);
-    
-    while (cmd[1][i])
-    {
-        ft_putchar_fd(cmd[1][i], 1);
-        i++;
-    }
-    if (new_line)
-        write(1, "\n", 1);
+	i = 0;
+	new_line = check_new_line_flag(cmd, &i);
+	while (check_new_line_flag(cmd, &i) == 0)
+		;
+	if (!cmd[1])
+	{
+		if (new_line)
+			write(1, "\n", 1);
+		return ;
+	}
+	tmp = expand_string(cmd[1], manager);
+	free(cmd[1]);
+	cmd[1] = remove_quotes(tmp);
+	while (cmd[1][i])
+	{
+		ft_putchar_fd(cmd[1][i], 1);
+		i++;
+	}
+	if (new_line)
+		write(1, "\n", 1);
 }

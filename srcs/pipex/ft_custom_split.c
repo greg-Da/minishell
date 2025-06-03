@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/02 17:48:46 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:19:24 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	ft_set_to_zero(int *a, int *b, int *c, int *d)
 
 int	ft_count_words(char const *s, char c)
 {
-	int			count;
-	int			in_word;
+	int				count;
+	int				in_word;
 	t_pip_quotes	quotes;
-	const char	*start;
+	const char		*start;
 
 	ft_set_to_zero(&count, &in_word, &quotes.d_quotes, &quotes.s_quotes);
 	start = s;
@@ -49,11 +49,13 @@ int	ft_count_words(char const *s, char c)
 
 void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 {
-	char *expanded;
-	char *str = arr[stru->j];
+	char	*expanded;
+	char	*str;
+
+	str = arr[stru->j];
 	if (str[0] == '\'')
 	{
-		return;
+		return ;
 	}
 	else
 	{
@@ -63,7 +65,6 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 	}
 	arr[stru->j] = remove_quotes(arr[stru->j]);
 }
-
 
 size_t	ft_get_str(const char *s, char c, t_custom_split *stru, char **arr)
 {

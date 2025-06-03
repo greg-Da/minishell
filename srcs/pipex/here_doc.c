@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/02 17:54:40 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:22 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	ft_here_doc(int write_fd, char *delim)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, SIG_DFL);
-
 		while (1)
 		{
 			line = readline("> ");
 			if (!line || ft_strcmp(line, delim) == 0)
 			{
-				printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delim);
+				printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
+					delim);
 				free(line);
 				exit(0);
 			}
@@ -42,7 +42,6 @@ int	ft_here_doc(int write_fd, char *delim)
 		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
 		signal(SIGINT, handle_sigint);
-
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
 			write(1, "\n", 1);
@@ -53,4 +52,3 @@ int	ft_here_doc(int write_fd, char *delim)
 	}
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 15:34:21 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:53 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	clean_after_pipex(t_parser *info)
 		unlink("here_doc.txt");
 		info->here_doc = 0;
 	}
-	
 }
 
 int	exec_pipex(int cmd_index, t_parser *info, char **envp)
@@ -55,24 +54,24 @@ int	exec_pipex(int cmd_index, t_parser *info, char **envp)
 	return (code);
 }
 
-int is_builtins(char *str)
+int	is_builtins(char *str)
 {
-    if (!ft_strcmp(str, "pwd") || !ft_strcmp(str, "exit") || !ft_strcmp(str, "env")
-    || !ft_strcmp(str, "cd") || !ft_strcmp(str, "echo") || !ft_strcmp(str, "export")
-    || !ft_strcmp(str, "unset"))
+	if (!ft_strcmp(str, "pwd") || !ft_strcmp(str, "exit") || !ft_strcmp(str,
+			"env") || !ft_strcmp(str, "cd") || !ft_strcmp(str, "echo")
+		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "unset"))
 		return (1);
-    return (0);
+	return (0);
 }
 
-char *sanitize_str(char *str)
+char	*sanitize_str(char *str)
 {
-    char *trimmed;
-	
+	char	*trimmed;
+
 	if (!str)
 		return (NULL);
 	trimmed = ft_strtrim(str, " \t\n\v\f\r");
-    free(str);
-    if (!trimmed)
-        return (NULL);
-    return trimmed;
+	free(str);
+	if (!trimmed)
+		return (NULL);
+	return (trimmed);
 }

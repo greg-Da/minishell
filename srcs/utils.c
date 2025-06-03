@@ -6,43 +6,46 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/02 15:38:45 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:21:05 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char *get_res_size(char *str)
+char	*get_res_size(char *str)
 {
-    int i = 0;
-    int len = 0;
-    char quote_type = 0;
-    char *result;
+	int		i;
+	int		len;
+	char	quote_type;
+	char	*result;
 
-    if (!str)
-        return NULL;
-    while (str[i])
-    {
-        if (!quote_type && (str[i] == '\'' || str[i] == '"'))
-            quote_type = str[i];
-        else if (quote_type && str[i] == quote_type)
-            quote_type = 0;
-        else
-            len++;
-        i++;
-    }
-    result = malloc(len + 1);
-
-    return (result);
+	i = 0;
+	len = 0;
+	quote_type = 0;
+	if (!str)
+		return (NULL);
+	while (str[i])
+	{
+		if (!quote_type && (str[i] == '\'' || str[i] == '"'))
+			quote_type = str[i];
+		else if (quote_type && str[i] == quote_type)
+			quote_type = 0;
+		else
+			len++;
+		i++;
+	}
+	result = malloc(len + 1);
+	return (result);
 }
 
-void free_pipes(char **pipes)
+void	free_pipes(char **pipes)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!pipes)
-		return;
+		return ;
 	while (pipes[i])
 		free(pipes[i++]);
 	free(pipes);
 }
-

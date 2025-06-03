@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/05/30 09:25:55 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:11 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_unset(char ***envp, char *name)
 {
-	int i = 0;
-	int len;
+	int	i;
+	int	len;
 
+	i = 0;
 	if (!envp || !*envp || !name)
-		return;
-
+		return ;
 	len = strlen(name);
 	while ((*envp)[i])
 	{
@@ -32,10 +32,9 @@ void	ft_unset(char ***envp, char *name)
 				i++;
 			}
 			(*envp)[i] = NULL;
-			break;
+			break ;
 		}
 		else
 			i++;
 	}
 }
-

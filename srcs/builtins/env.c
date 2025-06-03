@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:37 by greg              #+#    #+#             */
-/*   Updated: 2025/05/29 18:41:11 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:03 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ void	ft_env(t_pipex *pip)
 
 int	ft_envp_size(char **envp)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (envp && envp[i])
 		i++;
 	return (i);
 }
 
-char **ft_realloc_env(char **envp, char *arg)
+char	**ft_realloc_env(char **envp, char *arg)
 {
 	int		i;
 	char	**new_env;
@@ -55,4 +56,3 @@ char **ft_realloc_env(char **envp, char *arg)
 	new_env[i + 1] = NULL;
 	return (new_env);
 }
-

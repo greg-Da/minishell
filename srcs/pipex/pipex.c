@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/30 17:37:49 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/03 08:20:30 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	ft_cleanup(t_pipex *pipex)
 	}
 	free(pipex->cmd_path);
 	free(pipex->cmd_args);
-	
 }
 
 void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
@@ -78,7 +77,6 @@ int	pipex(int nmb, char **cmd, char **envp, int *fd)
 	pipex.in_fd = fd[0];
 	pipex.out_fd = fd[1];
 	pipex.is_invalid_infile = fd[2];
-	
 	ft_init_struct(&pipex, nmb, cmd, envp);
 	// if (pipex.here_doc)
 	// 	ft_here_doc(pipex.in_fd, cmd[0]);
