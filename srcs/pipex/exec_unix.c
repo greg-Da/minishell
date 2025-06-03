@@ -122,7 +122,7 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 			continue;
 		}
 		else if (!ft_strncmp(pipex->cmd_args[prev->i][0], "cd", 2))
-			pipex->exit_code = ft_cd(pipex->cmd_args[prev->i]);
+			pipex->exit_code = ft_cd(pipex->cmd_args[prev->i], pipex->manager);
 		else
 		{
 			ft_manage_exec(pipex, prev, envp);

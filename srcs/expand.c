@@ -6,17 +6,32 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/03 12:01:00 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/03 17:45:47 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*expand_variable(char *var_name)
+char	*expand_variable(char *var_name, t_minish *manager)
 {
 	char	*value;
+	int i = -1;
 
-	value = getenv(var_name);
+	value = NULL;
+
+	while (manager->envp[++i] != NULL)
+	{
+		if (ft_strncmp(manager->envp[i], var_name, ft_strlen(var_name)) == 0
+			&& manager->envp[i][ft_strlen(var_name)] == '=')
+		{
+			value = manager->envp[i] + ft_strlen(var_name) + 1;
+			break;
+		}
+	}
+
+	if (value == NULL)
+		value = getenv(var_name);
+	
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
@@ -69,7 +84,7 @@ char	*expand_string(char *input, t_minish *manager)
 				while ((ft_isalnum(input[i]) || input[i] == '_') && k < 255)
 					var_name[k++] = input[i++];
 				var_name[k] = '\0';
-				var_value = expand_variable(var_name);
+				var_value = expand_variable(var_name, manager);
 				if (var_value)
 				{
 					len = ft_strlen(var_value);
