@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/03 11:19:17 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/03 12:01:00 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ char	*expand_string(char *input, t_minish *manager)
 			i++;
 			if (input[i] == '?')
 			{
-				printf("last exit code: %d\n", manager->last_ex_code);
 				var_value = ft_itoa(manager->last_ex_code);
 				if (var_value)
 				{

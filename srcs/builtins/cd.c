@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 13:07:45 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:19:56 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 12:13:55 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	update_pwd(void)
 	free(pwd);
 }
 
-void	handle_go_back(void)
+int	handle_go_back(void)
 {
 	char	*oldpwd;
 
@@ -36,37 +36,53 @@ void	handle_go_back(void)
 	{
 		update_pwd();
 		pwd();
+		return (0);
 	}
 	else
+	{
 		perror("cd");
+		return (1);
+	}
 }
 
-void	get_home(void)
+int	get_home(void)
 {
 	char	*home;
 
 	home = getenv("HOME");
 	if (!home)
+	{
 		ft_putstr_fd("cd: HOME not set\n", 2);
+		return (1);
+	}
 	if (chdir(home) != 0)
+	{
 		perror("cd");
+		return (1);
+	}
+	return (0);
 }
 
-void	ft_cd(char **path)
+int	ft_cd(char **path)
 {
 	if (path[1] != NULL && path[2] != NULL)
+	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
+		return(126);
+	}
 	else if (path[1] == NULL || !ft_strcmp(path[1], "~"))
-		get_home();
+	return (get_home());
 	else if (!ft_strcmp(path[1], "-"))
-		handle_go_back();
+		return (handle_go_back());
 	else
 	{
 		if (chdir(path[1]) == 0)
-		{
 			update_pwd();
-		}
 		else
+		{
 			perror("cd");
+			return (1);
+		}
 	}
+	return (0);
 }
