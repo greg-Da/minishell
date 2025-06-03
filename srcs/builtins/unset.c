@@ -6,24 +6,29 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:11 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 13:20:02 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_unset(char ***envp, char *name)
+int	ft_unset(char ***envp, char *name)
 {
 	int	i;
 	int	len;
-
+	char *trimmed;
+	
 	i = 0;
-	if (!envp || !*envp || !name)
-		return ;
-	len = strlen(name);
+	while (i++ < 5)
+		name++;
+	trimmed = ft_strtrim(name, " \f\t\n\r\v");
+	i = 0;
+	if (!envp || !*envp || !trimmed)
+		return (1);
+	len = strlen(trimmed);
 	while ((*envp)[i])
 	{
-		if (strncmp((*envp)[i], name, len) == 0 && (*envp)[i][len] == '=')
+		if (strncmp((*envp)[i], trimmed, len) == 0 && (*envp)[i][len] == '=')
 		{
 			free((*envp)[i]);
 			while ((*envp)[i + 1])
@@ -37,4 +42,6 @@ void	ft_unset(char ***envp, char *name)
 		else
 			i++;
 	}
+	free(trimmed);
+	return (0);
 }

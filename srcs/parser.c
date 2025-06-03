@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 11:36:33 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/03 12:46:47 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,12 @@ static int	handle_pipe_failure(t_parser *info, char *trimmed)
 	clean_handle_cmd(info);
 	return (2);
 }
+static void	reset_parser_fds(t_parser *info)
+{
+	info->fd[0] = STDIN_FILENO;
+	info->fd[1] = STDOUT_FILENO;
+	info->fd[2] = 0;
+}
 
 static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		int *cmd_index, int pipe_index)
@@ -119,20 +125,12 @@ static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 	{
 		info->res = exec_pipex(*cmd_index, info, manager);
 		*cmd_index = 0;
-		info->fd[0] = STDIN_FILENO;
-		info->fd[1] = STDOUT_FILENO;
-		info->fd[2] = 0;
+		reset_parser_fds(info);
 	}
 	free(trimmed);
 	return (0);
 }
 
-static void	reset_parser_fds(t_parser *info)
-{
-	info->fd[0] = STDIN_FILENO;
-	info->fd[1] = STDOUT_FILENO;
-	info->fd[2] = 0;
-}
 
 int	parser(char **pipes, t_minish *manager, int pipe_nb)
 {
@@ -144,6 +142,7 @@ int	parser(char **pipes, t_minish *manager, int pipe_nb)
 	cmd_index = 0;
 	init_parser_struct(&info, pipes, pipe_nb);
 	reset_parser_fds(&info);
+	
 	while (pipes[pipe_index])
 	{
 		info.res = process_single_pipe(&info, pipes, manager, &cmd_index,
