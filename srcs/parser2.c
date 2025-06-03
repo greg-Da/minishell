@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 11:36:40 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/03 13:19:30 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_parser_struct(t_parser *info, char **pipes, int pipe_nb)
 	i = 0;
 	while (pipes[i])
 		i++;
-	info->cmd_nb = pipe_nb;
+	info->cmd_nb = pipe_nb + 1;
 	info->here_doc = 0;
 	info->cmd = ft_calloc(i + 2, sizeof(char *));
 }
@@ -42,7 +42,15 @@ int	exec_pipex(int cmd_index, t_parser *info, t_minish *manager)
 	int	i;
 	int	code;
 
-	code = pipex(cmd_index, info->cmd, manager, info->fd);
+	if (info->cmd_nb == 1 && (!ft_strncmp(info->cmd[0], "export", 6) || !ft_strncmp(info->cmd[0], "unset", 5)))
+	{
+		if (!ft_strncmp(info->cmd[0], "export", 6))
+			code = ft_export(&manager->envp, info->cmd[0]);
+		else
+			code = ft_unset(&manager->envp, info->cmd[0]);
+	}
+	else
+		code = pipex(cmd_index, info->cmd, manager, info->fd);
 	clean_after_pipex(info);
 	i = 0;
 	while (info->cmd[i])

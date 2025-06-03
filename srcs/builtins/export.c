@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:06 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/03 13:18:15 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,19 @@ static void	update_env(char ***envp, char *arg)
 	*envp = new_env;
 }
 
-void	ft_export(char ***envp, char *arg)
+int	ft_export(char ***envp, char *arg)
 {
-	if (!is_valid_identifier(arg))
+	int i;
+	char *trimmed;
+	
+	i = -1;
+	while (++i < 6)
+		arg++;
+	trimmed = ft_strtrim(arg, " \f\t\n\r\v");
+	if (!is_valid_identifier(trimmed))
 		ft_putstr_fd("minishell: export: invalid identifier\n", 2);
 	else
-		update_env(envp, arg);
+		update_env(envp, trimmed);
+	free(trimmed);
+	return (0);
 }

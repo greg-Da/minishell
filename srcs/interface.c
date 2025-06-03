@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 11:32:31 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/03 12:45:40 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	handle_cmd(t_minish *manager)
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);
 	pipes = get_pipes(input, manager);
+	// TO UPDATE EXIT
 	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
 		handle_exit(input, manager);
 	code = parser(pipes, manager, get_pipe_count(input));
