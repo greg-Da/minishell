@@ -37,11 +37,11 @@ int	check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-void	ft_echo(char **cmd, t_minish *manager)
+void	ft_echo(char **cmd)
 {
 	int		new_line;
 	int		i;
-	char	*tmp;
+	// char	*tmp;
 
 	i = 0;
 	new_line = check_new_line_flag(cmd, &i);
@@ -53,9 +53,9 @@ void	ft_echo(char **cmd, t_minish *manager)
 			write(1, "\n", 1);
 		return ;
 	}
-	tmp = expand_string(cmd[1], manager);
-	free(cmd[1]);
-	cmd[1] = remove_quotes(tmp);
+	// tmp = expand_string(cmd[1], manager);
+	// free(cmd[1]);
+	cmd[1] = remove_quotes(cmd[1]);
 	while (cmd[1][i])
 	{
 		ft_putchar_fd(cmd[1][i], 1);

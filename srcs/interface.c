@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 13:44:52 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 13:53:32 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ int	handle_cmd(t_minish *manager)
 		return (0);
 	is_unclosed = is_unclosed_quotes(input);
 	maybe_add_history(&input, manager, is_unclosed);
+
+	char *tmp = expand_string(input, manager); 
+	free(input);
+	input = tmp;
+
 	free(manager->last_cmd);
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);

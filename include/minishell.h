@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/04 10:53:04 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/04 13:57:03 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void				close_quotes(t_quotes *quotes, char **input);
 
 int					pwd(void);
 void				ft_env(t_pipex *pip);
-void				ft_echo(char **cmd, t_minish *manager);
+void				ft_echo(char **cmd);
 int					ft_cd(char **path, t_minish *manager);
 int					handle_cmd(t_minish *manager);
 char				*get_input(char *prompt, t_minish *manager);

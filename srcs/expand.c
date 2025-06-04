@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/03 17:45:47 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 13:35:05 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*expand_variable(char *var_name, t_minish *manager)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
 }
+
 void	expand_all_args(char **args, t_minish *manager)
 {
 	int		i;
