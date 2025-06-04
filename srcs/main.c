@@ -6,16 +6,34 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/03 13:42:55 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 14:27:53 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	main(int ac, char **av, char **envp)
+void increment_SHLVL(t_minish *manager)
 {
-	t_minish	manager;
-	int			i;
+	int i;
+	char *tmp;
+	char *shlvl = expand_string("$SHLVL", manager);
+
+	if (shlvl[0] == '\0')
+		ft_export(manager, "export SHLVL=1");
+
+	i = ft_atoi(shlvl);
+	free(shlvl);
+	tmp = ft_itoa(i + 1);
+	shlvl = ft_strjoin("export SHLVL=", tmp);
+	free(tmp);
+	ft_export(manager, shlvl);
+	free(shlvl);
+}
+
+int main(int ac, char **av, char **envp)
+{
+	t_minish manager;
+	int i;
 
 	(void)ac;
 	(void)av;
@@ -42,6 +60,9 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 	manager.envp[i] = NULL;
+
+	increment_SHLVL(&manager);
+
 	while (1)
 		manager.last_ex_code = handle_cmd(&manager);
 }
