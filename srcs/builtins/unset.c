@@ -6,42 +6,57 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/04 10:54:56 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/04 14:47:20 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int ft_unset(t_minish *manager, char *name)
+int	ft_unset(t_minish *manager, char *arg)
 {
-	int	i;
-	int	len;
-	char *trimmed;
-	
-	i = 0;
-	while (i++ < 5)
-		name++;
-	trimmed = ft_strtrim(name, " \f\t\n\r\v");
-	i = 0;
-	if (!manager->envp || !*manager->envp || !trimmed)
+	char	*key;
+	char	**new_env;
+	int		i, j;
+	int		len;
+
+	while (*arg && (*arg == ' ' || *arg == '\t'))
+		arg++;
+	arg += 5;
+	while (*arg == ' ')
+		arg++;
+
+	key = ft_strtrim(arg, " \t\n\r");
+	if (!key)
 		return (1);
-	len = strlen(trimmed);
-	while ((manager->envp)[i]) 
+
+	len = ft_strlen(key);
+	i = 0;
+	j = 0;
+
+	while (manager->envp[i])
+		i++;
+	new_env = ft_calloc(i + 1, sizeof(char *));
+	if (!new_env)
+		return (free(key), 1);
+
+	i = 0;
+	while (manager->envp[i])
 	{
-		if (strncmp((manager->envp)[i], trimmed, len) == 0 && (manager->envp)[i][len] == '=')
+		if (ft_strncmp(manager->envp[i], key, len) == 0 &&
+			(manager->envp[i][len] == '=' || manager->envp[i][len] == '\0'))
 		{
-			free((manager->envp)[i]);
-			while ((manager->envp)[i + 1])
-			{
-				(manager->envp)[i] = (manager->envp)[i + 1];
-				i++;
-			}
-			(manager->envp)[i] = NULL;
-			break ;
+			free(manager->envp[i]);
 		}
 		else
-			i++;
+		{
+			new_env[j++] = manager->envp[i];
+		}
+		i++;
 	}
-	free(trimmed);
+	new_env[j] = NULL;
+	free(manager->envp);
+	manager->envp = new_env;
+	free(key);
 	return (0);
 }
+
