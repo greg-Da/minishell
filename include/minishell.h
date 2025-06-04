@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/03 17:22:40 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 10:53:04 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void				handle_sigint(int sig);
 char				*expand_variable(char *var_name, t_minish *manager);
 char				*expand_string(char *input, t_minish *manager);
 void				expand_all_args(char **args, t_minish *manager);
-int				ft_export(char ***envp, char *arg);
-int				ft_unset(char ***envp, char *arg);
+int ft_export(t_minish *manager, char *arg);
+int ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
 extern sig_atomic_t	is_in_execution;
 int					check_quotes(char **input, t_minish *manager);

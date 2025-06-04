@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 13:07:45 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 17:48:13 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 10:59:20 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void update_pwd(char *pwd, char *old_pwd, char ***envp)
+void update_pwd(char *pwd, char *old_pwd, t_minish *manager)
 {
 	char *tmp;
 
@@ -28,15 +28,15 @@ void update_pwd(char *pwd, char *old_pwd, char ***envp)
 	}
 
 	tmp = ft_strjoin("export OLDPWD=", old_pwd);
-	ft_export(envp, tmp);
+	ft_export(manager, tmp);
 	free(tmp);
 
 	tmp = ft_strjoin("export PWD=", pwd);
-	ft_export(envp, tmp);
+	ft_export(manager, tmp);
 	free(tmp);
 }
 
-int handle_go_back(char *cur, char ***envp, t_minish *manager)
+int handle_go_back(char *cur, t_minish *manager)
 {
 	char *oldpwd;
 	
@@ -47,7 +47,7 @@ int handle_go_back(char *cur, char ***envp, t_minish *manager)
 		ft_putstr_fd("cd: OLDPWD not set\n", 2);
 	if (chdir(oldpwd) == 0)
 	{
-		update_pwd(oldpwd, cur, envp);
+		update_pwd(oldpwd, cur, manager);
 		pwd();
 		free(oldpwd);
 		return (0);
@@ -97,14 +97,14 @@ int ft_cd(char **path, t_minish *manager)
 	{
 		get_home(manager);
 		new_pwd = getcwd(NULL, 0);
-		update_pwd(new_pwd, pwd, &manager->envp);
+		update_pwd(new_pwd, pwd, manager);
 		free(pwd);
 		free(new_pwd);
 		return (0);
 	}
 	else if (!ft_strcmp(path[1], "-"))
 	{
-		handle_go_back(pwd, &manager->envp, manager);
+		handle_go_back(pwd, manager);
 		free(pwd);
 		return (0);
 	}
@@ -113,7 +113,7 @@ int ft_cd(char **path, t_minish *manager)
 		if (chdir(path[1]) == 0)
 		{
 			new_pwd = getcwd(NULL, 0);
-			update_pwd(new_pwd, pwd, &manager->envp);
+			update_pwd(new_pwd, pwd, manager);
 			free(new_pwd);
 		}
 		else

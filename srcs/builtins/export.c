@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/03 17:48:31 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 10:52:46 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	update_env(char ***envp, char *arg)
 	*envp = new_env;
 }
 
-int	ft_export(char ***envp, char *arg)
+int ft_export(t_minish *manager, char *arg)
 {
 	int i;
 	char *trimmed;
@@ -76,7 +76,7 @@ int	ft_export(char ***envp, char *arg)
 	if (!is_valid_identifier(trimmed))
 		ft_putstr_fd("minishell: export: invalid identifier\n", 2);
 	else
-		update_env(envp, trimmed);
+		update_env(&(manager->envp), trimmed);
 	free(trimmed);
 	return (0);
 }

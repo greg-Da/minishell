@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 13:19:30 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/04 10:57:33 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int	exec_pipex(int cmd_index, t_parser *info, t_minish *manager)
 	if (info->cmd_nb == 1 && (!ft_strncmp(info->cmd[0], "export", 6) || !ft_strncmp(info->cmd[0], "unset", 5)))
 	{
 		if (!ft_strncmp(info->cmd[0], "export", 6))
-			code = ft_export(&manager->envp, info->cmd[0]);
+			code = ft_export(manager, info->cmd[0]);
 		else
-			code = ft_unset(&manager->envp, info->cmd[0]);
+			code = ft_unset(manager, info->cmd[0]);
 	}
 	else
 		code = pipex(cmd_index, info->cmd, manager, info->fd);
