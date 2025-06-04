@@ -97,7 +97,6 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 {
 	while (++prev->i < pipex->cmd_count)
 	{
-		// printf("cmd : %s\n", pipex->cmd_args[prev->i][0]);
 		if (pipex->cmd_args[prev->i][0] == NULL)
 			continue;
 		if (pipe(pipex->fd) == -1)
