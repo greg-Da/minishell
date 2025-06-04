@@ -6,35 +6,52 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/04 10:52:46 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/04 15:08:38 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	is_valid_identifier(char *str)
+void	free_split(char **arr)
 {
 	int	i;
 
+	if (!arr)
+		return;
 	i = 0;
-	if (!str || !(ft_isalpha(str[0]) || str[0] == '_'))
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+int	is_valid_identifier(const char *str)
+{
+	int	i;
+
+	if (!str || !str[0])
 		return (0);
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	i = 1;
 	while (str[i] && str[i] != '=')
 	{
-		if (!(ft_isalnum(str[i]) || str[i] == '_'))
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-static void	update_env(char ***envp, char *arg)
+static void	update_env(t_minish *manager, char *arg)
 {
 	int		i;
 	size_t	len;
+	char	*var_name;
 	char	**new_env;
 
-	i = 0;
 	len = 0;
 	while (arg[len] && arg[len] != '=')
 	{
@@ -42,41 +59,72 @@ static void	update_env(char ***envp, char *arg)
 			return ;
 		len++;
 	}
-	while ((*envp)[i])
+	var_name = ft_substr(arg, 0, len);
+	if (!var_name)
+		return ;
+	i = 0;
+	while (manager->envp[i])
 	{
-		if ((*envp)[i] != NULL && ft_strncmp((*envp)[i], arg, len) == 0
-			&& (*envp)[i][len] == '=')
+		if (ft_strncmp(manager->envp[i], var_name, len) == 0 &&
+			(manager->envp[i][len] == '\0' || manager->envp[i][len] == '='))
 		{
-			free((*envp)[i]);
-			(*envp)[i] = ft_strdup(arg);
+			free(manager->envp[i]);
+			manager->envp[i] = ft_strdup(arg);
+			free(var_name);
 			return ;
 		}
 		i++;
 	}
-	new_env = ft_realloc_env(*envp, arg);
+	new_env = ft_realloc_env(manager->envp, arg);
 	if (!new_env)
+	{
+		free(var_name);
 		return ;
+	}
 	i = 0;
-	while ((*envp)[i])
-		free((*envp)[i++]);
-	free(*envp);
-	*envp = new_env;
+	while (manager->envp[i])
+		free(manager->envp[i++]);
+	free(manager->envp);
+
+	manager->envp = new_env;
+	free(var_name);
 }
 
-int ft_export(t_minish *manager, char *arg)
+int	ft_export(t_minish *manager, char *arg)
 {
-	int i;
-	char *trimmed;
+	char	**args;
+	char	*trimmed;
+	int		i;
+	int		status;
 
-	
-	i = -1;
-	while (++i < 6)
-		arg++;
-	trimmed = ft_strtrim(arg, " \f\t\n\r\v");
-	if (!is_valid_identifier(trimmed))
-		ft_putstr_fd("minishell: export: invalid identifier\n", 2);
-	else
-		update_env(&(manager->envp), trimmed);
-	free(trimmed);
-	return (0);
+	args = ft_split(arg + 6, ' ');
+	if (!args)
+		return (1);
+	i = 0;
+	status = 0;
+	while (args[i])
+	{
+		trimmed = ft_strtrim(args[i], " \f\t\n\r\v");
+		if (!trimmed)
+		{
+			status = 1;
+			i++;
+			continue;
+		}
+		if (!is_valid_identifier(trimmed))
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(trimmed, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			status = 1;
+		}
+		else
+			update_env(manager, trimmed);
+		free(trimmed);
+		i++;
+	}
+	free_split(args);
+	manager->last_ex_code = status;
+	return (status);
 }
+
