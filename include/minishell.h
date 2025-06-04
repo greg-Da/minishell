@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/04 13:57:03 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 15:29:30 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int					parser(char **pipes, t_minish *manager, int pipe_nb);
 char				*get_res_size(char *str);
 void				close_quotes(t_quotes *quotes, char **input);
 
-int					pwd(void);
+int					pwd(t_minish *manager);
 void				ft_env(t_pipex *pip);
 void				ft_echo(char **cmd);
 int					ft_cd(char **path, t_minish *manager);

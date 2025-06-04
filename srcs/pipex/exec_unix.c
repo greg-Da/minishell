@@ -53,7 +53,7 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 	if (is_builtins(pip->cmd_args[i][0]))
 	{
 		if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
-			pwd();
+			pwd(pip->manager);
 		else if (!ft_strncmp(pip->cmd_args[i][0], "env", 3))
 			ft_env(pip);
 		else if (!ft_strncmp(pip->cmd_args[i][0], "echo", 4))

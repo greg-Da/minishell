@@ -6,17 +6,23 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:24:18 by greg              #+#    #+#             */
-/*   Updated: 2025/05/21 14:47:33 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/04 15:28:17 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	pwd(void)
+int	pwd(t_minish *manager)
 {
 	char	*cwd;
 
-	cwd = getcwd(NULL, 0);
+
+	cwd = expand_string("$PWD", manager);
+	if (cwd[0] == '\0')
+	{
+		free(cwd);
+		cwd = getcwd(NULL, 0);
+	}
 	if (!cwd)
 	{
 		perror("getcwd");
