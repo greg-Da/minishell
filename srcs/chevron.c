@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 10:40:02 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 14:48:39 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	*get_next_chevron(char *str)
     while (str[i])
     {
         if ((str[i] == '>' || str[i] == '<')
-            && !is_between_quotes(str, i, '\'')
-            && !is_between_quotes(str, i, '\"'))
+            && !is_between_char(str, i, '\'')
+            && !is_between_char(str, i, '\"'))
         {
             first = &str[i];
             break;
@@ -77,14 +77,12 @@ int	process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 		filename = extract_filename(tmp, next_chevron);
 		if (!filename)
 			return (free(start), -1);
-		filename = sanitize_str(filename);
-		if (!filename)
-			return (free(start), -1);
 		if (!filename[0])
 		{
 			free(filename);
 			return (handle_filename_error(pipes, i, tmp, start));
 		}
+		// printf("filename : [%s]\n", filename);
 		current_fd = (chevron == '<') ? &fd[0] : &fd[1];
 		if (*current_fd != -1 && *current_fd != STDOUT_FILENO
 			&& *current_fd != STDIN_FILENO)

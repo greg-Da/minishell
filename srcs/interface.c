@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 13:23:07 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 13:29:13 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int get_pipe_count(char *input)
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && is_between_quotes(input, i, '\'') == 0 && is_between_quotes(input, i, '"') == 0)
+		if (input[i] == '|' && is_between_char(input, i, '\'') == 0 && is_between_char(input, i, '"') == 0)
 			count++;
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:32:12 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:56 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 13:29:13 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ char	**get_pipes_size(char *input, t_minish *manager)
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && !(is_between_quotes(input, i, '"')
-				|| is_between_quotes(input, i, '\'')))
+		if (input[i] == '|' && !(is_between_char(input, i, '"')
+				|| is_between_char(input, i, '\'')))
 			count++;
 		i++;
 	}
@@ -41,8 +41,8 @@ static void	fill_pipes_array(char **pipes, char *input)
 	i = 0, j = 0, start = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && !(is_between_quotes(input, i, '"')
-				|| is_between_quotes(input, i, '\'')))
+		if (input[i] == '|' && !(is_between_char(input, i, '"')
+				|| is_between_char(input, i, '\'')))
 		{
 			pipes[j++] = ft_substr(input, start, i - start);
 			start = i + 1;

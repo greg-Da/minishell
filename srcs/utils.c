@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 10:57:06 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 14:06:50 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 int is_between_any_quotes(char *str, int i)
 {
-	if (is_between_quotes(str, i, '\'') || is_between_quotes(str, i, '"'))
-		return (1);
-	return (0);
+	return (is_between_char(str, i, '\'') || is_between_char(str, i, '"'));
 }
 
-char	*get_res_size(char *str)
+char *get_res_size(char *str)
 {
-	int		i;
-	int		len;
-	char	quote_type;
-	char	*result;
+	int i;
+	int len;
+	char quote_type;
+	char *result;
 
 	i = 0;
 	len = 0;
@@ -45,13 +43,13 @@ char	*get_res_size(char *str)
 	return (result);
 }
 
-void	free_pipes(char **pipes)
+void free_pipes(char **pipes)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!pipes)
-		return ;
+		return;
 	while (pipes[i])
 		free(pipes[i++]);
 	free(pipes);

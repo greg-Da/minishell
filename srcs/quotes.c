@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:59 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 13:29:24 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	check_quotes(char **input, t_minish *manager)
 	return (0);
 }
 
-int	is_between_quotes(char *str, int index, char quote)
+int	is_between_char(char *str, int index, char quote)
 {
 	int	i;
 	int	in_quote;
