@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 13:29:13 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 15:50:32 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@ static int handle_err_exit(char *input, char *start)
 
 	i = 0;
 
+	if (!input[i])
+		return (0);
+	
+
 	if (input[i] == '+' || input[i] == '-')
 		i++;
 
 	while (ft_isdigit(input[i]))
 		i++;
 
-	if (!ft_include(input[i], " \f\t\n\r\v"))
+
+	if (ft_include(input[i], " \f\t\n\r\v") || ft_isalpha(input[i]))
 	{
 		err = ft_strjoin("minishell: exit:", start + 4);
 		free(input);

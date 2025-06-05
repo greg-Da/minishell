@@ -12,9 +12,9 @@
 
 #include "../../include/minishell.h"
 
-int	check_new_line_flag(char **cmd, int *i)
+int check_new_line_flag(char **cmd, int *i)
 {
-	int	tmp;
+	int tmp;
 
 	tmp = *i;
 	if (!ft_strncmp("-n", &cmd[1][*i], 2))
@@ -37,10 +37,36 @@ int	check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-void	ft_echo(char **cmd)
+static char *skip_redir_and_filename(char *str)
 {
-	int		new_line;
-	int		i;
+    int i = 0;
+    char chevron;
+
+    while (str[i] && ft_include(str[i], " \t\n\r\v"))
+        i++;
+
+    while (str[i] == '>' || str[i] == '<')
+    {
+        chevron = str[i++];
+        if (str[i] == chevron)
+            i++;
+        while (str[i] && ft_include(str[i], " \t\n\r\v"))
+            i++;
+        while (str[i] && ((str[i] != ' ' && str[i] != '>' && str[i] != '<') || is_between_any_quotes(str, i)))
+            i++;
+        while (str[i] && ft_include(str[i], " \t\n\r\v"))
+            i++;
+    }
+
+    char *res = strdup(&str[i]);
+    free(str);
+    return res;
+}
+
+void ft_echo(char **cmd)
+{
+	int new_line;
+	int i;
 
 
 	i = 0;
@@ -51,8 +77,10 @@ void	ft_echo(char **cmd)
 	{
 		if (new_line)
 			write(1, "\n", 1);
-		return ;
+		return;
 	}
+
+	cmd[1] = skip_redir_and_filename(cmd[1]);
 	cmd[1] = remove_quotes(cmd[1]);
 	while (cmd[1][i])
 	{

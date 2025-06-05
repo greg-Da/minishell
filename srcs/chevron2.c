@@ -3,31 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:39 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 15:05:10 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*extract_filename(char *tmp, char *next_chevron)
+char *extract_filename(char *input, char *next_chevron)
 {
-	char	*space;
+	int i = 0;
+	char *trimmed;
+	char *res;
+	int start = 0;
 
-	space = ft_strchr(tmp, ' ');
-	if (space && (!next_chevron || space < next_chevron))
-		next_chevron = space;
-	if (next_chevron)
-		return (ft_substr(tmp, 0, next_chevron - tmp));
-	else
-		return (ft_strdup(tmp));
+	
+	trimmed = ft_strtrim(input, " \f\t\n\r\v");
+	printf("trimmed %s\n", trimmed);
+
+	if (trimmed[0] == '<')
+		start++;
+	
+	while (trimmed[i] && (!ft_include(trimmed[i], " \f\t\n\r\v") || is_between_any_quotes(trimmed, i)) && trimmed + i != next_chevron)
+		i++;
+
+	res = ft_substr(trimmed, start, i);
+	free(trimmed);
+	return (remove_quotes(res));
 }
 
-int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
+int handle_filename_error(char **pipes, int i, char *tmp, char *start)
 {
-	char	*next;
+	char *next;
 
 	next = tmp;
 	printf("next: [%s]\n", next);
@@ -43,13 +52,13 @@ int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 	else
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-			2);
+					 2);
 	free(start);
 	return (-1);
 }
 
-int	open_chevron_fd(char chevron, int *current_fd, char *filename,
-		t_parser *info, int append)
+int open_chevron_fd(char chevron, int *current_fd, char *filename,
+					t_parser *info, int append)
 {
 	if (chevron == '>')
 	{
@@ -63,7 +72,7 @@ int	open_chevron_fd(char chevron, int *current_fd, char *filename,
 		if (info->here_doc)
 		{
 			int temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
+							   0644);
 			if (temp_fd == -1)
 			{
 				perror("open");

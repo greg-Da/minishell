@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 11:11:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 15:52:06 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void get_cmd(t_parser *info, char *pipe, int j)
 
 	cmd = NULL;
 	start = pipe;
-
 
 	while (*start)
 	{
