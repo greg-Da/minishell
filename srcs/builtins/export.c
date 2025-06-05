@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 13:34:30 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:34:20 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_valid_identifier(const char *str)
 		return (0);
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 		return (0);
-	i = 1;
+	i = 0;
 	while (str[i] && str[i] != '=')
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
@@ -97,7 +97,10 @@ int	ft_export(t_minish *manager, char *arg)
 	int		i;
 	int		status;
 
-	args = ft_split(arg + 6, ' ');
+	char *export_args = arg + 6;
+    while (*export_args == ' ')
+	    export_args++;
+    args = ft_split(export_args, ' ');
 	if (!args)
 		return (1);
 	i = 0;

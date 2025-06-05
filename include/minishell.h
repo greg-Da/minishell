@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/05 13:24:17 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:33:29 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int					is_between_quotes(char *str, int index, char quote);
 char				*remove_quotes(char *str);
 void				free_pipes(char **pipes);
 char				*remove_double_quotes(char *str);
+int                 set_env_key_value(t_minish *manager, char *key, char *value);
+void                free_split(char **arr);
 
 
 #endif
