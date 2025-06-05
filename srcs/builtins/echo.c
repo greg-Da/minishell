@@ -37,7 +37,7 @@ int	check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-void	ft_echo(char **cmd, t_minish *manager)
+void	ft_echo(char **cmd)
 {
 	int		new_line;
 	int		i;

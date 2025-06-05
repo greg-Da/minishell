@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/05 11:17:39 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 11:49:03 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void				close_quotes(t_quotes *quotes, char **input);
 int					pwd(t_minish *manager);
 int					is_path_missing(t_minish *manager);
 void				ft_env(t_pipex *pip);
-void				ft_echo(char **cmd, t_minish *manager);
+void				ft_echo(char **cmd);
 int					ft_cd(char **path, t_minish *manager);
 int					handle_cmd(t_minish *manager);
 char				*get_input(char *prompt, t_minish *manager);
