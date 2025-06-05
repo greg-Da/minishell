@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/04 15:29:30 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 11:17:39 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ char				*get_res_size(char *str);
 void				close_quotes(t_quotes *quotes, char **input);
 
 int					pwd(t_minish *manager);
+int					is_path_missing(t_minish *manager);
 void				ft_env(t_pipex *pip);
-void				ft_echo(char **cmd);
+void				ft_echo(char **cmd, t_minish *manager);
 int					ft_cd(char **path, t_minish *manager);
 int					handle_cmd(t_minish *manager);
 char				*get_input(char *prompt, t_minish *manager);
@@ -80,8 +81,9 @@ void				handle_sigint(int sig);
 char				*expand_variable(char *var_name, t_minish *manager);
 char				*expand_string(char *input, t_minish *manager);
 void				expand_all_args(char **args, t_minish *manager);
-int ft_export(t_minish *manager, char *arg);
-int ft_unset(t_minish *manager, char *name);
+int					is_valid_identifier(const char *str);
+int					ft_export(t_minish *manager, char *arg);
+int					ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
 extern sig_atomic_t	is_in_execution;
 int					check_quotes(char **input, t_minish *manager);
