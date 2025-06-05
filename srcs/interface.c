@@ -6,42 +6,106 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/04 13:53:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 13:29:13 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	get_pipe_count(char *input)
+int get_pipe_count(char *input)
 {
-	int	i;
-	int	count;
+	int i;
+	int count;
 
 	i = 0;
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && is_between_quotes(input, i, '\'') == 0
-				&& is_between_quotes(input, i, '"') == 0)
+		if (input[i] == '|' && is_between_char(input, i, '\'') == 0 && is_between_char(input, i, '"') == 0)
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-static void	handle_exit(char *input, t_minish *manager)
+static int handle_err_exit(char *input, char *start)
 {
-	if (manager->last_cmd)
-		free(manager->last_cmd);
-	free(input);
-	write(1, "exit\n", 5);
-	exit(0);
+	int i;
+	char *err;
+
+	i = 0;
+
+	if (input[i] == '+' || input[i] == '-')
+		i++;
+
+	while (ft_isdigit(input[i]))
+		i++;
+
+	if (!ft_include(input[i], " \f\t\n\r\v"))
+	{
+		err = ft_strjoin("minishell: exit:", start + 4);
+		free(input);
+		input = ft_strjoin(err, ": numeric argument required\n");
+		ft_putstr_fd(input, 2);
+
+		free(start);
+		free(input);
+		exit(2);
+	}
+
+	if (input[i] != '\0')
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		return (1);
+	}
+	return (0);
 }
 
-static void	maybe_add_history(char **input, t_minish *manager, int is_unclosed)
+static int handle_exit(char *input, t_minish *manager)
 {
-	if ((ft_strcmp(*input, manager->last_cmd) != 0 || ft_strchr(*input, '\n'))
-		&& !is_unclosed)
+	char *tmp;
+	int res;
+	int err;
+
+	if (!input)
+	{
+		if (manager->last_cmd)
+			free(manager->last_cmd);
+		write(1, "exit\n", 5);
+		exit(0);
+	}
+
+	// printf("exit: |%s\n", input);
+
+	tmp = expand_string(input, manager);
+	tmp = remove_quotes(tmp);
+	free(input);
+
+	input = ft_strdup(tmp);
+	free(tmp);
+
+	tmp = ft_strtrim(input + 4, " \f\t\n\r\v");
+
+	err = handle_err_exit(tmp, input);
+	if (err > 0)
+	{
+		free(input);
+		free(tmp);
+		return (err);
+	}
+
+	res = ft_atoi(tmp) % 266;
+	free(input);
+	free(tmp);
+	write(1, "exit\n", 5);
+	if (manager->last_cmd)
+		free(manager->last_cmd);
+	exit(res);
+}
+
+static void maybe_add_history(char **input, t_minish *manager, int is_unclosed)
+{
+	if ((ft_strcmp(*input, manager->last_cmd) != 0 || ft_strchr(*input, '\n')) && !is_unclosed)
 		add_history(*input);
 	if (is_unclosed)
 	{
@@ -50,9 +114,9 @@ static void	maybe_add_history(char **input, t_minish *manager, int is_unclosed)
 	}
 }
 
-static char	*get_input_line(t_minish *manager)
+static char *get_input_line(t_minish *manager)
 {
-	char	*input;
+	char *input;
 
 	input = readline("find a funny name > ");
 	if (!input)
@@ -65,12 +129,12 @@ static char	*get_input_line(t_minish *manager)
 	return (input);
 }
 
-int	handle_cmd(t_minish *manager)
+int handle_cmd(t_minish *manager)
 {
-	char	*input;
-	char	**pipes;
-	int		code;
-	int		is_unclosed;
+	char *input;
+	char **pipes;
+	int code;
+	int is_unclosed;
 
 	pipes = NULL;
 	input = get_input_line(manager);
@@ -79,7 +143,7 @@ int	handle_cmd(t_minish *manager)
 	is_unclosed = is_unclosed_quotes(input);
 	maybe_add_history(&input, manager, is_unclosed);
 
-	char *tmp = expand_string(input, manager); 
+	char *tmp = expand_string(input, manager);
 	free(input);
 	input = tmp;
 
@@ -87,9 +151,11 @@ int	handle_cmd(t_minish *manager)
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);
 	pipes = get_pipes(input, manager);
-	// TO UPDATE EXIT
 	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
-		handle_exit(input, manager);
+	{
+		free_pipes(pipes);
+		return (handle_exit(input, manager));
+	}
 	code = parser(pipes, manager, get_pipe_count(input));
 	free_pipes(pipes);
 	free(input);

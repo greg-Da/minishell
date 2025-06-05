@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/05 15:33:29 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:41:06 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,14 @@ int					ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
 extern sig_atomic_t	is_in_execution;
 int					check_quotes(char **input, t_minish *manager);
-int					is_between_quotes(char *str, int index, char quote);
+int					is_between_char(char *str, int index, char quote);
 char				*remove_quotes(char *str);
 void				free_pipes(char **pipes);
 char				*remove_double_quotes(char *str);
 int                 set_env_key_value(t_minish *manager, char *key, char *value);
 void                free_split(char **arr);
 
+char	*get_next_chevron(char *str);
+int is_between_any_quotes(char *str, int i);
 
 #endif

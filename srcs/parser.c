@@ -6,15 +6,15 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/04 13:45:49 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 11:11:32 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	clean_handle_cmd(t_parser *info)
+void clean_handle_cmd(t_parser *info)
 {
-	int	j;
+	int j;
 
 	j = -1;
 	while (info->cmd[++j])
@@ -29,35 +29,37 @@ void	clean_handle_cmd(t_parser *info)
 	info->fd[2] = 0;
 }
 
-void	get_cmd(t_parser *info, char *pipe, int j)
+void get_cmd(t_parser *info, char *pipe, int j)
 {
-	char	*cmd;
-	char	*start;
-	char	*end;
-	char	*part;
-	char	*tmp;
+	char *cmd;
+	char *start;
+	char *end;
+	char *part;
+	char *tmp;
 
 	cmd = NULL;
 	start = pipe;
+
+
 	while (*start)
 	{
 		while (*start && *start == ' ')
 			start++;
 		if (*start == '\0')
-			break ;
-		if (*start == '>' || *start == '<')
+			break;
+		if ((*start == '>' || *start == '<') && !is_between_any_quotes(pipe, start - pipe))
 		{
 			start++;
-			if (*start == '>' || *start == '<')
+			if ((*start == '>' || *start == '<') && !is_between_any_quotes(pipe, start - pipe))
 				start++;
 			while (*start && *start == ' ')
 				start++;
-			while (*start && *start != ' ' && *start != '>' && *start != '<')
+			while (*start && *start != ' ' && ((*start != '>' && *start != '<') || is_between_any_quotes(pipe, start - pipe)))
 				start++;
-			continue ;
+			continue;
 		}
 		end = start;
-		while (*end && *end != '>' && *end != '<')
+		while (*end && ((*end != '>' && *end != '<') || !is_between_any_quotes(pipe, start - pipe)))
 			end++;
 		part = ft_substr(start, 0, end - start);
 		if (!part)
@@ -86,26 +88,28 @@ void	get_cmd(t_parser *info, char *pipe, int j)
 	}
 }
 
-static int	handle_pipe_failure(t_parser *info, char *trimmed)
+static int handle_pipe_failure(t_parser *info, char *trimmed)
 {
 	free(trimmed);
 	clean_handle_cmd(info);
 	return (2);
 }
-static void	reset_parser_fds(t_parser *info)
+static void reset_parser_fds(t_parser *info)
 {
 	info->fd[0] = STDIN_FILENO;
 	info->fd[1] = STDOUT_FILENO;
 	info->fd[2] = 0;
 }
 
-static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
-		int *cmd_index, int pipe_index)
+static int process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
+							   int *cmd_index, int pipe_index)
 {
-	char	*pipe_copy;
-	char	*trimmed;
+	char *pipe_copy;
+	char *trimmed;
+	char *chevron_ptr;
 
 	pipe_copy = ft_strdup(pipes[pipe_index]);
+
 	if (!pipe_copy)
 	{
 		clean_handle_cmd(info);
@@ -121,7 +125,8 @@ static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		return (handle_pipe_failure(info, trimmed));
 	get_cmd(info, pipes[pipe_index], *cmd_index);
 	(*cmd_index)++;
-	if (ft_strchr(pipes[pipe_index], '>'))
+	chevron_ptr = get_next_chevron(pipes[pipe_index]);
+	if (chevron_ptr && *chevron_ptr == '>')
 	{
 		info->res = exec_pipex(*cmd_index, info, manager);
 		*cmd_index = 0;
@@ -131,29 +136,28 @@ static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 	return (0);
 }
 
-
-int	parser(char **pipes, t_minish *manager, int pipe_nb)
+int parser(char **pipes, t_minish *manager, int pipe_nb)
 {
-	t_parser	info;
-	int			pipe_index;
-	int			cmd_index;
+	t_parser info;
+	int pipe_index;
+	int cmd_index;
 
 	pipe_index = 0;
 	cmd_index = 0;
 	init_parser_struct(&info, pipes, pipe_nb);
 	reset_parser_fds(&info);
-	
+
 	while (pipes[pipe_index])
 	{
 		info.res = process_single_pipe(&info, pipes, manager, &cmd_index,
-				pipe_index);
+									   pipe_index);
 		if (info.res)
 			return (info.res);
 		pipe_index++;
 	}
 	if (cmd_index > 0)
 		info.res = exec_pipex(cmd_index, &info, manager);
-	
+
 	clean_handle_cmd(&info);
 	return (info.res);
 }

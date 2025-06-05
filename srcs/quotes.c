@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 13:37:35 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:41:12 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	check_quotes(char **input, t_minish *manager)
 	return (0);
 }
 
-int	is_between_quotes(char *str, int index, char quote)
+int	is_between_char(char *str, int index, char quote)
 {
 	int	i;
 	int	in_quote;

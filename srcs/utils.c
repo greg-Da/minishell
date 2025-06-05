@@ -6,18 +6,23 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 15:30:58 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:41:20 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*get_res_size(char *str)
+int is_between_any_quotes(char *str, int i)
 {
-	int		i;
-	int		len;
-	char	quote_type;
-	char	*result;
+	return (is_between_char(str, i, '\'') || is_between_char(str, i, '"'));
+}
+
+char *get_res_size(char *str)
+{
+	int i;
+	int len;
+	char quote_type;
+	char *result;
 
 	i = 0;
 	len = 0;
@@ -38,13 +43,13 @@ char	*get_res_size(char *str)
 	return (result);
 }
 
-void	free_pipes(char **pipes)
+void free_pipes(char **pipes)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!pipes)
-		return ;
+		return;
 	while (pipes[i])
 		free(pipes[i++]);
 	free(pipes);

@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/04 15:36:52 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 13:29:13 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ char	*expand_variable(char *var_name, t_minish *manager)
 			break;
 		}
 	}
-
-	if (value == NULL)
-		value = getenv(var_name);
 	
 	if (value)
 		return (ft_strdup(value));
@@ -63,7 +60,7 @@ char	*expand_string(char *input, t_minish *manager)
 	i = 0, j = 0, k = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' && !is_between_quotes(input, i, '\''))
+		if (input[i] == '$' && !is_between_char(input, i, '\''))
 		{
 			i++;
 			if (input[i] == '?')

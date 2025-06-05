@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*   ft_include.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 14:26:10 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 13:03:36 by greg             ###   ########.fr       */
+/*   Created: 2025/06/05 13:03:47 by greg              #+#    #+#             */
+/*   Updated: 2025/06/05 13:03:49 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-char	*ft_strtrim(char const *s1, char const *set)
+int	ft_include(char c, const char *set)
 {
 	int	i;
-	int	len;
 
 	i = 0;
-	len = ft_strlen((char *)s1) - 1;
-	while (ft_include(s1[i], set))
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
 		i++;
-	while (ft_include(s1[len], set))
-		len--;
-	return (ft_substr(s1, (unsigned int)i, (size_t)(len - i + 1)));
+	}
+	return (0);
 }
-
-// int main(void)
-// {
-//     printf("%s", ft_strtrim("tripouille   xxx", " x"));
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:36 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 14:48:39 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,22 @@ static int	parse_chevron_type(char **tmp, char chevron, t_parser *info,
 
 char	*get_next_chevron(char *str)
 {
-	char	*r_chev;
-	char	*l_chev;
-	char	*first;
+    int		i;
+    char	*first = NULL;
 
-	r_chev = ft_strchr(str, '>');
-	l_chev = ft_strchr(str, '<');
-	if (r_chev && l_chev)
-	{
-		if (r_chev < l_chev)
-			first = r_chev;
-		else
-			first = l_chev;
-	}
-	else if (r_chev)
-		first = r_chev;
-	else if (l_chev)
-		first = l_chev;
-	else
-		return (NULL);
-	return (first);
+    i = 0;
+    while (str[i])
+    {
+        if ((str[i] == '>' || str[i] == '<')
+            && !is_between_char(str, i, '\'')
+            && !is_between_char(str, i, '\"'))
+        {
+            first = &str[i];
+            break;
+        }
+        i++;
+    }
+    return (first);
 }
 
 int	process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
@@ -81,14 +77,12 @@ int	process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 		filename = extract_filename(tmp, next_chevron);
 		if (!filename)
 			return (free(start), -1);
-		filename = sanitize_str(filename);
-		if (!filename)
-			return (free(start), -1);
 		if (!filename[0])
 		{
 			free(filename);
 			return (handle_filename_error(pipes, i, tmp, start));
 		}
+		// printf("filename : [%s]\n", filename);
 		current_fd = (chevron == '<') ? &fd[0] : &fd[1];
 		if (*current_fd != -1 && *current_fd != STDOUT_FILENO
 			&& *current_fd != STDIN_FILENO)

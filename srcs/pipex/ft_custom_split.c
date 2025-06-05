@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/03 11:49:15 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 14:46:15 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_check_quotes(char **arr, t_custom_split *stru, t_minish *manager)
 		expanded = expand_string(str, manager);
 		free(arr[stru->j]);
 		arr[stru->j] = expanded;
+
 	}
 	arr[stru->j] = remove_quotes(arr[stru->j]);
 }
