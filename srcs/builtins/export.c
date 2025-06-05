@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/04 15:08:38 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 13:34:30 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	ft_export(t_minish *manager, char *arg)
 	status = 0;
 	while (args[i])
 	{
-		trimmed = ft_strtrim(args[i], " \f\t\n\r\v");
+		trimmed = remove_double_quotes(args[i]);
 		if (!trimmed)
 		{
 			status = 1;

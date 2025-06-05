@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 11:32:18 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 13:41:39 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_unset(t_minish *manager, char *arg)
 	while (*arg == ' ')
 		arg++;
 
-	key = ft_strtrim(arg, " \f\v\t\n\r\"");
+	key = remove_double_quotes(arg);
 	if (!key)
 		return (1);
 
