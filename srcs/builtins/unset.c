@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/04 14:47:20 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 11:32:18 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_unset(t_minish *manager, char *arg)
 	while (*arg == ' ')
 		arg++;
 
-	key = ft_strtrim(arg, " \t\n\r");
+	key = ft_strtrim(arg, " \f\v\t\n\r\"");
 	if (!key)
 		return (1);
 
