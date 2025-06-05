@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/04 15:08:38 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 15:34:20 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_valid_identifier(const char *str)
 		return (0);
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 		return (0);
-	i = 1;
+	i = 0;
 	while (str[i] && str[i] != '=')
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
@@ -97,14 +97,17 @@ int	ft_export(t_minish *manager, char *arg)
 	int		i;
 	int		status;
 
-	args = ft_split(arg + 6, ' ');
+	char *export_args = arg + 6;
+    while (*export_args == ' ')
+	    export_args++;
+    args = ft_split(export_args, ' ');
 	if (!args)
 		return (1);
 	i = 0;
 	status = 0;
 	while (args[i])
 	{
-		trimmed = ft_strtrim(args[i], " \f\t\n\r\v");
+		trimmed = remove_double_quotes(args[i]);
 		if (!trimmed)
 		{
 			status = 1;

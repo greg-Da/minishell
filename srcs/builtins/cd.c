@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 13:07:45 by greg              #+#    #+#             */
-/*   Updated: 2025/06/04 15:36:09 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 15:26:14 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,13 @@
 
 void update_pwd(char *pwd, char *old_pwd, t_minish *manager)
 {
-	char *tmp;
-
-	if (pwd == NULL || old_pwd == NULL)
+	if (!pwd || !old_pwd)
 		return;
 
-	tmp = ft_strjoin("export OLDPWD=", old_pwd);
-	ft_export(manager, tmp);
-	free(tmp);
-
-	tmp = ft_strjoin("export PWD=", pwd);
-	ft_export(manager, tmp);
-	free(tmp);
+	set_env_key_value(manager, "OLDPWD", old_pwd);
+	set_env_key_value(manager, "PWD", pwd);
 }
+
 
 int handle_go_back(char *cur, t_minish *manager)
 {

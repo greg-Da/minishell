@@ -3,15 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 13:29:24 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 15:41:12 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+char	*remove_double_quotes(char *str)
+{
+	int		i = 0, j = 0;
+	char	*cleaned;
+
+	if (!str)
+		return (NULL);
+	cleaned = malloc(ft_strlen(str) + 1);
+	if (!cleaned)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] != '"' && str[i] != '\'')
+			cleaned[j++] = str[i];
+		i++;
+	}
+	cleaned[j] = '\0';
+	return (cleaned);
+}
 int	is_unclosed_quotes(char *input)
 {
 	int	i;
