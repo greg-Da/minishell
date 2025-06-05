@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 13:07:45 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 15:26:14 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 17:33:10 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ void update_pwd(char *pwd, char *old_pwd, t_minish *manager)
 {
 	if (!pwd || !old_pwd)
 		return;
-
-	set_env_key_value(manager, "OLDPWD", old_pwd);
-	set_env_key_value(manager, "PWD", pwd);
+	char *str1 = ft_strjoin("PWD=", pwd);
+	char *str2 = ft_strjoin("OLDPWD=", old_pwd);
+	ft_export(manager, str2);
+	ft_export(manager, str1);
+	free(str1);
+	free(str2);
 }
+
 
 
 int handle_go_back(char *cur, t_minish *manager)
@@ -89,11 +93,12 @@ int ft_cd(char **path, t_minish *manager)
 {
 	char *pwd;
 	char *new_pwd;
+    int status;
 
 	if (path[1] != NULL && path[2] != NULL)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
-		return (126);
+		return (1);
 	}
 
 	pwd = expand_string("$PWD", manager);
@@ -129,9 +134,11 @@ int ft_cd(char **path, t_minish *manager)
 					update_pwd(tmp, pwd, manager);
 					free(tmp);
 					perror("cd: error retrieving current directory: getcwd: cannot access parent directories");
+                    status = 1;
 				}
 				else
 					perror("getcwd");
+                    status = 1;
 			}
 			update_pwd(new_pwd, pwd, manager);
 			free(new_pwd);
@@ -139,10 +146,12 @@ int ft_cd(char **path, t_minish *manager)
 		else
 		{
 			perror("cd");
+            status = 1;
 			free(pwd);
 			return (1);
 		}
 	}
 	free(pwd);
+    manager->last_ex_code = status;
 	return (0);
 }

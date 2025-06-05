@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 15:34:20 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 17:29:17 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,66 +45,24 @@ int	is_valid_identifier(const char *str)
 	return (1);
 }
 
-static void	update_env(t_minish *manager, char *arg)
-{
-	int		i;
-	size_t	len;
-	char	*var_name;
-	char	**new_env;
-
-	len = 0;
-	while (arg[len] && arg[len] != '=')
-	{
-		if (arg[len] == ' ')
-			return ;
-		len++;
-	}
-	var_name = ft_substr(arg, 0, len);
-	if (!var_name)
-		return ;
-	i = 0;
-	while (manager->envp[i])
-	{
-		if (ft_strncmp(manager->envp[i], var_name, len) == 0 &&
-			(manager->envp[i][len] == '\0' || manager->envp[i][len] == '='))
-		{
-			free(manager->envp[i]);
-			manager->envp[i] = ft_strdup(arg);
-			free(var_name);
-			return ;
-		}
-		i++;
-	}
-	new_env = ft_realloc_env(manager->envp, arg);
-	if (!new_env)
-	{
-		free(var_name);
-		return ;
-	}
-	i = 0;
-	while (manager->envp[i])
-		free(manager->envp[i++]);
-	free(manager->envp);
-
-	manager->envp = new_env;
-	free(var_name);
-}
-
 int	ft_export(t_minish *manager, char *arg)
 {
 	char	**args;
 	char	*trimmed;
-	int		i;
-	int		status;
+	int		i = 0;
+	int		status = 0;
 
-	char *export_args = arg + 6;
-    while (*export_args == ' ')
-	    export_args++;
-    args = ft_split(export_args, ' ');
+	if (ft_strncmp(arg, "export", 6) == 0)
+	{
+		arg += 6;
+		while (*arg == ' ')
+			arg++;
+	}
+
+	args = ft_split(arg, ' ');
 	if (!args)
 		return (1);
-	i = 0;
-	status = 0;
+
 	while (args[i])
 	{
 		trimmed = remove_double_quotes(args[i]);
@@ -114,20 +72,42 @@ int	ft_export(t_minish *manager, char *arg)
 			i++;
 			continue;
 		}
-		if (!is_valid_identifier(trimmed))
+
+		char *assign = ft_strchr(trimmed, '=');
+		if (!assign || assign == trimmed)
 		{
 			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(trimmed, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			free(trimmed);
+			status = 1;
+			i++;
+			continue;
+		}
+
+		char *key = ft_substr(trimmed, 0, assign - trimmed);
+		char *value = ft_strdup(assign + 1);
+
+		if (!is_valid_identifier(key))
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(key, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			status = 1;
 		}
 		else
-			update_env(manager, trimmed);
+			set_env_key_value(manager, key, value);
+
+		free(key);
+		free(value);
 		free(trimmed);
 		i++;
 	}
+
 	free_split(args);
 	manager->last_ex_code = status;
 	return (status);
 }
+
+
 

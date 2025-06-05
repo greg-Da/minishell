@@ -68,6 +68,7 @@ typedef struct s_parser
 	int					cmd_nb;
 
 	int					here_doc;
+    t_minish            *manager;
 }						t_parser;
 
 void					ft_cleanup(t_pipex *pipex);
@@ -86,7 +87,7 @@ int						ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void					ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
 int						pipex(int nmb, char **cmd, t_minish *manager, int *fd);
 int						exec_pipex(int cmd_index, t_parser *info, t_minish *manager);
-void					init_parser_struct(t_parser *info, char **pipes,
+void					init_parser_struct(t_parser *info, t_minish *manager,char **pipes,
 							int pipe_nb);
 char					*sanitize_str(char *str);
 char					*get_chevron_indices(char *pipe, int index[2]);

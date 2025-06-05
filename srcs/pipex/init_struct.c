@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:42:37 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/03 11:40:14 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 16:39:11 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,18 +114,10 @@ void	ft_init_part2(t_pipex *pip, int nmb, char **cmd)
 
 void	ft_init_struct(t_pipex *pipex, int nmb, char **cmd, t_minish *manager)
 {
-	// pipex->here_doc = 0;
 	pipex->cmd_args = NULL;
 	pipex->cmd_path = NULL;
 	pipex->pids = NULL;
 	pipex->manager = manager;
-	// if (pipex->in_fd == -10)
-	// {
-	//     pipex->here_doc = 1;
-	//     pipex->in_fd = open("here_doc.txt", O_RDWR | O_CREAT, 0666);
-	//     if (pipex->in_fd == -1)
-	//         return ;
-	// }
 	pipex->exit_code = 0;
 	pipex->exit = 0;
 	pipex->pids_size = 0;

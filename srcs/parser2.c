@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 10:45:18 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 18:38:54 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	init_parser_struct(t_parser *info, char **pipes, int pipe_nb)
+void	init_parser_struct(t_parser *info, t_minish *manager, char **pipes, int pipe_nb)
 {
 	int	i;
 
@@ -20,6 +20,7 @@ void	init_parser_struct(t_parser *info, char **pipes, int pipe_nb)
 	while (pipes[i])
 		i++;
 	info->cmd_nb = pipe_nb + 1;
+    info->manager = manager;
 	info->here_doc = 0;
 	info->cmd = ft_calloc(i + 2, sizeof(char *));
 }

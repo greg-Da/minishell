@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 15:50:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 17:37:15 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int handle_err_exit(char *input, char *start)
 
 		free(start);
 		free(input);
-		exit(2);
+		exit(1);
 	}
 
 	if (input[i] != '\0')

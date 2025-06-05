@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/05 15:41:06 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 19:09:06 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-typedef enum e_token
-{
-	INVALID = -1,
-	WORD = 1,
-	PIPE,
-	AND,
-	OR,
-	VAR,
-	QUOTE,
-	D_QUOTE,
-	R_DIR_OUT,
-	R_DIR_IN,
-	RR_DIR_OUT,
-	RR_DIR_IN,
-}					t_token;
-
-typedef struct s_tokenized
-{
-	int				nb_cmds;
-	char			**split_input;
-	t_token			*tokens;
-}					t_tokenized;
 
 typedef struct s_quotes
 {

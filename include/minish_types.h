@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish_types.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:16:14 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/03 08:19:46 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 18:34:38 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct s_minish
 	char	**envp;
 	int		add_history;
 	int		nb_cmds;
-
 }			t_minish;
 
 #endif

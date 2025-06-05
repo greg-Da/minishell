@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 15:52:06 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/05 18:46:01 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int handle_pipe_failure(t_parser *info, char *trimmed)
 {
 	free(trimmed);
 	clean_handle_cmd(info);
-	return (2);
+	return (1);
 }
 static void reset_parser_fds(t_parser *info)
 {
@@ -143,7 +143,7 @@ int parser(char **pipes, t_minish *manager, int pipe_nb)
 
 	pipe_index = 0;
 	cmd_index = 0;
-	init_parser_struct(&info, pipes, pipe_nb);
+	init_parser_struct(&info, manager, pipes, pipe_nb);
 	reset_parser_fds(&info);
 
 	while (pipes[pipe_index])

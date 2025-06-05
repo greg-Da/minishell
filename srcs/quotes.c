@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 15:41:12 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/05 17:49:23 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	check_quotes(char **input, t_minish *manager)
 	(void)manager;
 	s_quotes = ft_strchr(*input, '\'');
 	d_quotes = ft_strchr(*input, '"');
-	printf("*input: %s\n", *input);
+	//printf("*input: %s\n", *input);
 	while (d_quotes || s_quotes)
 	{
 		quotes.open = first_quotes(s_quotes, d_quotes);
