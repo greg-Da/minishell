@@ -43,6 +43,7 @@ void	ft_echo(char **cmd)
 	int		i;
 	// char	*tmp;
 
+
 	i = 0;
 	new_line = check_new_line_flag(cmd, &i);
 	while (check_new_line_flag(cmd, &i) == 0)

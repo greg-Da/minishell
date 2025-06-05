@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/03 08:21:05 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/05 10:57:06 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int is_between_any_quotes(char *str, int i)
+{
+	if (is_between_quotes(str, i, '\'') || is_between_quotes(str, i, '"'))
+		return (1);
+	return (0);
+}
 
 char	*get_res_size(char *str)
 {
