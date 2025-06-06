@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/06 19:28:55 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 19:59:10 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_quotes
 }					t_quotes;
 
 char				**get_pipes(char *input, t_minish *manager);
-int					get_files(t_parser *info, int i, char **pipes);
+void					get_files(t_parser *info, int i, char **pipes);
 char				*extract_filename(char *tmp);
 int					handle_filename_error(char **pipes, int i, char *tmp,
 						char *start);

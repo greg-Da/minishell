@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/06 19:38:56 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 19:49:31 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
 	t_prev	prev;
 	int		i;
 
-
-	printf("cmd %s\n", cmd[0]);
 
 	i = 1;
 	while (++i < nmb - 1)
