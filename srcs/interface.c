@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 14:17:00 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 14:40:34 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int handle_err_exit(char *input, char *start)
 		i++;
 
 
-	if (ft_include(input[i], " \f\t\n\r\v") || ft_isalpha(input[i]))
+	if (ft_isalpha(input[i]))
 	{
 		err = ft_strjoin("minishell: exit:", start + 4);
 		free(input);
@@ -99,7 +99,7 @@ static int handle_exit(char *input, t_minish *manager)
 		return (err);
 	}
 
-	res = ft_atoi(tmp) % 266;
+	res = ft_atoi(tmp) % 256;
 	free(input);
 	free(tmp);
 	write(1, "exit\n", 5);

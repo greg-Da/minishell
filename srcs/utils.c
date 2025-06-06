@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 15:41:20 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 14:47:43 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,9 @@ int	set_env_key_value(t_minish *manager, char *key, char *value)
 		return (1);
 
 	key_len = ft_strlen(key);
-	new_var = ft_strjoin_three(key, "=", value); // crée "KEY=VALUE"
+	new_var = ft_strjoin_three(key, "=", value);
 	if (!new_var)
 		return (1);
-
-	// Cherche si la variable existe déjà
 	for (i = 0; manager->envp[i]; i++)
 	{
 		if (ft_strncmp(manager->envp[i], key, key_len) == 0
@@ -116,8 +114,6 @@ int	set_env_key_value(t_minish *manager, char *key, char *value)
 			return (0);
 		}
 	}
-
-	// Ajoute une nouvelle variable
 	manager->envp = append_str_to_array(manager->envp, new_var);
 	free(new_var);
 	return (0);
