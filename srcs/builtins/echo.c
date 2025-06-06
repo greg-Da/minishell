@@ -37,56 +37,10 @@ int check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-char *skip_redir_and_filename(char *str)
-{
-    int i = 0, j = 0;
-    char quote_char = 0;
-	char chevron;
-    char *res = malloc(strlen(str) + 1); // TEMPO
-
-    if (!res)
-        return NULL;
-
-    while (str[i])
-    {
-        while (str[i] && ft_include(str[i], " \t\n\r\v"))
-            res[j++] = str[i++];
-
-        if ((str[i] == '>' || str[i] == '<') && !is_between_any_quotes(str, i))
-        {
-            chevron = str[i++];
-            if (str[i] == chevron)
-                i++;
-            while (str[i] && ft_include(str[i], " \t\n\r\v"))
-                i++;
-            if (str[i] == '\'' || str[i] == '"')
-            {
-                quote_char = str[i++];
-                while (str[i] && str[i] != quote_char)
-                    i++;
-                if (str[i] == quote_char)
-                    i++;
-            }
-            else
-            {
-                while (str[i] && !ft_include(str[i], " \t\n\r\v><"))
-                    i++;
-            }
-            continue;
-        }
-        if (str[i])
-            res[j++] = str[i++];
-    }
-    res[j] = '\0';
-    free(str);
-    return res;
-}
-
 void ft_echo(char **cmd)
 {
 	int new_line;
 	int i;
-
 
 	i = 0;
 	new_line = check_new_line_flag(cmd, &i);
@@ -99,7 +53,6 @@ void ft_echo(char **cmd)
 		return;
 	}
 
-	cmd[1] = skip_redir_and_filename(cmd[1]);
 	cmd[1] = remove_quotes(cmd[1]);
 	while (cmd[1][i])
 	{
