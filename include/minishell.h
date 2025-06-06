@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/06 14:12:45 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 14:18:44 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_quotes
 
 char				**get_pipes(char *input, t_minish *manager);
 int					get_files(t_parser *info, int i, char **pipes);
-char				*extract_filename(char *tmp, char *next_chevron);
+char				*extract_filename(char *tmp);
 int					handle_filename_error(char **pipes, int i, char *tmp,
 						char *start);
 int					open_chevron_fd(char chevron, int *current_fd,
@@ -76,5 +76,6 @@ char	**split_args_preserving_quotes(char *str);
 
 char				*get_next_chevron(char *str);
 int					is_between_any_quotes(char *str, int i);
+char *skip_redir_and_filename(char *str);
 
 #endif

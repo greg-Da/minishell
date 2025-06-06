@@ -37,28 +37,47 @@ int check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-static char *skip_redir_and_filename(char *str)
+char *skip_redir_and_filename(char *str)
 {
-    int i = 0;
-    char chevron;
+    int i = 0, j = 0;
+    char quote_char = 0;
+	char chevron;
+    char *res = malloc(strlen(str) + 1); // TEMPO
 
-    while (str[i] && ft_include(str[i], " \t\n\r\v"))
-        i++;
+    if (!res)
+        return NULL;
 
-    while (str[i] == '>' || str[i] == '<')
+    while (str[i])
     {
-        chevron = str[i++];
-        if (str[i] == chevron)
-            i++;
         while (str[i] && ft_include(str[i], " \t\n\r\v"))
-            i++;
-        while (str[i] && ((str[i] != ' ' && str[i] != '>' && str[i] != '<') || is_between_any_quotes(str, i)))
-            i++;
-        while (str[i] && ft_include(str[i], " \t\n\r\v"))
-            i++;
-    }
+            res[j++] = str[i++];
 
-    char *res = strdup(&str[i]);
+        if ((str[i] == '>' || str[i] == '<') && !is_between_any_quotes(str, i))
+        {
+            chevron = str[i++];
+            if (str[i] == chevron)
+                i++;
+            while (str[i] && ft_include(str[i], " \t\n\r\v"))
+                i++;
+            if (str[i] == '\'' || str[i] == '"')
+            {
+                quote_char = str[i++];
+                while (str[i] && str[i] != quote_char)
+                    i++;
+                if (str[i] == quote_char)
+                    i++;
+            }
+            else
+            {
+                while (str[i] && !ft_include(str[i], " \t\n\r\v><"))
+                    i++;
+            }
+            continue;
+        }
+        if (str[i])
+            res[j++] = str[i++];
+    }
+    res[j] = '\0';
     free(str);
     return res;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 18:46:01 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 13:35:35 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void get_cmd(t_parser *info, char *pipe, int j)
 	if (!cmd)
 		cmd = ft_strdup("");
 	info->cmd[j] = sanitize_str(cmd);
+	info->cmd[j] = skip_redir_and_filename(info->cmd[j]);
 	if (!info->cmd[j])
 	{
 		perror("malloc");
@@ -123,6 +124,7 @@ static int process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 	if (get_files(info, pipe_index, pipes) == -1)
 		return (handle_pipe_failure(info, trimmed));
 	get_cmd(info, pipes[pipe_index], *cmd_index);
+	
 	(*cmd_index)++;
 	chevron_ptr = get_next_chevron(pipes[pipe_index]);
 	if (chevron_ptr && *chevron_ptr == '>')
