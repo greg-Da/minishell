@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/05 19:09:06 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 10:53:09 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -68,10 +69,11 @@ int					is_between_char(char *str, int index, char quote);
 char				*remove_quotes(char *str);
 void				free_pipes(char **pipes);
 char				*remove_double_quotes(char *str);
-int                 set_env_key_value(t_minish *manager, char *key, char *value);
-void                free_split(char **arr);
+int					set_env_key_value(t_minish *manager, char *key,
+						char *value);
+void				free_split(char **arr);
 
-char	*get_next_chevron(char *str);
-int is_between_any_quotes(char *str, int i);
+char				*get_next_chevron(char *str);
+int					is_between_any_quotes(char *str, int i);
 
 #endif
