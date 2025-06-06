@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 19:58:38 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 20:09:56 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,13 @@ void get_cmd(t_parser *info, char *pipe, int j)
 	}
 }
 
-// static int handle_pipe_failure(t_parser *info, char *trimmed)
-// {
-// 	free(trimmed);
-// 	clean_handle_cmd(info);
-// 	return (1);
-// }
+static int handle_pipe_failure(t_parser *info, char *trimmed)
+{
+	free(trimmed);
+	(void)info; // Suppress unused variable warning
+	// clean_handle_cmd(info);
+	return (1);
+}
 static void reset_parser_fds(t_parser *info)
 {
 	info->fd[0] = STDIN_FILENO;
@@ -122,7 +123,8 @@ static int process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		clean_handle_cmd(info);
 		return (1);
 	}
-	get_files(info, pipe_index, pipes);
+	if (get_files(info, pipe_index, pipes) == -1)
+		return (handle_pipe_failure(info, trimmed));
 	get_cmd(info, pipes[pipe_index], *cmd_index);
 	
 	(*cmd_index)++;
@@ -152,8 +154,8 @@ int parser(char **pipes, t_minish *manager, int pipe_nb)
 	{
 		info.res = process_single_pipe(&info, pipes, manager, &cmd_index,
 									   pipe_index);
-		if (info.res)
-			return (info.res);
+		// if (info.res)
+		// 	return (info.res);
 		pipe_index++;
 	}
 	if (cmd_index > 0)
