@@ -40,6 +40,7 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 		dup2(pip->in_fd, STDIN_FILENO);
 		close(pip->in_fd);
 	}
+
 	else if (prev.in != STDIN_FILENO)
 	{
 		dup2(prev.in, STDIN_FILENO);
@@ -97,15 +98,16 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 {
 	while (++prev->i < pipex->cmd_count)
 	{
+		pipex->exit_code = 0;
 		if (pipex->cmd_args[prev->i][0] == NULL)
 			continue;
 		if (pipe(pipex->fd) == -1)
 			ft_error("pipe failed");
-		// if (prev->in == -1 && pipex->is_invalid_infile > 0)
-		// {
-		// 	if (ft_invalid_infile(pipex, prev) == -1)
-		// 		break;
-		// }
+		if (prev->in == -1 && pipex->is_invalid_infile > 0)
+		{
+			if (ft_invalid_infile(pipex, prev) == -1)
+				break;
+		}
 		else if (prev->i == 0 && !ft_strncmp(pipex->cmd_args[prev->i][0],
 											 "exit", 4))
 		{
