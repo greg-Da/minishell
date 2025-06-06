@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 15:29:10 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 15:45:36 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,20 +121,15 @@ int set_env_key_value(t_minish *manager, char *key, char *value)
 char *remove_space_before_redir(char *str)
 {
 	int i = 0, j = 0, k = 0;
-	char quote = 0;
 	char *res = malloc(strlen(str) + 1);
 	if (!res)
 		return NULL;
 
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '"'))
+		if (is_between_any_quotes(str, i))
 		{
-			quote = str[i];
-			res[j++] = str[i++];
-			while (str[i] && str[i] != quote)
-				res[j++] = str[i++];
-			if (str[i] == quote)
+			while (str[i] && is_between_any_quotes(str, i))
 				res[j++] = str[i++];
 			continue;
 		}
@@ -155,7 +150,6 @@ char *remove_space_before_redir(char *str)
 
 		res[j++] = str[i++];
 	}
-
 	res[j] = '\0';
 	return res;
 }
@@ -168,7 +162,6 @@ char *skip_redir_and_filename(char *str)
 	char *res = malloc(strlen(str) + 1); // TEMPO
 	char *input;
 
-	printf("str: %s\n", str);
 	if (!res)
 		return NULL;
 
@@ -204,12 +197,13 @@ char *skip_redir_and_filename(char *str)
 				}
 				while (input[i] && ft_include(input[i], " \t\n\r\v"))
 					i++;
+				continue;
 			}
-			continue;
         }
         res[j++] = input[i++];
 	}
 	res[j] = '\0';
+
 	free(input);
 	return (res);
 }
