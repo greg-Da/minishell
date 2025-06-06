@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 14:18:53 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 19:14:03 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 	return (0);
 }
 
-int get_files(t_parser *info, int i, char **pipes)
+void get_files(t_parser *info, int i, char **pipes)
 {
 	if (process_chevrons(pipes, i, info->fd, info) == -1)
 	{
@@ -109,7 +109,5 @@ int get_files(t_parser *info, int i, char **pipes)
 			close(info->fd[0]);
 		if (info->fd[1] != STDOUT_FILENO)
 			close(info->fd[1]);
-		return (-1);
 	}
-	return (1);
 }
