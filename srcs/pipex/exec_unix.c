@@ -24,14 +24,8 @@ void handle_exec_fail(int *std, int i, t_pipex *pip, t_prev prev)
 {
 	default_std(std);
 	ft_invalid_cmd(pip, &prev);
-	/*write(prev.out, "\0", 1);
-	if (prev.i == pip->cmd_count - 1)
-	{*/
-		if (pip->cmd_path[i] == NULL)
-        	exit(127);
-		else
-			exit(1);
-//	}
+	if (pip->cmd_path[i] == NULL)
+        exit(127);
 }
 
 void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)

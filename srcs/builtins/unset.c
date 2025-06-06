@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 17:13:57 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 13:28:43 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ int	ft_unset(t_minish *manager, char *arg)
 			arg++;
 	}
 
-	args = ft_split(arg, ' ');
+	args = split_args_preserving_quotes(arg);
 	if (!args)
 		return (1);
 
 	for (k = 0; args[k]; k++)
 	{
-		key = remove_double_quotes(args[k]);
+		key = strip_quotes(args[k]);
 		if (!key)
 		{
 			status = 1;

@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 15:27:31 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 15:29:10 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,9 @@ int set_env_key_value(t_minish *manager, char *key, char *value)
 		return (1);
 
 	key_len = ft_strlen(key);
-	new_var = ft_strjoin_three(key, "=", value); // crée "KEY=VALUE"
+	new_var = ft_strjoin_three(key, "=", value);
 	if (!new_var)
 		return (1);
-
-	// Cherche si la variable existe déjà
 	for (i = 0; manager->envp[i]; i++)
 	{
 		if (ft_strncmp(manager->envp[i], key, key_len) == 0 && manager->envp[i][key_len] == '=')
@@ -115,8 +113,6 @@ int set_env_key_value(t_minish *manager, char *key, char *value)
 			return (0);
 		}
 	}
-
-	// Ajoute une nouvelle variable
 	manager->envp = append_str_to_array(manager->envp, new_var);
 	free(new_var);
 	return (0);

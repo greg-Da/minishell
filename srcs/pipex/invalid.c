@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invalid.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:55:24 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 11:33:14 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:38:59 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_valid_executable(const char *path)
 	if (S_ISDIR(sb.st_mode))
 	{
 		ft_putstr_fd((char *)path, 2);
-		ft_putstr_fd(": is a directory.\n", 2);
+		ft_putstr_fd(": Is a directory\n", 2);
 		return (126);
 	}
 	// Check if it's executable
