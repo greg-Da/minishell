@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/06 10:53:09 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:51:03 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_quotes
 
 char				**get_pipes(char *input, t_minish *manager);
 int					get_files(t_parser *info, int i, char **pipes);
-char				*extract_filename(char *tmp, char *next_chevron);
+char				*extract_filename(char *tmp);
 int					handle_filename_error(char **pipes, int i, char *tmp,
 						char *start);
 int					open_chevron_fd(char chevron, int *current_fd,
@@ -75,5 +75,6 @@ void				free_split(char **arr);
 
 char				*get_next_chevron(char *str);
 int					is_between_any_quotes(char *str, int i);
+char *skip_redir_and_filename(char *str);
 
 #endif

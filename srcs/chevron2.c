@@ -3,59 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 19:11:12 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 13:50:36 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char *extract_filename(char *input, char *next_chevron)
+char *extract_filename(char *input)
 {
-    int i = 0;
-    char *trimmed;
-    char *res;
-    int start = 0;
-    size_t limit = 0;
 
-    trimmed = ft_strtrim(input, " \f\t\n\r\v");
-    if (!trimmed)
-        return (NULL);
+	int i = 0;
+	char *res;
+	char *trimmed;
 
-    if (trimmed[0] == '<' || trimmed[0] == '>')
-    {
-        if (trimmed[1] == '>')
-            start = 2;
-        else
-            start = 1;
-    }
-    if (next_chevron && next_chevron >= input)
-        limit = (size_t)(next_chevron - input);
-    else
-        limit = 0;
-    i = start;
-    while (trimmed[i])
-    {
-        if (ft_include(trimmed[i], " \f\t\n\r\v") && !is_between_any_quotes(trimmed, i))
-            break;
-        if (limit && (size_t)(i + (input - trimmed)) >= limit)
-            break;
+	res = NULL;
 
-        i++;
-    }
-    if (i <= start)
-    {
-        free(trimmed);
-        return (NULL);
-    }
-    res = ft_substr(trimmed, start, i - start);
-    free(trimmed);
-    return (remove_quotes(res));
+	while (input[i])
+	{
+		if ((input[i] == '>' || input[i] == '<' || ft_include(input[i], " \f\t\n\r\v")) && !is_between_any_quotes(input, i))
+			break;
+		i++;
+	}
+
+	trimmed = ft_strtrim(input, " \f\t\n\r\v");
+	res = ft_substr(trimmed, 0, i);
+	free(trimmed);
+	return (remove_quotes(res));
 }
-
-
 
 int handle_filename_error(char **pipes, int i, char *tmp, char *start)
 {
@@ -88,13 +65,13 @@ int open_chevron_fd(char chevron, int *current_fd, char *filename,
 			*current_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
 			*current_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (*current_fd == -1)
-        {
-            ft_putstr_fd("minishell: ", 2);
-            perror(filename);
-            info->manager->last_ex_code = 1;
-            return (-1);
-        }
+		if (*current_fd == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			perror(filename);
+			info->manager->last_ex_code = 1;
+			return (-1);
+		}
 	}
 	else if (chevron == '<')
 	{

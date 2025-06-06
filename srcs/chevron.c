@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 18:12:31 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 13:51:31 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 		append = 0;
 		parse_chevron_type(&tmp, chevron, info, &append);
 		next_chevron = get_next_chevron(tmp);
-		filename = extract_filename(tmp, next_chevron);
+		filename = extract_filename(tmp);
+
 		if (!filename)
 			return (free(start), -1);
+		
 		if (!filename[0])
 		{
 			free(filename);
@@ -89,6 +91,7 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 			free(filename);
 			return (-1);
 		}
+
 		free(filename);
 		if (*current_fd == -1)
 			break;
