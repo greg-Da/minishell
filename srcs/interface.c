@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 17:37:15 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 14:17:00 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int handle_err_exit(char *input, char *start)
 
 		free(start);
 		free(input);
-		exit(1);
+		exit(2);
 	}
 
 	if (input[i] != '\0')

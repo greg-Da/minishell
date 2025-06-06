@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:09:04 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/05 13:04:06 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 13:47:14 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_list *ft_lstmap(t_list *lst, void *(*f)(void *),
 				  void (*del)(void *));
 unsigned int ft_strlcat(char *dest, char *src, unsigned int nb);
 unsigned int ft_strlcpy(char *dest, char *src, unsigned int n);
+int	ft_is_space(char c);
 
 int ft_include(char c, const char *set);
 #endif

@@ -6,31 +6,41 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 17:49:23 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 13:49:05 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*remove_double_quotes(char *str)
+char	*strip_quotes(char *str)
 {
-	int		i = 0, j = 0;
-	char	*cleaned;
+	int		len = 0;
+	char	*res;
+	int		i = 0;
+	int		j = 0;
 
-	if (!str)
-		return (NULL);
-	cleaned = malloc(ft_strlen(str) + 1);
-	if (!cleaned)
-		return (NULL);
 	while (str[i])
 	{
 		if (str[i] != '"' && str[i] != '\'')
-			cleaned[j++] = str[i];
+			len++;
 		i++;
 	}
-	cleaned[j] = '\0';
-	return (cleaned);
+
+	res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '"' && str[i] != '\'')
+			res[j++] = str[i];
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
 }
+
 int	is_unclosed_quotes(char *input)
 {
 	int	i;
@@ -103,4 +113,86 @@ int	is_between_char(char *str, int index, char quote)
 		i++;
 	}
 	return (in_quote);
+}
+char	**split_args_preserving_quotes(char *str)
+{
+	char	**args;
+	int		count = 0;
+	int		in_quote = 0;
+	char	quote = 0;
+	int		i = 0;
+	int		start = 0;
+
+	while (str[i])
+	{
+		while (ft_is_space(str[i]))
+			i++;
+		if (!str[i])
+			break;
+		start = i;
+		while (str[i])
+		{
+			if (!in_quote && (str[i] == '\'' || str[i] == '"'))
+			{
+				in_quote = 1;
+				quote = str[i++];
+			}
+			else if (in_quote && str[i] == quote)
+			{
+				in_quote = 0;
+				i++;
+			}
+			else if (!in_quote && ft_is_space(str[i]))
+				break;
+			else
+				i++;
+		}
+		count++;
+	}
+	args = malloc(sizeof(char *) * (count + 1));
+	if (!args)
+		return (NULL);
+	i = 0;
+	int arg_idx = 0;
+	while (*str)
+	{
+		while (ft_is_space(*str))
+			str++;
+		if (!*str)
+			break;
+		start = 0;
+		in_quote = 0;
+		quote = 0;
+		while (str[start])
+		{
+			if (!in_quote && (str[start] == '\'' || str[start] == '"'))
+			{
+				in_quote = 1;
+				quote = str[start++];
+			}
+			else if (in_quote && str[start] == quote)
+			{
+				in_quote = 0;
+				start++;
+			}
+			else if (!in_quote && ft_is_space(str[start]))
+				break;
+			else
+				start++;
+		}
+		args[arg_idx] = malloc(start + 1);
+		if (!args[arg_idx])
+			return (NULL);
+		int j = 0;
+		while (j < start)
+		{
+			args[arg_idx][j] = str[j];
+			j++;
+		}
+		args[arg_idx][j] = '\0';
+		str += start;
+		arg_idx++;
+	}
+	args[arg_idx] = NULL;
+	return (args);
 }

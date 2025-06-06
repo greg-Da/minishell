@@ -38,7 +38,8 @@ FILES=	ft_isalpha.c\
 		ft_nsplit.c\
 		ft_strtrim.c\
 		ft_include.c\
-		ft_abs.c
+		ft_abs.c\
+		ft_is_space.c
 FILES_BONUS=	ft_lstnew_bonus.c\
 				ft_lstsize_bonus.c\
 				ft_lstlast_bonus.c\

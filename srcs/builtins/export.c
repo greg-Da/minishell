@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 17:29:17 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/06 13:28:21 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,20 @@ int	ft_export(t_minish *manager, char *arg)
 	int		i = 0;
 	int		status = 0;
 
-	if (ft_strncmp(arg, "export", 6) == 0)
+	if (!arg || ft_strncmp(arg, "export", 6) == 0)
 	{
 		arg += 6;
 		while (*arg == ' ')
 			arg++;
 	}
 
-	args = ft_split(arg, ' ');
+	args = split_args_preserving_quotes(arg);
 	if (!args)
 		return (1);
 
 	while (args[i])
 	{
-		trimmed = remove_double_quotes(args[i]);
+		trimmed = strip_quotes(args[i]);
 		if (!trimmed)
 		{
 			status = 1;
@@ -73,41 +73,46 @@ int	ft_export(t_minish *manager, char *arg)
 			continue;
 		}
 
-		char *assign = ft_strchr(trimmed, '=');
-		if (!assign || assign == trimmed)
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(trimmed, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			free(trimmed);
-			status = 1;
-			i++;
-			continue;
-		}
+		char *equal = ft_strchr(trimmed, '=');
 
-		char *key = ft_substr(trimmed, 0, assign - trimmed);
-		char *value = ft_strdup(assign + 1);
-
-		if (!is_valid_identifier(key))
+		if (equal)
 		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(key, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			status = 1;
+			char *key = ft_substr(trimmed, 0, equal - trimmed);
+			char *value = ft_strdup(equal + 1);
+
+			if (!is_valid_identifier(key))
+			{
+				ft_putstr_fd("minishell: export: `", 2);
+				ft_putstr_fd(trimmed, 2);
+				ft_putendl_fd("': not a valid identifier", 2);
+				status = 1;
+			}
+			else
+				set_env_key_value(manager, key, value);
+
+			free(key);
+			free(value);
 		}
 		else
-			set_env_key_value(manager, key, value);
-
-		free(key);
-		free(value);
+		{
+			if (!is_valid_identifier(trimmed))
+			{
+				ft_putstr_fd("minishell: export: `", 2);
+				ft_putstr_fd(trimmed, 2);
+				ft_putendl_fd("': not a valid identifier", 2);
+				status = 1;
+			}
+			else
+				set_env_key_value(manager, trimmed, NULL);
+		}
 		free(trimmed);
 		i++;
 	}
-
 	free_split(args);
 	manager->last_ex_code = status;
 	return (status);
 }
+
 
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/05 15:52:19 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/06 11:44:56 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,6 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
 	t_prev	prev;
 	int		i;
 
-	// printf("nmb: %d\n", nmb);
-	// printf("===============\n");
-	// i = -1;
-	// printf("fd : %d %d\n", fd[0], fd[1]);
-	// while (cmd[++i])
-	// {
-	// 	printf("cmd[%d] : %s\n", i, cmd[i]);
-	// }
 	i = 1;
 	while (++i < nmb - 1)
 	{
@@ -78,17 +70,11 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
 	pipex.out_fd = fd[1];
 	pipex.is_invalid_infile = fd[2];
 	ft_init_struct(&pipex, nmb, cmd, manager);
-	// if (pipex.here_doc)
-	// 	ft_here_doc(pipex.in_fd, cmd[0]);
 	prev.in = pipex.in_fd;
 	prev.i = -1;
 	ft_loop(&pipex, &prev, pipex.envp);
 	i = -1;
 	ft_wait_children(&pipex, prev, i);
 	ft_cleanup(&pipex);
-	// if (pipex.exit)
-	// {
-	// 	exit(1);
-	// }
 	return (pipex.exit_code);
 }
