@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 14:40:34 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/09 10:07:41 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static char *get_input_line(t_minish *manager)
 {
 	char *input;
 
-	input = readline("find a funny name > ");
+	input = readline("minishell > ");
 	if (!input)
 		handle_exit(NULL, manager);
 	if (*input == '\0')

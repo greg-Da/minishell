@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/09 09:50:11 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/09 10:10:39 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,16 @@ void	ft_cleanup(t_pipex *pipex)
 
 void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
 {
-	int	status;
+    int	status;
 
-	while (pipex->pids_size > ++i)
-	{
-		waitpid(pipex->pids[i], &status, 0);
-		if (WEXITSTATUS(status))
-		{
-			if (pipex->pids_size - 1 == i)
-				pipex->exit_code = WEXITSTATUS(status);
-		}
-		if (prev.out == -1)
-		{
-			pipex->exit_code = 1;
-		}
-	}
+	(void)prev;
+
+    while (pipex->pids_size > ++i)
+    {
+        waitpid(pipex->pids[i], &status, 0);
+        if (pipex->pids_size - 1 == i)
+            pipex->exit_code = WEXITSTATUS(status);
+    }
 }
 
 int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
