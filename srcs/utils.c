@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 15:45:36 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/09 09:23:06 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ char *remove_space_before_redir(char *str)
 			if ((str[k] == '<' || str[k] == '>') && !is_between_any_quotes(str, k))
 			{
 				i = k;
-				res[j++] = ' ';
 				continue;
 			}
 		}
@@ -157,53 +156,55 @@ char *remove_space_before_redir(char *str)
 
 char *skip_redir_and_filename(char *str)
 {
-	int i = 0, j = 0;
-	char quote_char = 0;
-	char *res = malloc(strlen(str) + 1); // TEMPO
-	char *input;
+    int i = 0, j = 0;
+    char quote_char = 0;
+    char *res = malloc(strlen(str) + 1);
+    char *input;
 
-	if (!res)
-		return NULL;
+    if (!res)
+        return NULL;
 
-	input = remove_space_before_redir(str);
-	free(str);
+    input = remove_space_before_redir(str);
+    free(str);
 
-
-	while (input[i])
-	{
-		if (input[i] == '>' || input[i] == '<')
+    while (input[i])
+    {
+        if ((input[i] == '>' || input[i] == '<') && !is_between_any_quotes(input, i))
         {
-			if (!is_between_any_quotes(input, i))
-			{
-				i++;
-				if (input[i] == input[i - 1])
-					i++;
+            i++;
+            if (input[i] == input[i - 1])
+                i++;
 
-				while (input[i] && ft_include(input[i], " \t\n\r\v"))
-					i++;
-				
-				if (input[i] == '\'' || input[i] == '"')
-				{
-					quote_char = input[i++];
-					while (input[i] && input[i] != quote_char)
-						i++;
-					if (input[i] == quote_char)
-						i++;
-				}
-				else
-				{
-					while (input[i] && !ft_include(input[i], " \t\n\r\v><"))
-						i++;
-				}
-				while (input[i] && ft_include(input[i], " \t\n\r\v"))
-					i++;
-				continue;
-			}
+            while (input[i] && ft_include(input[i], " \t\n\r\v"))
+                i++;
+
+            if (input[i] == '\'' || input[i] == '"')
+            {
+                quote_char = input[i++];
+                while (input[i] && input[i] != quote_char)
+                    i++;
+                if (input[i] == quote_char)
+                    i++;
+            }
+            else
+            {
+                while (input[i] && !ft_include(input[i], " \t\n\r\v><"))
+                    i++;
+            }
+
+            while (input[i] && ft_include(input[i], " \t\n\r\v"))
+                i++;
+
+            if (j > 0 && input[i] && res[j - 1] != ' ')
+                res[j++] = ' ';
+            continue;
         }
         res[j++] = input[i++];
-	}
-	res[j] = '\0';
+    }
+    if (j > 0 && res[j - 1] == ' ')
+        j--;
+    res[j] = '\0';
 
-	free(input);
-	return (res);
+    free(input);
+    return res;
 }
