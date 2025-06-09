@@ -23,9 +23,11 @@ void default_std(int *std)
 void handle_exec_fail(int *std, int i, t_pipex *pip, t_prev prev)
 {
 	default_std(std);
+	(void)i;
+	// if (pip->cmd_path[i] == NULL)
+	// 	exit(127);
 	ft_invalid_cmd(pip, &prev);
-	if (pip->cmd_path[i] == NULL)
-        exit(127);
+	exit(pip->exit_code);
 }
 
 void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)

@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:55:24 by greg              #+#    #+#             */
-/*   Updated: 2025/06/09 09:53:28 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/09 10:04:44 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,11 @@ void ft_invalid_cmd(t_pipex *pipex, t_prev *prev)
 	if (strchr(pipex->cmd_args[prev->i][0], '/'))
 		valid_file = is_valid_executable(pipex->cmd_args[prev->i][0]);
 	if (valid_file > 0)
+	{
+		close(pipex->fd[1]);
 		pipex->exit_code = valid_file;
+		return;
+	}
 
 	pipex->exit_code = 127;
 	tmp = ft_strjoin(pipex->cmd_args[prev->i][0], ": command not found");
