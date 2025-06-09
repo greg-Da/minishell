@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/06 19:49:31 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/09 09:50:11 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
 	}
 	pipex.in_fd = fd[0];
 	pipex.out_fd = fd[1];
-	pipex.is_invalid_infile = fd[2];
+	pipex.is_invalid_infile = ft_abs(fd[2]);
 	ft_init_struct(&pipex, nmb, cmd, manager);
 	prev.in = pipex.in_fd;
 	prev.i = -1;

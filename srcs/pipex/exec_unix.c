@@ -105,8 +105,8 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 			ft_error("pipe failed");
 		if (prev->in == -1 && pipex->is_invalid_infile > 0)
 		{
-			if (ft_invalid_infile(pipex, prev) == -1)
-				break;
+			// if (ft_invalid_infile(pipex, prev) == -1)
+			break;
 		}
 		else if (prev->i == 0 && !ft_strncmp(pipex->cmd_args[prev->i][0],
 											 "exit", 4))

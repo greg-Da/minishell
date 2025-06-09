@@ -83,7 +83,7 @@ size_t					ft_next_occurence(char const *s, char c, int index);
 char					*ft_remove_slash(char *str, int len);
 int						ft_create_outfile(int here_doc, char *file);
 void					ft_invalid_cmd(t_pipex *pipex, t_prev *prev);
-int						ft_invalid_infile(t_pipex *pipex, t_prev *prev);
+// int						ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void					ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
 int						pipex(int nmb, char **cmd, t_minish *manager, int *fd);
 int						exec_pipex(int cmd_index, t_parser *info, t_minish *manager);

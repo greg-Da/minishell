@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 13:50:36 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/09 09:53:09 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int open_chevron_fd(char chevron, int *current_fd, char *filename,
 			*current_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (*current_fd == -1)
 		{
+
 			ft_putstr_fd("minishell: ", 2);
 			perror(filename);
 			info->manager->last_ex_code = 1;
