@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 20:09:56 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/10 09:39:25 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ static int process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		reset_parser_fds(info);
 	}
 	free(trimmed);
-	return (0);
+	return (info->res);
 }
 
 int parser(char **pipes, t_minish *manager, int pipe_nb)
@@ -154,6 +154,7 @@ int parser(char **pipes, t_minish *manager, int pipe_nb)
 	{
 		info.res = process_single_pipe(&info, pipes, manager, &cmd_index,
 									   pipe_index);
+		
 		// if (info.res)
 		// 	return (info.res);
 		pipe_index++;

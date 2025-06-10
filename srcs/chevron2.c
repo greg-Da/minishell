@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/09 09:53:09 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/10 09:03:17 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int open_chevron_fd(char chevron, int *current_fd, char *filename,
 			ft_putstr_fd("minishell: ", 2);
 			perror(filename);
 			info->manager->last_ex_code = 1;
-			return (-1);
+			return (1);
 		}
 	}
 	else if (chevron == '<')

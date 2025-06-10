@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/06 20:07:47 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/10 09:20:44 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <fcntl.h>
 
 typedef struct s_quotes
 {
