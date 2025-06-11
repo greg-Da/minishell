@@ -36,6 +36,7 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
+	
 
 	if (pip->in_fd != STDIN_FILENO && pip->in_fd != -1)
 	{
