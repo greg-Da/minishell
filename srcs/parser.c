@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:01:16 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:08:38 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ static int process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 {
 	char *pipe_copy;
 	char *trimmed;
-	char *chevron_ptr;
+	// char *chevron_ptr;
+	(void)manager; // Suppress unused variable warning
 
 
 	pipe_copy = ft_strdup(pipes[pipe_index]);
@@ -133,12 +134,12 @@ static int process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 	get_cmd(info, pipes[pipe_index], *cmd_index);
 
 	(*cmd_index)++;
-	chevron_ptr = get_next_chevron(pipes[pipe_index]);
-	if (chevron_ptr && *chevron_ptr == '>')
-	{
-		info->res = exec_pipex(*cmd_index, info, manager);
-		*cmd_index = 0;
-	}
+	// chevron_ptr = get_next_chevron(pipes[pipe_index]);
+	// if (chevron_ptr && *chevron_ptr == '>')
+	// {
+	// 	info->res = exec_pipex(*cmd_index, info, manager);
+	// 	*cmd_index = 0;
+	// }
 	free(trimmed);
 	return (info->res);
 }
