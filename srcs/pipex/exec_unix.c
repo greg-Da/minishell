@@ -37,39 +37,72 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
 
-	// printf("pip->is_invalid_infile: %d\n", pip->is_invalid_infile);
-	if (pip->in_fd != STDIN_FILENO && pip->in_fd != -1)
+	if (pip->fds[prev.i][0] != STDIN_FILENO)
 	{
-		dup2(pip->in_fd, STDIN_FILENO);
-		close(pip->in_fd);
+		if (pip->fds[prev.i][0] == -1)
+		{
+			// ft_error("Invalid input file descriptor");
+			printf("exit\n");
+			exit(1);
+		}
+		dup2(pip->fds[prev.i][0], STDIN_FILENO);
+		if (pip->fds[prev.i][0] != STDIN_FILENO)
+			close(pip->fds[prev.i][0]);
 	}
 	else if (prev.in != STDIN_FILENO && prev.in != -1)
 	{
 		dup2(prev.in, STDIN_FILENO);
-		close(prev.in);
 	}
-	else if (prev.in == -1)
+
+	if (pip->fds[prev.i][1] != STDOUT_FILENO)
 	{
-		int devnull = open("/dev/null", O_RDONLY);
-		if (devnull == -1)
+		if (pip->fds[prev.i][1] == -1)
+		{
+			default_std(std);
+
+			// ft_error("Invalid input file descriptor");
 			exit(1);
-		dup2(devnull, STDIN_FILENO);
-		close(devnull);
+		}
+		dup2(pip->fds[prev.i][1], STDOUT_FILENO);
+		if (pip->fds[prev.i][1] != STDOUT_FILENO)
+			close(pip->fds[prev.i][1]);
+		
 	}
-
-	if (pip->is_invalid_infile)
-	{
-		exit(1);
-	}
-
-	if (prev.out != STDOUT_FILENO && prev.out != -1)
+	else if (prev.out != STDOUT_FILENO)
 	{
 		dup2(prev.out, STDOUT_FILENO);
-		close(prev.out);
 	}
 
-	if (prev.out == -1)
-		exit(1);
+	if (prev.in != STDIN_FILENO)
+		close(prev.in);
+	if (prev.out != STDOUT_FILENO)
+		close(prev.out);
+
+	// printf("pip->is_invalid_infile: %d\n", pip->is_invalid_infile);
+	// if (pip->in_fd != STDIN_FILENO && pip->in_fd != -1)
+	// {
+	// 	dup2(pip->in_fd, STDIN_FILENO);
+	// 	close(pip->in_fd);
+	// }
+	// else
+	// if (prev.in != STDIN_FILENO && prev.in != -1)
+	// {
+	// 	dup2(prev.in, STDIN_FILENO);
+	// 	close(prev.in);
+	// }
+	// else if (prev.in == -1)
+	// {
+	// 	exit(1);
+	// }
+
+	// if (prev.out != STDOUT_FILENO && prev.out != -1)
+	// {
+	// 	dup2(prev.out, STDOUT_FILENO);
+	// 	close(prev.out);
+	// }
+
+	// if (prev.out == -1)
+	// 	exit(1);
 
 	if (is_builtins(pip->cmd_args[i][0]))
 	{
@@ -82,6 +115,8 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 		default_std(std);
 		exit(0);
 	}
+
+	// printf("execve: %s\n", pip->cmd_path[i]);
 	if (execve(pip->cmd_path[i], pip->cmd_args[i], envp) == -1)
 		handle_exec_fail(std, i, pip, prev);
 }
@@ -108,7 +143,7 @@ void ft_exec(t_prev prev, t_pipex *pip, int i, char **envp)
 void ft_manage_exec(t_pipex *pipex, t_prev *prev, char **envp)
 {
 	if (prev->i == pipex->cmd_count - 1)
-		prev->out = pipex->out_fd;
+		prev->out = pipex->fds[pipex->cmd_count - 1][1];
 	else
 		prev->out = pipex->fd[1];
 	ft_exec(*prev, pipex, prev->i, envp);
@@ -119,10 +154,8 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 	while (++prev->i < pipex->cmd_count)
 	{
 		pipex->exit_code = 0;
-		if (pipex->cmd_args[prev->i][0] == NULL)
-			continue;
-		if (pipe(pipex->fd) == -1)
-			ft_error("pipe failed");
+		// if (pipex->cmd_args[prev->i][0] == NULL)
+		// 	continue;
 
 		if (prev->i == 0 && !ft_strncmp(pipex->cmd_args[prev->i][0],
 										"exit", 4))
@@ -130,11 +163,7 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 			if (pipex->cmd_args[prev->i + 1] == NULL)
 				pipex->exit = 1;
 			else
-			{
-				close(pipex->fd[1]);
-				close(pipex->fd[0]);
 				continue;
-			}
 		}
 		// if (prev->in == -1)
 		// {
@@ -147,6 +176,9 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 		// 	printf("prev->in: %d\n", prev->in);
 		// }
 
+		if (pipe(pipex->fd) == -1)
+			ft_error("pipe failed");
+
 		if (pipex->cmd_path[prev->i] == NULL && !is_builtins(pipex->cmd_args[prev->i][0]))
 		{
 			ft_invalid_cmd(pipex, prev);
@@ -158,10 +190,11 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 			pipex->exit_code = ft_cd(pipex->cmd_args[prev->i], pipex->manager);
 		else
 		{
+
 			ft_manage_exec(pipex, prev, envp);
 		}
 		close(pipex->fd[1]);
-		if (prev->in != pipex->in_fd)
+		if (prev->in != STDIN_FILENO)
 			close(prev->in);
 		prev->in = pipex->fd[0];
 		if (pipex->exit)

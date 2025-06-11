@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/11 12:20:34 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:01:32 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
     }
 }
 
-int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
+int	pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2])
 {
 	t_pipex	pipex;
 	t_prev	prev;
@@ -61,18 +61,31 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int *fd)
 
 	// printf("fd [0]: %d [1]: %d\n", fd[0], fd[1]);
 
+	// i = - 1;
+	// while (++i < nmb)
+	// {
+	// 	printf("fd[%d]: %d %d\n", i, fd[i][0], fd[i][1]);
+	// }
+	
+
 	i = 1;
 	while (++i < nmb - 1)
 	{
 		if (ft_strlen(cmd[i]) == 0)
 			exit(1);
 	}
-	pipex.in_fd = fd[0];
-	pipex.out_fd = fd[1];
-	pipex.is_invalid_infile = ft_abs(fd[2]);
+	// pipex.in_fd = fd[0][0];
+	// pipex.out_fd = fd[0][1];
+
+	//TO CHANGE
+	// pipex.is_invalid_infile = ft_abs(fd[0][0]);
+
+
 	ft_init_struct(&pipex, nmb, cmd, manager);
-	prev.in = pipex.in_fd;
+	pipex.fds = fd;
+	prev.in = fd[0][0];
 	prev.i = -1;
+	// printf("nmb: %d fd: %d\n", nmb, fd[nmb - 1][1]);
 	ft_loop(&pipex, &prev, pipex.envp);
 	i = -1;
 	ft_wait_children(&pipex, prev, i);

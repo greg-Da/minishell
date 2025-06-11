@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/10 09:39:15 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 14:44:55 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,12 @@ void	init_parser_struct(t_parser *info, t_minish *manager, char **pipes, int pip
     info->manager = manager;
 	info->here_doc = 0;
 	info->cmd = ft_calloc(i + 2, sizeof(char *));
+	info->fd = ft_calloc(i + 2, sizeof(int *));
 }
 
 void	clean_after_pipex(t_parser *info)
 {
-	if (info->fd[0] != STDIN_FILENO)
-		close(info->fd[0]);
-	if (info->fd[1] != STDOUT_FILENO)
-		close(info->fd[1]);
+	reset_parser_fds(info);
 	if (info->here_doc)
 	{
 		unlink("here_doc.txt");

@@ -22,18 +22,17 @@ typedef struct s_pipex
 {
 	int					*pids;
 	int					pids_size;
-	int					in_fd;
-	int					out_fd;
+	// int					in_fd;
+	// int					out_fd;
+	int					fd[2];
+	int					(*fds)[2];       // Array of input/output fds
 	char				**envp;
 	char				**cmd_path;
 	char				***cmd_args;
-	// int		here_doc;
-	// int		append;
-	int					fd[2];
-	int					exit_code;
 	int					cmd_count;
-	int					is_invalid_infile;
+	// int					is_invalid_infile;
 	int					exit;
+	int					exit_code;
 	t_minish			*manager;
 }						t_pipex;
 
@@ -60,7 +59,7 @@ typedef struct s_pip_quotes
 typedef struct s_parser
 {
 	int					res;
-	int					fd[3];
+	int					(*fd)[2];
 	int					index[2];
 	char				*chevron;
 	char				*files[2];
@@ -85,7 +84,7 @@ int						ft_create_outfile(int here_doc, char *file);
 void					ft_invalid_cmd(t_pipex *pipex, t_prev *prev);
 // int						ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void					ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
-int						pipex(int nmb, char **cmd, t_minish *manager, int *fd);
+int						pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2]);
 int						exec_pipex(int cmd_index, t_parser *info, t_minish *manager);
 void					init_parser_struct(t_parser *info, t_minish *manager,char **pipes,
 							int pipe_nb);
@@ -94,5 +93,6 @@ char					*get_chevron_indices(char *pipe, int index[2]);
 int						get_outfile(t_parser *info, char **pipes, int i);
 int						get_infile(t_parser *info, char **pipes, int i, int j);
 int						is_builtins(char *str);
+void reset_parser_fds(t_parser *info);
 
 #endif

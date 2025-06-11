@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 12:18:17 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 14:34:42 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char *get_next_chevron(char *str)
 	return (first);
 }
 
-int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
+int process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 {
 	char *tmp;
 	char *start;
@@ -60,11 +60,17 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 	char *filename;
 	int *current_fd;
 
+	
+
 	tmp = ft_strdup(pipes[i]);
 	if (!tmp)
 		return (-1);
 	start = tmp;
 	next_chevron = get_next_chevron(tmp);
+
+	fd[i][0] = STDIN_FILENO;
+	fd[i][1] = STDOUT_FILENO;
+
 	while (next_chevron)
 	{
 		chevron = *next_chevron;
@@ -82,7 +88,10 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 			free(filename);
 			return (handle_filename_error(pipes, i, tmp, start));
 		}
-		current_fd = (chevron == '<') ? &fd[0] : &fd[1];
+
+
+
+		current_fd = (chevron == '<') ? &fd[i][0] : &fd[i][1];
 		if (*current_fd != -1 && *current_fd != STDOUT_FILENO && *current_fd != STDIN_FILENO)
 			close(*current_fd);
 		if (open_chevron_fd(chevron, current_fd, filename, info, append) == -1)
@@ -103,14 +112,16 @@ int process_chevrons(char **pipes, int i, int fd[2], t_parser *info)
 
 int get_files(t_parser *info, int i, char **pipes)
 {
-	info->fd[2] = 0;
+	// info->fd[2] = 0;
 	if (process_chevrons(pipes, i, info->fd, info) == -1)
 	{
-		if (info->fd[0] != STDIN_FILENO)
-			close(info->fd[0]);
-		if (info->fd[1] != STDOUT_FILENO)
-			close(info->fd[1]);
-		info->fd[2] = 1;
+		info->fd[i][0] = -1;
+		info->fd[i][1] = -1;
+		// if (info->fd[0] != STDIN_FILENO)
+		// 	close(info->fd[0]);
+		// if (info->fd[1] != STDOUT_FILENO)
+		// 	close(info->fd[1]);
+		// info->fd[2] = 1;
 		return (-1);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/10 09:39:20 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 16:19:12 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ static void maybe_add_history(char **input, t_minish *manager, int is_unclosed)
 static char *get_input_line(t_minish *manager)
 {
 	char *input;
+	(void)manager;
 
 	input = readline("minishell > ");
 	if (!input)
