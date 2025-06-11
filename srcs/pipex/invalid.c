@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   invalid.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:55:24 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:23:05 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:32:05 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int is_valid_executable(const char *path)
+int	is_valid_executable(const char *path)
 {
-	struct stat sb;
+	struct stat	sb;
 
-	// Check if the file exists
 	if (access(path, F_OK) != 0)
 	{
 		perror(path);
@@ -33,7 +32,6 @@ int is_valid_executable(const char *path)
 		ft_putstr_fd(": Is a directory\n", 2);
 		return (126);
 	}
-	// Check if it's executable
 	if (access(path, X_OK) != 0)
 	{
 		perror(path);
@@ -42,13 +40,14 @@ int is_valid_executable(const char *path)
 	return (0);
 }
 
-void ft_invalid_cmd(t_pipex *pipex, t_prev *prev)
+void	ft_invalid_cmd(t_pipex *pipex, t_prev *prev)
 {
-	char *tmp;
-	int valid_file;
+	char	*tmp;
+	int		valid_file;
 
 	valid_file = 0;
-	if (pipex && pipex->cmd_args && pipex->cmd_args[prev->i] && pipex->cmd_args[prev->i][0])
+	if (pipex && pipex->cmd_args && pipex->cmd_args[prev->i]
+		&& pipex->cmd_args[prev->i][0])
 	{
 		if (strchr(pipex->cmd_args[prev->i][0], '/'))
 			valid_file = is_valid_executable(pipex->cmd_args[prev->i][0]);
@@ -56,32 +55,13 @@ void ft_invalid_cmd(t_pipex *pipex, t_prev *prev)
 		{
 			close(pipex->fd[1]);
 			pipex->exit_code = valid_file;
-			return;
+			return ;
 		}
-
 		pipex->exit_code = 127;
 		tmp = ft_strjoin(pipex->cmd_args[prev->i][0], ": command not found");
 		ft_putstr_fd(tmp, 2);
 		ft_putstr_fd("\n", 2);
 		free(tmp);
 	}
-
 	close(pipex->fd[1]);
 }
-
-// int ft_invalid_infile(t_pipex *pipex, t_prev *prev)
-// {
-// 	if (pipex->is_invalid_infile == 1)
-// 	{
-// 		ft_putstr_fd("No such file or directory\n", 2);
-// 		if (prev->i == pipex->cmd_count - 1)
-// 			write(pipex->out_fd, "\0", 1);
-// 		else
-// 			write(pipex->fd[1], "\0", 1);
-// 	}
-// 	else
-// 	{
-// 		// return (-1);
-// 	}
-// 	return (0);
-// }

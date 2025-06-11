@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:32:12 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 13:29:13 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:38:18 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ char	**get_pipes_size(char *input, t_minish *manager)
 
 static void	fill_pipes_array(char **pipes, char *input)
 {
-	int	i = 0, j = 0, start;
+	int	i;
+	int	j;
+	int	start;
 
 	i = 0, j = 0, start = 0;
 	while (input[i])

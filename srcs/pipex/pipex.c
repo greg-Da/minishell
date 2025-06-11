@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/11 17:01:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:32:32 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ void	ft_cleanup(t_pipex *pipex)
 	int	i;
 	int	j;
 
-	// close(pipex.in_fd);
-	// close(pipex.out_fd);
 	free(pipex->pids);
-	// if (pipex->here_doc)
-	// 	unlink("here_doc.txt");
 	i = -1;
 	while (pipex->cmd_args && pipex->cmd_args[++i])
 	{
@@ -37,17 +33,15 @@ void	ft_cleanup(t_pipex *pipex)
 
 void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
 {
-    int	status;
+	int	status;
 
 	(void)prev;
-
-    while (pipex->pids_size > ++i)
-    {
-        waitpid(pipex->pids[i], &status, 0);
-        if (pipex->pids_size - 1 == i)
-            pipex->exit_code = WEXITSTATUS(status);
-		
-    }
+	while (pipex->pids_size > ++i)
+	{
+		waitpid(pipex->pids[i], &status, 0);
+		if (pipex->pids_size - 1 == i)
+			pipex->exit_code = WEXITSTATUS(status);
+	}
 }
 
 int	pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2])
@@ -56,36 +50,16 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2])
 	t_prev	prev;
 	int		i;
 
-	// printf("pip %s\n", cmd[0]);
-	// printf("pip %s\n", cmd[1]);
-
-	// printf("fd [0]: %d [1]: %d\n", fd[0], fd[1]);
-
-	// i = - 1;
-	// while (++i < nmb)
-	// {
-	// 	printf("fd[%d]: %d %d\n", i, fd[i][0], fd[i][1]);
-	// }
-	
-
 	i = 1;
 	while (++i < nmb - 1)
 	{
 		if (ft_strlen(cmd[i]) == 0)
 			exit(1);
 	}
-	// pipex.in_fd = fd[0][0];
-	// pipex.out_fd = fd[0][1];
-
-	//TO CHANGE
-	// pipex.is_invalid_infile = ft_abs(fd[0][0]);
-
-
 	ft_init_struct(&pipex, nmb, cmd, manager);
 	pipex.fds = fd;
 	prev.in = fd[0][0];
 	prev.i = -1;
-	// printf("nmb: %d fd: %d\n", nmb, fd[nmb - 1][1]);
 	ft_loop(&pipex, &prev, pipex.envp);
 	i = -1;
 	ft_wait_children(&pipex, prev, i);

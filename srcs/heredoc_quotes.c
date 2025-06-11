@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_quotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:49:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/05 13:25:26 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:35:24 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ char	*remove_quotes(char *str)
 		i++;
 	}
 	result[j] = '\0';
-    free(str);
+	free(str);
 	return (result);
 }

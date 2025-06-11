@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/05 17:27:37 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:35:18 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 char	*expand_variable(char *var_name, t_minish *manager)
 {
 	char	*value;
-	int i = -1;
+	int		i;
 
+	i = -1;
 	value = NULL;
-
 	while (manager->envp[++i] != NULL)
 	{
 		if (ft_strncmp(manager->envp[i], var_name, ft_strlen(var_name)) == 0
 			&& manager->envp[i][ft_strlen(var_name)] == '=')
 		{
 			value = manager->envp[i] + ft_strlen(var_name) + 1;
-			break;
+			break ;
 		}
 	}
-	
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
@@ -54,9 +53,9 @@ char	*expand_string(char *input, t_minish *manager)
 	char	result[2048] = {0};
 	char	var_name[256] = {0};
 	char	*var_value;
-	int		i, j, k;
 	size_t	len;
 
+	int i, j, k;
 	i = 0, j = 0, k = 0;
 	while (input[i])
 	{

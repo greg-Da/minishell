@@ -22,15 +22,12 @@ typedef struct s_pipex
 {
 	int					*pids;
 	int					pids_size;
-	// int					in_fd;
-	// int					out_fd;
 	int					fd[2];
-	int					(*fds)[2];       // Array of input/output fds
+	int					(*fds)[2];
 	char				**envp;
 	char				**cmd_path;
 	char				***cmd_args;
 	int					cmd_count;
-	// int					is_invalid_infile;
 	int					exit;
 	int					exit_code;
 	t_minish			*manager;
@@ -59,7 +56,7 @@ typedef struct s_pip_quotes
 typedef struct s_parser
 {
 	int					res;
-	int					(*fd)[2];
+	int (*fd)[2];
 	int					index[2];
 	char				*chevron;
 	char				*files[2];
@@ -67,12 +64,13 @@ typedef struct s_parser
 	int					cmd_nb;
 
 	int					here_doc;
-    t_minish            *manager;
+	t_minish			*manager;
 }						t_parser;
 
 void					ft_cleanup(t_pipex *pipex);
 
-void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd, t_minish *manager);
+void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd,
+							t_minish *manager);
 int						ft_here_doc(int fd, char *limiter);
 void					ft_error(char *str);
 char					**ft_custom_split(char const *s, char c,
@@ -82,17 +80,18 @@ size_t					ft_next_occurence(char const *s, char c, int index);
 char					*ft_remove_slash(char *str, int len);
 int						ft_create_outfile(int here_doc, char *file);
 void					ft_invalid_cmd(t_pipex *pipex, t_prev *prev);
-// int						ft_invalid_infile(t_pipex *pipex, t_prev *prev);
 void					ft_loop(t_pipex *pipex, t_prev *prev, char **envp);
-int						pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2]);
-int						exec_pipex(int cmd_index, t_parser *info, t_minish *manager);
-void					init_parser_struct(t_parser *info, t_minish *manager,char **pipes,
-							int pipe_nb);
+int						pipex(int nmb, char **cmd, t_minish *manager,
+							int (*fd)[2]);
+int						exec_pipex(int cmd_index, t_parser *info,
+							t_minish *manager);
+void					init_parser_struct(t_parser *info, t_minish *manager,
+							char **pipes, int pipe_nb);
 char					*sanitize_str(char *str);
 char					*get_chevron_indices(char *pipe, int index[2]);
 int						get_outfile(t_parser *info, char **pipes, int i);
 int						get_infile(t_parser *info, char **pipes, int i, int j);
 int						is_builtins(char *str);
-void reset_parser_fds(t_parser *info);
+void					reset_parser_fds(t_parser *info);
 
 #endif

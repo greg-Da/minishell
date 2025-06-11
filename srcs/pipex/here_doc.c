@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/11 10:39:32 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:31:47 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ int	ft_here_doc(int write_fd, char *delim)
 			line = readline("> ");
 			if (!line)
 			{
-                printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
-		        delim);
+				printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
+					delim);
 				exit(0);
 			}
-            if(ft_strcmp(line, delim) == 0)
-            {
-                free(line);
-                exit(0);
-            }
+			if (ft_strcmp(line, delim) == 0)
+			{
+				free(line);
+				exit(0);
+			}
 			ft_putendl_fd(line, write_fd);
 			free(line);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/06 13:49:05 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:36:56 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 
 char	*strip_quotes(char *str)
 {
-	int		len = 0;
+	int		len;
 	char	*res;
-	int		i = 0;
-	int		j = 0;
+	int		i;
+	int		j;
 
+	len = 0;
+	i = 0;
+	j = 0;
 	while (str[i])
 	{
 		if (str[i] != '"' && str[i] != '\'')
 			len++;
 		i++;
 	}
-
 	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
-
 	i = 0;
 	while (str[i])
 	{
@@ -83,7 +84,6 @@ int	check_quotes(char **input, t_minish *manager)
 	(void)manager;
 	s_quotes = ft_strchr(*input, '\'');
 	d_quotes = ft_strchr(*input, '"');
-	//printf("*input: %s\n", *input);
 	while (d_quotes || s_quotes)
 	{
 		quotes.open = first_quotes(s_quotes, d_quotes);
@@ -117,18 +117,25 @@ int	is_between_char(char *str, int index, char quote)
 char	**split_args_preserving_quotes(char *str)
 {
 	char	**args;
-	int		count = 0;
-	int		in_quote = 0;
-	char	quote = 0;
-	int		i = 0;
-	int		start = 0;
+	int		count;
+	int		in_quote;
+	char	quote;
+	int		i;
+	int		start;
+	int		arg_idx;
+	int		j;
 
+	count = 0;
+	in_quote = 0;
+	quote = 0;
+	i = 0;
+	start = 0;
 	while (str[i])
 	{
 		while (ft_is_space(str[i]))
 			i++;
 		if (!str[i])
-			break;
+			break ;
 		start = i;
 		while (str[i])
 		{
@@ -143,7 +150,7 @@ char	**split_args_preserving_quotes(char *str)
 				i++;
 			}
 			else if (!in_quote && ft_is_space(str[i]))
-				break;
+				break ;
 			else
 				i++;
 		}
@@ -153,13 +160,13 @@ char	**split_args_preserving_quotes(char *str)
 	if (!args)
 		return (NULL);
 	i = 0;
-	int arg_idx = 0;
+	arg_idx = 0;
 	while (*str)
 	{
 		while (ft_is_space(*str))
 			str++;
 		if (!*str)
-			break;
+			break ;
 		start = 0;
 		in_quote = 0;
 		quote = 0;
@@ -176,14 +183,14 @@ char	**split_args_preserving_quotes(char *str)
 				start++;
 			}
 			else if (!in_quote && ft_is_space(str[start]))
-				break;
+				break ;
 			else
 				start++;
 		}
 		args[arg_idx] = malloc(start + 1);
 		if (!args[arg_idx])
 			return (NULL);
-		int j = 0;
+		j = 0;
 		while (j < start)
 		{
 			args[arg_idx][j] = str[j];

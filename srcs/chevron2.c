@@ -3,40 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 11:12:13 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:35:14 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char *extract_filename(char *input)
+char	*extract_filename(char *input)
 {
+	int		i;
+	char	*res;
+	char	*trimmed;
 
-	int i = 0;
-	char *res;
-	char *trimmed;
-
+	i = 0;
 	res = NULL;
-
 	while (input[i])
 	{
-		if ((input[i] == '>' || input[i] == '<' || ft_include(input[i], " \f\t\n\r\v")) && !is_between_any_quotes(input, i))
-			break;
+		if ((input[i] == '>' || input[i] == '<' || ft_include(input[i],
+					" \f\t\n\r\v")) && !is_between_any_quotes(input, i))
+			break ;
 		i++;
 	}
-
 	trimmed = ft_strtrim(input, " \f\t\n\r\v");
 	res = ft_substr(trimmed, 0, i);
 	free(trimmed);
 	return (remove_quotes(res));
 }
 
-int handle_filename_error(char **pipes, int i, char *tmp, char *start)
+int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
 {
-	char *next;
+	char	*next;
 
 	next = tmp;
 	while (*next && *next == ' ')
@@ -51,13 +50,13 @@ int handle_filename_error(char **pipes, int i, char *tmp, char *start)
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 	else
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-					 2);
+			2);
 	free(start);
 	return (-1);
 }
 
-int open_chevron_fd(char chevron, int *current_fd, char *filename,
-					t_parser *info, int append)
+int	open_chevron_fd(char chevron, int *current_fd, char *filename,
+		t_parser *info, int append)
 {
 	if (chevron == '>')
 	{
@@ -67,7 +66,6 @@ int open_chevron_fd(char chevron, int *current_fd, char *filename,
 			*current_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (*current_fd == -1)
 		{
-
 			ft_putstr_fd("minishell: ", 2);
 			perror(filename);
 			info->manager->last_ex_code = 1;
@@ -79,7 +77,7 @@ int open_chevron_fd(char chevron, int *current_fd, char *filename,
 		if (info->here_doc)
 		{
 			int temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC,
-							   0644);
+					0644);
 			if (temp_fd == -1)
 			{
 				perror("open");

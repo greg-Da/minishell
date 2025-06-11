@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/10 09:20:44 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:40:03 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "minish_types.h"
+# include <fcntl.h>
 # include <fcntl.h>
 # include <libft.h>
 # include <limits.h>
@@ -25,7 +26,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <fcntl.h>
 
 typedef struct s_quotes
 {
@@ -64,19 +64,19 @@ int					is_valid_identifier(const char *str);
 int					ft_export(t_minish *manager, char *arg);
 int					ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
-extern sig_atomic_t	is_in_execution;
+extern				sig_atomic_t	is_in_execution;
 int					check_quotes(char **input, t_minish *manager);
 int					is_between_char(char *str, int index, char quote);
 char				*remove_quotes(char *str);
 void				free_pipes(char **pipes);
-char                *strip_quotes(char *str);
+char				*strip_quotes(char *str);
 int					set_env_key_value(t_minish *manager, char *key,
 						char *value);
 void				free_split(char **arr);
-char	**split_args_preserving_quotes(char *str);
+char				**split_args_preserving_quotes(char *str);
 
 char				*get_next_chevron(char *str);
 int					is_between_any_quotes(char *str, int i);
-char *skip_redir_and_filename(char *str);
+char				*skip_redir_and_filename(char *str);
 
 #endif

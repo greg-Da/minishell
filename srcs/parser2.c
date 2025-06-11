@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 14:44:55 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:36:46 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	init_parser_struct(t_parser *info, t_minish *manager, char **pipes, int pipe_nb)
+void	init_parser_struct(t_parser *info, t_minish *manager, char **pipes,
+		int pipe_nb)
 {
 	int	i;
 
@@ -20,7 +21,7 @@ void	init_parser_struct(t_parser *info, t_minish *manager, char **pipes, int pip
 	while (pipes[i])
 		i++;
 	info->cmd_nb = pipe_nb + 1;
-    info->manager = manager;
+	info->manager = manager;
 	info->here_doc = 0;
 	info->cmd = ft_calloc(i + 2, sizeof(char *));
 	info->fd = ft_calloc(i + 2, sizeof(int *));
@@ -39,9 +40,10 @@ void	clean_after_pipex(t_parser *info)
 int	exec_pipex(int cmd_index, t_parser *info, t_minish *manager)
 {
 	int	i;
-	int	code;	
+	int	code;
 
-	if (info->cmd_nb == 1 && (!ft_strncmp(info->cmd[0], "export", 6) || !ft_strncmp(info->cmd[0], "unset", 5)))
+	if (info->cmd_nb == 1 && (!ft_strncmp(info->cmd[0], "export", 6)
+			|| !ft_strncmp(info->cmd[0], "unset", 5)))
 	{
 		if (!ft_strncmp(info->cmd[0], "export", 6))
 			code = ft_export(manager, info->cmd[0]);

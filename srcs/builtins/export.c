@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/06 13:28:21 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:39:25 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_split(char **arr)
 	int	i;
 
 	if (!arr)
-		return;
+		return ;
 	i = 0;
 	while (arr[i])
 	{
@@ -49,20 +49,23 @@ int	ft_export(t_minish *manager, char *arg)
 {
 	char	**args;
 	char	*trimmed;
-	int		i = 0;
-	int		status = 0;
+	int		i;
+	int		status;
+	char	*equal;
+	char	*key;
+	char	*value;
 
+	i = 0;
+	status = 0;
 	if (!arg || ft_strncmp(arg, "export", 6) == 0)
 	{
 		arg += 6;
 		while (*arg == ' ')
 			arg++;
 	}
-
 	args = split_args_preserving_quotes(arg);
 	if (!args)
 		return (1);
-
 	while (args[i])
 	{
 		trimmed = strip_quotes(args[i]);
@@ -70,16 +73,13 @@ int	ft_export(t_minish *manager, char *arg)
 		{
 			status = 1;
 			i++;
-			continue;
+			continue ;
 		}
-
-		char *equal = ft_strchr(trimmed, '=');
-
+		equal = ft_strchr(trimmed, '=');
 		if (equal)
 		{
-			char *key = ft_substr(trimmed, 0, equal - trimmed);
-			char *value = ft_strdup(equal + 1);
-
+			key = ft_substr(trimmed, 0, equal - trimmed);
+			value = ft_strdup(equal + 1);
 			if (!is_valid_identifier(key))
 			{
 				ft_putstr_fd("minishell: export: `", 2);
@@ -89,7 +89,6 @@ int	ft_export(t_minish *manager, char *arg)
 			}
 			else
 				set_env_key_value(manager, key, value);
-
 			free(key);
 			free(value);
 		}
@@ -112,7 +111,3 @@ int	ft_export(t_minish *manager, char *arg)
 	manager->last_ex_code = status;
 	return (status);
 }
-
-
-
-

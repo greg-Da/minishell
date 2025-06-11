@@ -12,9 +12,9 @@
 
 #include "../../include/minishell.h"
 
-int check_new_line_flag(char **cmd, int *i)
+int	check_new_line_flag(char **cmd, int *i)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = *i;
 	if (!ft_strncmp("-n", &cmd[1][*i], 2))
@@ -37,10 +37,10 @@ int check_new_line_flag(char **cmd, int *i)
 	return (1);
 }
 
-void ft_echo(char **cmd)
+void	ft_echo(char **cmd)
 {
-	int new_line;
-	int i;
+	int	new_line;
+	int	i;
 
 	i = 0;
 	new_line = check_new_line_flag(cmd, &i);
@@ -50,9 +50,8 @@ void ft_echo(char **cmd)
 	{
 		if (new_line)
 			write(1, "\n", 1);
-		return;
+		return ;
 	}
-
 	cmd[1] = remove_quotes(cmd[1]);
 	while (cmd[1][i])
 	{
