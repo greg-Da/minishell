@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 10:39:29 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 10:48:16 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,10 +170,8 @@ int skip_quotes(char *input, int i)
 char *skip_redir_and_filename(char *str)
 {
 	int i = 0, j = 0;
-	// char quote_char = 0;
-	char *res = malloc(strlen(str) + 1);
+	char *res = malloc(strlen(str) + 1); //TEMPO
 	char *input;
-	// int was_redir = 0;
 
 	if (!res)
 		return NULL;
@@ -186,7 +184,6 @@ char *skip_redir_and_filename(char *str)
 		if (
 			(
 				(input[i] == '>' || input[i] == '<') && !is_between_any_quotes(input, i)) 
-				// || (was_redir && ((input[i] == '\'') || input[i] == '"'))
 		)
 		{
 			i++;
@@ -198,15 +195,7 @@ char *skip_redir_and_filename(char *str)
 
 			
 			if (input[i] == '\'' || input[i] == '"')
-			{
 				i = skip_quotes(input, i);
-
-				// quote_char = input[i++];
-				// while (input[i] && input[i] != quote_char)
-				// 	i++;
-				// if (input[i] == quote_char)
-				// 	i++;
-			}
 			else
 			{
 				while (input[i] && !ft_include(input[i], " \t\n\r\v><"))
@@ -218,11 +207,9 @@ char *skip_redir_and_filename(char *str)
 
 			if (j > 0 && input[i] && res[j - 1] != ' ')
 				res[j++] = ' ';
-			// was_redir = 1;
 			continue;
 		}
 		res[j++] = input[i++];
-		// was_redir = 0;
 	}
 	if (j > 0 && res[j - 1] == ' ')
 		j--;

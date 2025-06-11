@@ -36,18 +36,25 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
-	
 
+	// printf("prev.in: %d\n", prev.in);
 	if (pip->in_fd != STDIN_FILENO && pip->in_fd != -1)
 	{
 		dup2(pip->in_fd, STDIN_FILENO);
 		close(pip->in_fd);
 	}
-
-	else if (prev.in != STDIN_FILENO)
+	else if (prev.in != STDIN_FILENO && prev.in != -1)
 	{
 		dup2(prev.in, STDIN_FILENO);
 		close(prev.in);
+	}
+	else if (prev.in == -1 || pip->is_invalid_infile)
+	{
+		int devnull = open("/dev/null", O_RDONLY);
+		if (devnull == -1)
+			exit(1);
+		dup2(devnull, STDIN_FILENO);
+		close(devnull);
 	}
 
 	if (prev.out != STDOUT_FILENO && prev.out != -1)
@@ -58,7 +65,6 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 
 	if (prev.out == -1)
 		exit(1);
-
 
 	if (is_builtins(pip->cmd_args[i][0]))
 	{
@@ -112,23 +118,35 @@ void ft_loop(t_pipex *pipex, t_prev *prev, char **envp)
 			continue;
 		if (pipe(pipex->fd) == -1)
 			ft_error("pipe failed");
-		if (prev->in == -1 && pipex->is_invalid_infile > 0)
-		{
-			// if (ft_invalid_infile(pipex, prev) == -1)
-			break;
-		}
-		else if (prev->i == 0 && !ft_strncmp(pipex->cmd_args[prev->i][0],
-											 "exit", 4))
+
+		if (prev->i == 0 && !ft_strncmp(pipex->cmd_args[prev->i][0],
+										"exit", 4))
 		{
 			if (pipex->cmd_args[prev->i + 1] == NULL)
 				pipex->exit = 1;
 			else
+			{
+				close(pipex->fd[1]);
+				close(pipex->fd[0]);
 				continue;
+			}
 		}
-		else if (pipex->cmd_path[prev->i] == NULL && !is_builtins(pipex->cmd_args[prev->i][0]))
+		// if (prev->in == -1)
+		// {
+		// 	// printf("minishell: %s: No such file or o\n",
+		// 	//    pipex->cmd_args[prev->i][0]);
+		// 	// ft_invalid_infile(pipex, prev);
+		// 	printf("cmd: %s\n", pipex->cmd_args[prev->i][0]);
+		// 	close(pipex->fd[1]);
+		// 	close(pipex->fd[0]);
+		// 	printf("prev->in: %d\n", prev->in);
+		// }
+
+		if (pipex->cmd_path[prev->i] == NULL && !is_builtins(pipex->cmd_args[prev->i][0]))
 		{
 			ft_invalid_cmd(pipex, prev);
 			prev->in = pipex->fd[0];
+			close(pipex->fd[1]);
 			continue;
 		}
 		else if (!ft_strncmp(pipex->cmd_args[prev->i][0], "cd", 2))

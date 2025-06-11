@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:55:24 by greg              #+#    #+#             */
-/*   Updated: 2025/06/09 10:04:44 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 11:24:07 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,7 @@ void ft_invalid_cmd(t_pipex *pipex, t_prev *prev)
 // 	}
 // 	else
 // 	{
-// 		close(pipex->fd[1]);
-// 		close(pipex->fd[0]);
-// 		return (-1);
+// 		// return (-1);
 // 	}
 // 	return (0);
 // }
