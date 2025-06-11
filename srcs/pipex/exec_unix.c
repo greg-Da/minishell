@@ -37,7 +37,7 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
 
-	// printf("prev.in: %d\n", prev.in);
+	// printf("pip->is_invalid_infile: %d\n", pip->is_invalid_infile);
 	if (pip->in_fd != STDIN_FILENO && pip->in_fd != -1)
 	{
 		dup2(pip->in_fd, STDIN_FILENO);
@@ -48,13 +48,18 @@ void ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 		dup2(prev.in, STDIN_FILENO);
 		close(prev.in);
 	}
-	else if (prev.in == -1 || pip->is_invalid_infile)
+	else if (prev.in == -1)
 	{
 		int devnull = open("/dev/null", O_RDONLY);
 		if (devnull == -1)
 			exit(1);
 		dup2(devnull, STDIN_FILENO);
 		close(devnull);
+	}
+
+	if (pip->is_invalid_infile)
+	{
+		exit(1);
 	}
 
 	if (prev.out != STDOUT_FILENO && prev.out != -1)
