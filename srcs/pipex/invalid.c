@@ -6,7 +6,7 @@
 /*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:55:24 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 15:25:04 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/11 17:23:05 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,24 @@ void ft_invalid_cmd(t_pipex *pipex, t_prev *prev)
 	int valid_file;
 
 	valid_file = 0;
-	if (strchr(pipex->cmd_args[prev->i][0], '/'))
-		valid_file = is_valid_executable(pipex->cmd_args[prev->i][0]);
-	if (valid_file > 0)
+	if (pipex && pipex->cmd_args && pipex->cmd_args[prev->i] && pipex->cmd_args[prev->i][0])
 	{
-		close(pipex->fd[1]);
-		pipex->exit_code = valid_file;
-		return;
+		if (strchr(pipex->cmd_args[prev->i][0], '/'))
+			valid_file = is_valid_executable(pipex->cmd_args[prev->i][0]);
+		if (valid_file > 0)
+		{
+			close(pipex->fd[1]);
+			pipex->exit_code = valid_file;
+			return;
+		}
+
+		pipex->exit_code = 127;
+		tmp = ft_strjoin(pipex->cmd_args[prev->i][0], ": command not found");
+		ft_putstr_fd(tmp, 2);
+		ft_putstr_fd("\n", 2);
+		free(tmp);
 	}
 
-	pipex->exit_code = 127;
-	tmp = ft_strjoin(pipex->cmd_args[prev->i][0], ": command not found");
-	ft_putstr_fd(tmp, 2);
-	ft_putstr_fd("\n", 2);
-	free(tmp);
 	close(pipex->fd[1]);
 }
 
