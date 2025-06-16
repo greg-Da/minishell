@@ -37,10 +37,7 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 	if (pip->fds[prev.i][0] != STDIN_FILENO)
 	{
 		if (pip->fds[prev.i][0] == -1)
-		{
-			printf("exit\n");
 			exit(1);
-		}
 		dup2(pip->fds[prev.i][0], STDIN_FILENO);
 		if (pip->fds[prev.i][0] != STDIN_FILENO)
 			close(pip->fds[prev.i][0]);
