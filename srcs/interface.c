@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:35:40 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 10:51:38 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,15 @@ int	handle_cmd(t_minish *manager)
 		free_pipes(pipes);
 		return (handle_exit(input, manager));
 	}
+	is_in_execution = 1;
 	code = parser(pipes, manager, get_pipe_count(input));
+	is_in_execution = 0;
+	if (code == 130)
+	{
+		free_pipes(pipes);
+		free(input);
+		return (130);
+	}
 	free_pipes(pipes);
 	free(input);
 	return (code);

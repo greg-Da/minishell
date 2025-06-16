@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/11 17:32:32 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 10:56:20 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
 	{
 		waitpid(pipex->pids[i], &status, 0);
 		if (pipex->pids_size - 1 == i)
-			pipex->exit_code = WEXITSTATUS(status);
+		pipex->exit_code = WEXITSTATUS(status);
 	}
+	is_in_execution = 0;
 }
 
 int	pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2])

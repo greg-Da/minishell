@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/16 09:22:34 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 11:08:20 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,28 @@
 
 sig_atomic_t	is_in_execution = 0;
 
-void	handle_sigint(int sig)
+void handle_sigint(int sig)
 {
-	write(1, "\n", 1);
-	if (sig == SIGINT && is_in_execution == 0)
+	if (sig == SIGINT)
 	{
-		(void)sig;
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		write(1, "\n", 1);
+		if (is_in_execution == 0)
+		{
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
+		else if (is_in_execution == 2)
+		{
+			return;
+		}
 	}
+}
+void handle_sigint_heredoc(int sig)
+{
+    (void)sig;
+    write(1, "\n", 1);
+    exit(1);
 }
 
 void	init_signals(void)
@@ -40,13 +52,4 @@ void	init_signals(void)
 	sa_quit.sa_flags = 0;
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
-char	*get_input(char *prompt, t_minish *manager)
-{
-	char *input = readline(prompt);
-	if (!input)
-	{
-		write(1, "exit\n", 5);
-		exit(manager->last_ex_code);
-	}
-	return (input);
-}
+

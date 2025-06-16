@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:35:14 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 10:46:35 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ int	open_chevron_fd(char chevron, int *current_fd, char *filename,
 				perror("open");
 				return (-1);
 			}
-			if (ft_here_doc(temp_fd, filename))
+			if (ft_here_doc(temp_fd, filename, info->manager) == 1)
 			{
 				close(temp_fd);
-				return (-1);
+				unlink("here_doc.txt");
+				return (1);
 			}
 			close(temp_fd);
 			*current_fd = open("here_doc.txt", O_RDONLY);
