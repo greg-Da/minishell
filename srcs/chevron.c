@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:35:03 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 13:44:21 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ char	*get_next_chevron(char *str)
 	return (first);
 }
 
+int *set_current_fd(char chevron, int *current_fd, int (*fd)[2], int i)
+{
+	if (chevron == '<')
+		current_fd = &fd[i][0];
+	else
+		current_fd = &fd[i][1];
+
+	if (*current_fd != -1 && *current_fd != STDOUT_FILENO
+		&& *current_fd != STDIN_FILENO)
+		close(*current_fd);
+	return (current_fd);
+}
+
 int	process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 {
 	char	*tmp;
@@ -84,10 +97,9 @@ int	process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 			free(filename);
 			return (handle_filename_error(pipes, i, tmp, start));
 		}
-		current_fd = (chevron == '<') ? &fd[i][0] : &fd[i][1];
-		if (*current_fd != -1 && *current_fd != STDOUT_FILENO
-			&& *current_fd != STDIN_FILENO)
-			close(*current_fd);
+		
+		current_fd = set_current_fd(chevron, current_fd, fd, i);
+		
 		if (open_chevron_fd(chevron, current_fd, filename, info, append) == -1)
 		{
 			free(start);
@@ -95,8 +107,7 @@ int	process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 			return (-1);
 		}
 		free(filename);
-		if (*current_fd == -1)
-			break ;
+
 		next_chevron = get_next_chevron(tmp);
 	}
 	free(start);

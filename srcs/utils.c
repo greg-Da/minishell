@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 11:44:32 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 13:38:45 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	free_pipes(char **pipes)
 		free(pipes[i++]);
 	free(pipes);
 }
+
 char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 {
 	char	*res;

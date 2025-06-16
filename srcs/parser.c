@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:36:29 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 12:42:10 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,58 +39,7 @@ void	clean_handle_cmd(t_parser *info)
 
 void	get_cmd(t_parser *info, char *pipe, int j)
 {
-	char	*cmd;
-	char	*start;
-	char	*end;
-	char	*part;
-	char	*tmp;
-
-	cmd = NULL;
-	start = pipe;
-	while (*start)
-	{
-		while (*start && *start == ' ')
-			start++;
-		if (*start == '\0')
-			break ;
-		if ((*start == '>' || *start == '<') && !is_between_any_quotes(pipe,
-				start - pipe))
-		{
-			start++;
-			if ((*start == '>' || *start == '<') && !is_between_any_quotes(pipe,
-					start - pipe))
-				start++;
-			while (*start && *start == ' ')
-				start++;
-			while (*start && *start != ' ' && ((*start != '>' && *start != '<')
-					|| is_between_any_quotes(pipe, start - pipe)))
-				start++;
-			continue ;
-		}
-		end = start;
-		while (*end && ((*end != '>' && *end != '<')
-				|| !is_between_any_quotes(pipe, start - pipe)))
-			end++;
-		part = ft_substr(start, 0, end - start);
-		if (!part)
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
-		if (cmd)
-		{
-			tmp = ft_strjoin(cmd, part);
-			free(cmd);
-			free(part);
-			cmd = tmp;
-		}
-		else
-			cmd = part;
-		start = end;
-	}
-	if (!cmd)
-		cmd = ft_strdup("");
-	info->cmd[j] = sanitize_str(cmd);
+	info->cmd[j] = sanitize_str(ft_strdup(pipe));
 	info->cmd[j] = skip_redir_and_filename(info->cmd[j]);
 	if (!info->cmd[j])
 	{
@@ -98,6 +47,7 @@ void	get_cmd(t_parser *info, char *pipe, int j)
 		exit(EXIT_FAILURE);
 	}
 }
+
 static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		int *cmd_index, int pipe_index)
 {

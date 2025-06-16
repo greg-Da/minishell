@@ -3,36 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 10:51:38 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 13:25:04 by greg             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	get_pipe_count(char *input)
+int get_pipe_count(char *input)
 {
-	int	i;
-	int	count;
+	int i;
+	int count;
 
 	i = 0;
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && is_between_char(input, i, '\'') == 0
-				&& is_between_char(input, i, '"') == 0)
+		if (input[i] == '|' && is_between_char(input, i, '\'') == 0 && is_between_char(input, i, '"') == 0)
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-static int	handle_err_exit(char *input, char *start)
+static int handle_err_exit(char *input, char *start)
 {
-	int		i;
-	char	*err;
+	int i;
+	char *err;
 
 	i = 0;
 	if (!input[i])
@@ -59,11 +58,11 @@ static int	handle_err_exit(char *input, char *start)
 	return (0);
 }
 
-static int	handle_exit(char *input, t_minish *manager)
+static int handle_exit(char *input, t_minish *manager)
 {
-	char	*tmp;
-	int		res;
-	int		err;
+	char *tmp;
+	int res;
+	int err;
 
 	if (!input)
 	{
@@ -94,10 +93,9 @@ static int	handle_exit(char *input, t_minish *manager)
 	exit(res);
 }
 
-static void	maybe_add_history(char **input, t_minish *manager, int is_unclosed)
+static void maybe_add_history(char **input, t_minish *manager, int is_unclosed)
 {
-	if ((ft_strcmp(*input, manager->last_cmd) != 0 || ft_strchr(*input, '\n'))
-		&& !is_unclosed)
+	if ((ft_strcmp(*input, manager->last_cmd) != 0 || ft_strchr(*input, '\n')) && !is_unclosed)
 		add_history(*input);
 	if (is_unclosed)
 	{
@@ -106,9 +104,9 @@ static void	maybe_add_history(char **input, t_minish *manager, int is_unclosed)
 	}
 }
 
-static char	*get_input_line(t_minish *manager)
+static char *get_input_line(t_minish *manager)
 {
-	char	*input;
+	char *input;
 
 	(void)manager;
 	input = readline("minishell > ");
@@ -122,15 +120,12 @@ static char	*get_input_line(t_minish *manager)
 	return (input);
 }
 
-int	handle_cmd(t_minish *manager)
+char *get_user_input(t_minish *manager)
 {
-	char	*input;
-	char	**pipes;
-	int		code;
-	int		is_unclosed;
-	char	*tmp;
+	char *input;
+	int is_unclosed;
+	char *tmp;
 
-	pipes = NULL;
 	input = get_input_line(manager);
 	if (!input)
 		return (0);
@@ -142,6 +137,18 @@ int	handle_cmd(t_minish *manager)
 	free(manager->last_cmd);
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);
+
+	return (input);
+}
+
+int handle_cmd(t_minish *manager)
+{
+	char *input;
+	char **pipes;
+	int code;
+
+	pipes = NULL;
+	input = get_user_input(manager);
 	pipes = get_pipes(input, manager);
 	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
 	{
