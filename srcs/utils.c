@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:38:47 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 09:32:07 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,14 @@ int	set_env_key_value(t_minish *manager, char *key, char *value)
 
 char	*remove_space_before_redir(char *str)
 {
-	int		i = 0, j = 0, k;
+	int		i;
+	int		j;
+	int		k;
 	char	*res;
 
-	i = 0, j = 0, k = 0;
+	i = 0;
+	j = 0;
+	k = 0;
 	res = malloc(strlen(str) + 1);
 	if (!res)
 		return (NULL);
@@ -168,16 +172,18 @@ int	skip_quotes(char *input, int i)
 
 char	*skip_redir_and_filename(char *str)
 {
-	int i = 0, j = 0;
-	char *res = malloc(strlen(str) + 1);
-	char *input;
+	int		i;
+	int		j;
+	char	*res;
+	char	*input;
 
+	res = malloc(strlen(str) + 1);
+	i = 0;
+	j = 0;
 	if (!res)
 		return (NULL);
-
 	input = remove_space_before_redir(str);
 	free(str);
-
 	while (input[i])
 	{
 		if (((input[i] == '>' || input[i] == '<')
@@ -186,10 +192,8 @@ char	*skip_redir_and_filename(char *str)
 			i++;
 			if (input[i] == input[i - 1])
 				i++;
-
 			while (input[i] && ft_include(input[i], " \t\n\r\v"))
 				i++;
-
 			if (input[i] == '\'' || input[i] == '"')
 				i = skip_quotes(input, i);
 			else
@@ -197,10 +201,8 @@ char	*skip_redir_and_filename(char *str)
 				while (input[i] && !ft_include(input[i], " \t\n\r\v><"))
 					i++;
 			}
-
 			while (input[i] && ft_include(input[i], " \t\n\r\v"))
 				i++;
-
 			if (j > 0 && input[i] && res[j - 1] != ' ')
 				res[j++] = ' ';
 			continue ;
@@ -210,7 +212,6 @@ char	*skip_redir_and_filename(char *str)
 	if (j > 0 && res[j - 1] == ' ')
 		j--;
 	res[j] = '\0';
-
 	free(input);
 	return (res);
 }

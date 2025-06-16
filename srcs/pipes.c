@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:32:12 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/11 17:38:18 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 09:30:31 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ static void	fill_pipes_array(char **pipes, char *input)
 	int	j;
 	int	start;
 
-	i = 0, j = 0, start = 0;
+	i = 0;
+	j = 0;
+	start = 0;
 	while (input[i])
 	{
 		if (input[i] == '|' && !(is_between_char(input, i, '"')

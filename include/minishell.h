@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/11 17:40:03 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 09:34:12 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void				init_signals(void);
 void				handle_sigint(int sig);
 char				*expand_variable(char *var_name, t_minish *manager);
 char				*expand_string(char *input, t_minish *manager);
-void				expand_all_args(char **args, t_minish *manager);
 int					is_valid_identifier(const char *str);
 int					ft_export(t_minish *manager, char *arg);
 int					ft_unset(t_minish *manager, char *name);

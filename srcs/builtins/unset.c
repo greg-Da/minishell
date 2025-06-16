@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:08 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/11 17:39:18 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 09:27:27 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ int	ft_unset(t_minish *manager, char *arg)
 	char	*key;
 	char	**new_env;
 	int		status;
+	int		i;
+	int		j;
+	int		k;
+	int		len;
+	int		skip;
 
-	int i, j, k, len, skip;
 	status = 0;
 	if (ft_strncmp(arg, "unset", 5) == 0)
 	{
@@ -30,7 +34,8 @@ int	ft_unset(t_minish *manager, char *arg)
 	args = split_args_preserving_quotes(arg);
 	if (!args)
 		return (1);
-	for (k = 0; args[k]; k++)
+	k = 0;
+	while (args[k])
 	{
 		key = strip_quotes(args[k]);
 		if (!key)
@@ -66,6 +71,7 @@ int	ft_unset(t_minish *manager, char *arg)
 		free(manager->envp);
 		manager->envp = new_env;
 		free(key);
+		k++;
 	}
 	free_split(args);
 	return (status);
