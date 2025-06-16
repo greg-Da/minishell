@@ -27,7 +27,9 @@ SRC = srcs/main.c \
 	srcs/quotes.c\
 	srcs/chevron.c\
 	srcs/chevron2.c\
-	srcs/expand.c
+	srcs/expand.c\
+	srcs/skip.c\
+	srcs/remove_and_array.c
 
 
 OBJS = ${SRC:.c=.o}

@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/16 11:08:50 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 11:47:48 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,14 @@ int					handle_cmd(t_minish *manager);
 void				init_signals(void);
 void				handle_sigint(int sig);
 void				handle_sigint_heredoc(int sig);
+void				setup_here_doc_signals(void);
 char				*expand_variable(char *var_name, t_minish *manager);
 char				*expand_string(char *input, t_minish *manager);
 int					is_valid_identifier(const char *str);
 int					ft_export(t_minish *manager, char *arg);
 int					ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
-extern 				sig_atomic_t	is_in_execution;
+extern sig_atomic_t	is_in_execution;
 int					check_quotes(char **input, t_minish *manager);
 int					is_between_char(char *str, int index, char quote);
 char				*remove_quotes(char *str);
@@ -76,5 +77,8 @@ char				**split_args_preserving_quotes(char *str);
 char				*get_next_chevron(char *str);
 int					is_between_any_quotes(char *str, int i);
 char				*skip_redir_and_filename(char *str);
+char				*remove_space_before_redir(char *str);
+int					skip_quotes(char *input, int i);
+char				*ft_strjoin_three(char *s1, char *s2, char *s3);
 
 #endif

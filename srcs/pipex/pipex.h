@@ -71,7 +71,7 @@ void					ft_cleanup(t_pipex *pipex);
 
 void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd,
 							t_minish *manager);
-int						ft_here_doc(int fd, char *limiter, t_minish *manager);
+int						ft_here_doc(int fd, char *limiter);
 void					ft_error(char *str);
 char					**ft_custom_split(char const *s, char c,
 							t_minish *manager);

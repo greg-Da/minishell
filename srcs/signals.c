@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/16 11:08:20 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/16 11:17:28 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void handle_sigint(int sig)
 		}
 	}
 }
+void setup_here_doc_signals(void)
+{
+	signal(SIGINT, handle_sigint_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void handle_sigint_heredoc(int sig)
 {
     (void)sig;
