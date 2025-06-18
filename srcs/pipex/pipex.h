@@ -83,8 +83,7 @@ void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd,
 							t_minish *manager);
 int						ft_here_doc(int fd, char *limiter);
 void					ft_error(char *str);
-char					**ft_custom_split(char *s, char c,
-							t_minish *manager);
+char					**ft_custom_split(char *s, char c, t_minish *manager);
 char					**ft_free(char **arr, int j);
 size_t					ft_next_occurence(char const *s, char c, int index);
 char					*ft_remove_slash(char *str, int len);
