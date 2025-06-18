@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 11:37:18 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:55:32 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	free_pipes(char **pipes)
 		free(pipes[i++]);
 	free(pipes);
 }
+
 char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 {
 	char	*res;
@@ -72,6 +73,7 @@ char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 	ft_strlcat(res, s3, len1 + len2 + len3 + 1);
 	return (res);
 }
+
 void	free_split(char **arr)
 {
 	int	i;
