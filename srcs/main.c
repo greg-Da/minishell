@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:46:40 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 13:23:57 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:48:20 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,26 @@ void	increment_shlvl(t_minish *manager)
 	free(shlvl);
 }
 
+int	main_inside(char **envp, t_minish manager)
+{
+	int	i;
+
+	i = -1;
+	while (envp[++i])
+	{
+		manager.envp[i] = ft_strdup(envp[i]);
+		if (!manager.envp[i])
+		{
+			perror("ft_strdup");
+			return (EXIT_FAILURE);
+		}
+	}
+	manager.envp[i] = NULL;
+	increment_shlvl(&manager);
+	while (1)
+		manager.last_ex_code = handle_cmd(&manager);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_minish	manager;
@@ -49,18 +69,5 @@ int	main(int ac, char **av, char **envp)
 		perror("malloc");
 		return (EXIT_FAILURE);
 	}
-	i = -1;
-	while (envp[++i])
-	{
-		manager.envp[i] = ft_strdup(envp[i]);
-		if (!manager.envp[i])
-		{
-			perror("ft_strdup");
-			return (EXIT_FAILURE);
-		}
-	}
-	manager.envp[i] = NULL;
-	increment_shlvl(&manager);
-	while (1)
-		manager.last_ex_code = handle_cmd(&manager);
+	return (main_inside(envp, manager));
 }
