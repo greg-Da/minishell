@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_nsplit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:37:29 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/05/21 14:52:12 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/17 14:16:19 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-// static int	ft_count_words(char const *s, char c)
-// {
-// 	int	count;
-// 	int	in_word;
-
-// 	count = 0;
-// 	in_word = 0;
-// 	while (*s)
-// 	{
-// 		if (*s != c && !in_word)
-// 		{
-// 			in_word = 1;
-// 			count++;
-// 		}
-// 		else if (*s == c)
-// 		{
-// 			in_word = 0;
-// 		}
-// 		s++;
-// 	}
-// 	return (count);
-// }
 
 static size_t	ft_next_occurence(char const *s, char c, int index)
 {

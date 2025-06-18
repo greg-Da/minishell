@@ -23,7 +23,7 @@ typedef struct s_pipex
 	int					*pids;
 	int					pids_size;
 	int					fd[2];
-	int					(*fds)[2];
+	int (*fds)[2];
 	char				**envp;
 	char				**cmd_path;
 	char				***cmd_args;
@@ -66,6 +66,16 @@ typedef struct s_parser
 	int					here_doc;
 	t_minish			*manager;
 }						t_parser;
+typedef struct s_chevron
+{
+	char				*tmp;
+	char				*start;
+	char				*next_chevron;
+	char				chevron;
+	int					append;
+	char				*filename;
+	int					*current_fd;
+}						t_chevron;
 
 void					ft_cleanup(t_pipex *pipex);
 

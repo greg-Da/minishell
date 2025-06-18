@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/16 11:47:48 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/17 14:13:34 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int					get_files(t_parser *info, int i, char **pipes);
 char				*extract_filename(char *tmp);
 int					handle_filename_error(char **pipes, int i, char *tmp,
 						char *start);
-int					open_chevron_fd(char chevron, int *current_fd,
-						char *filename, t_parser *info, int append);
+int					open_chevron_fd(t_chevron stru, t_parser *info);
 
 int					is_unclosed_quotes(char *input);
 int					parser(char **pipes, t_minish *manager, int pipe_nb);

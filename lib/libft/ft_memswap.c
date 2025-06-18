@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memswap.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greg <greg@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:53:58 by greg              #+#    #+#             */
-/*   Updated: 2024/11/29 15:03:16 by greg             ###   ########.fr       */
+/*   Updated: 2025/06/17 14:16:01 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ int	ft_memswap(void *p1, void *p2, size_t size)
 	ft_memcpy(p1, p2, size);
 	ft_memcpy(p2, tmp, size);
 	free(tmp);
-	return(0);
+	return (0);
 }

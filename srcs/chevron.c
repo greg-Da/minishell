@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 13:10:13 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/17 14:12:09 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,52 +54,46 @@ char	*get_next_chevron(char *str)
 
 int	process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 {
-	char	*tmp;
-	char	*start;
-	char	*next_chevron;
-	char	chevron;
-	int		append;
-	char	*filename;
-	int		*current_fd;
+	t_chevron	stru;
 
-	tmp = ft_strdup(pipes[i]);
-	if (!tmp)
+	stru.tmp = ft_strdup(pipes[i]);
+	if (!stru.tmp)
 		return (-1);
-	start = tmp;
-	next_chevron = get_next_chevron(tmp);
+	stru.start = stru.tmp;
+	stru.next_chevron = get_next_chevron(stru.tmp);
 	fd[i][0] = STDIN_FILENO;
 	fd[i][1] = STDOUT_FILENO;
-	while (next_chevron)
+	while (stru.next_chevron)
 	{
-		chevron = *next_chevron;
-		tmp = next_chevron + 1;
-		append = 0;
-		parse_chevron_type(&tmp, chevron, info, &append);
-		next_chevron = get_next_chevron(tmp);
-		filename = extract_filename(tmp);
-		if (!filename)
-			return (free(start), -1);
-		if (!filename[0])
+		stru.chevron = *stru.next_chevron;
+		stru.tmp = stru.next_chevron + 1;
+		stru.append = 0;
+		parse_chevron_type(&stru.tmp, stru.chevron, info, &stru.append);
+		stru.next_chevron = get_next_chevron(stru.tmp);
+		stru.filename = extract_filename(stru.tmp);
+		if (!stru.filename)
+			return (free(stru.start), -1);
+		if (!stru.filename[0])
 		{
-			free(filename);
-			return (handle_filename_error(pipes, i, tmp, start));
+			free(stru.filename);
+			return (handle_filename_error(pipes, i, stru.tmp, stru.start));
 		}
-		current_fd = (chevron == '<') ? &fd[i][0] : &fd[i][1];
-		if (*current_fd != -1 && *current_fd != STDOUT_FILENO
-			&& *current_fd != STDIN_FILENO)
-			close(*current_fd);
-		if (open_chevron_fd(chevron, current_fd, filename, info, append) == -1)
+		stru.current_fd = (stru.chevron == '<') ? &fd[i][0] : &fd[i][1];
+		if (*stru.current_fd != -1 && *stru.current_fd != STDOUT_FILENO
+			&& *stru.current_fd != STDIN_FILENO)
+			close(*stru.current_fd);
+		if (open_chevron_fd(stru, info) == -1)
 		{
-			free(start);
-			free(filename);
+			free(stru.start);
+			free(stru.filename);
 			return (-1);
 		}
-		free(filename);
-		if (*current_fd == -1)
+		free(stru.filename);
+		if (*stru.current_fd == -1)
 			break ;
-		next_chevron = get_next_chevron(tmp);
+		stru.next_chevron = get_next_chevron(stru.tmp);
 	}
-	free(start);
+	free(stru.start);
 	return (0);
 }
 

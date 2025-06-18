@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 13:02:58 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/17 14:13:08 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,51 +55,53 @@ int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
 	return (-1);
 }
 
-int	open_chevron_fd(char chevron, int *current_fd, char *filename,
-		t_parser *info, int append)
+int	open_chevron_fd(t_chevron stru, t_parser *info)
 {
-	if (chevron == '>')
+	int	temp_fd;
+
+	if (stru.chevron == '>')
 	{
-		if (append)
-			*current_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (stru.append)
+			*stru.current_fd = open(stru.filename,
+					O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
-			*current_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (*current_fd == -1)
+			*stru.current_fd = open(stru.filename, O_WRONLY | O_CREAT | O_TRUNC,
+					0644);
+		if (*stru.current_fd == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			perror(filename);
+			perror(stru.filename);
 			info->manager->last_ex_code = 1;
 			return (1);
 		}
 	}
-	else if (chevron == '<')
+	else if (stru.chevron == '<')
 	{
 		if (info->here_doc)
 		{
-			int temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
+			temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (temp_fd == -1)
 			{
 				perror("open");
 				return (-1);
 			}
-			if (ft_here_doc(temp_fd, filename))
+			if (ft_here_doc(temp_fd, stru.filename))
 			{
 				close(temp_fd);
 				unlink("here_doc.txt");
 				return (1);
 			}
 			close(temp_fd);
-			*current_fd = open("here_doc.txt", O_RDONLY);
+			*stru.current_fd = open("here_doc.txt", O_RDONLY);
 		}
 		else
 		{
-			*current_fd = open(filename, O_RDONLY);
+			*stru.current_fd = open(stru.filename, O_RDONLY);
 		}
-		if (*current_fd == -1)
+		if (*stru.current_fd == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			perror(filename);
+			perror(stru.filename);
 			return (-1);
 		}
 	}
