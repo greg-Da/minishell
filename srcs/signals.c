@@ -6,26 +6,26 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/18 13:58:23 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:05:51 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-sig_atomic_t	is_in_execution = 0;
+sig_atomic_t	g_is_in_execution = 0;
 
 void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
-		if (is_in_execution == 0)
+		if (g_is_in_execution == 0)
 		{
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
 		}
-		else if (is_in_execution == 2)
+		else if (g_is_in_execution == 2)
 		{
 			return ;
 		}

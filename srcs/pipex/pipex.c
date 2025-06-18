@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/18 14:01:06 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:05:44 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
 		if (pipex->pids_size - 1 == i)
 			pipex->exit_code = WEXITSTATUS(status);
 	}
-	is_in_execution = 0;
+	g_is_in_execution = 0;
 }
 
 int	pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2])

@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 13:46:22 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:05:44 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ int	handle_cmd_inside(t_minish *manager, char *input)
 		free_pipes(pipes);
 		return (handle_exit(input, manager));
 	}
-	is_in_execution = 1;
+	g_is_in_execution = 1;
 	code = parser(pipes, manager, get_pipe_count(input));
-	is_in_execution = 0;
+	g_is_in_execution = 0;
 	if (code == 130)
 	{
 		free_pipes(pipes);

@@ -93,7 +93,7 @@ void	ft_exec(t_prev prev, t_pipex *pip, int i, char **envp)
 {
 	pid_t	pid;
 
-	is_in_execution = 1;
+	g_is_in_execution = 1;
 	pid = fork();
 	if (pid < 0)
 		ft_error("fork failed");

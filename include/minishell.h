@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 13:33:27 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:05:44 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int					is_valid_identifier(const char *str);
 int					ft_export(t_minish *manager, char *arg);
 int					ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
-extern sig_atomic_t	is_in_execution;
+extern sig_atomic_t	g_is_in_execution;
 int					check_quotes(char **input, t_minish *manager);
 int					is_between_char(char *str, int index, char quote);
 char				*remove_quotes(char *str);
