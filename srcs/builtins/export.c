@@ -6,13 +6,11 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/18 11:38:52 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:12:42 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-
 
 int	is_valid_identifier(const char *str)
 {
