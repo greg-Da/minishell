@@ -29,6 +29,7 @@ SRC = srcs/main.c \
 	srcs/chevron2.c\
 	srcs/expand.c\
 	srcs/skip.c\
+	srcs/file.c\
 	srcs/remove_and_array.c
 
 
@@ -52,7 +53,7 @@ all: lib/libft/libft.a ${NAME}
 
 lib/libft/libft.a:
 		$(call loading_bar, "Building libft")
-		@make -C lib/libft
+		@make -C lib/libft > /dev/null 2>&1
 
 ${NAME}: lib/libft/libft.a ${OBJS}
 		$(call loading_bar, "Building minishell")

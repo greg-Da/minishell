@@ -6,14 +6,13 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 11:31:15 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:34:26 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	parse_chevron_type(char **tmp, char chevron, t_parser *info,
-		int *append)
+int	parse_chevron_type(char **tmp, char chevron, t_parser *info, int *append)
 {
 	if (**tmp == chevron && chevron == '>')
 	{
@@ -42,7 +41,7 @@ char	*get_next_chevron(char *str)
 	while (str[i])
 	{
 		if ((str[i] == '>' || str[i] == '<') && !is_between_char(str, i, '\'')
-				&& !is_between_char(str, i, '\"'))
+			&& !is_between_char(str, i, '\"'))
 		{
 			first = &str[i];
 			break ;
@@ -52,6 +51,14 @@ char	*get_next_chevron(char *str)
 	return (first);
 }
 
+static void	setup(t_chevron *stru, int i, int (*fd)[2])
+{
+	stru->start = stru->tmp;
+	stru->next_chevron = get_next_chevron(stru->tmp);
+	fd[i][0] = STDIN_FILENO;
+	fd[i][1] = STDOUT_FILENO;
+}
+
 int	process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 {
 	t_chevron	stru;
@@ -59,51 +66,22 @@ int	process_chevrons(char **pipes, int i, int (*fd)[2], t_parser *info)
 	stru.tmp = ft_strdup(pipes[i]);
 	if (!stru.tmp)
 		return (-1);
-	stru.start = stru.tmp;
-	stru.next_chevron = get_next_chevron(stru.tmp);
-	fd[i][0] = STDIN_FILENO;
-	fd[i][1] = STDOUT_FILENO;
+	setup(&stru, i, fd);
 	while (stru.next_chevron)
 	{
-		stru.chevron = *stru.next_chevron;
-		stru.tmp = stru.next_chevron + 1;
-		stru.append = 0;
-		parse_chevron_type(&stru.tmp, stru.chevron, info, &stru.append);
-		stru.next_chevron = get_next_chevron(stru.tmp);
-		stru.filename = extract_filename(stru.tmp);
-		if (!stru.filename)
-			return (free(stru.start), -1);
+		if (get_filename(&stru, info) == -1)
+			return (-1);
 		if (!stru.filename[0])
 		{
 			free(stru.filename);
 			return (handle_filename_error(pipes, i, stru.tmp, stru.start));
 		}
-		stru.current_fd = (stru.chevron == '<') ? &fd[i][0] : &fd[i][1];
-		if (*stru.current_fd != -1 && *stru.current_fd != STDOUT_FILENO
-			&& *stru.current_fd != STDIN_FILENO)
-			close(*stru.current_fd);
-		if (open_chevron_fd(stru, info) == -1)
-		{
-			free(stru.start);
-			free(stru.filename);
+		if (redir_to_file(&stru, fd, i, info) == -1)
 			return (-1);
-		}
-		free(stru.filename);
 		if (*stru.current_fd == -1)
 			break ;
 		stru.next_chevron = get_next_chevron(stru.tmp);
 	}
 	free(stru.start);
 	return (0);
-}
-
-int	get_files(t_parser *info, int i, char **pipes)
-{
-	if (process_chevrons(pipes, i, info->fd, info) == -1)
-	{
-		info->fd[i][0] = -1;
-		info->fd[i][1] = -1;
-		return (-1);
-	}
-	return (1);
 }

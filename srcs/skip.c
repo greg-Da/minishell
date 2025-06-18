@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 11:39:52 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/18 11:41:39 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:00:19 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ static char	*parse_str(char *input, char *res, int *i, int *j)
 			if (input[*i] == '\'' || input[*i] == '"')
 				*i = skip_quotes(input, *i);
 			else
-			{
 				while (input[*i] && !ft_include(input[*i], " \t\n\r\v><"))
 					(*i)++;
-			}
 			while (input[*i] && ft_include(input[*i], " \t\n\r\v"))
 				(*i)++;
 			if (*j > 0 && input[*i] && res[*j - 1] != ' ')

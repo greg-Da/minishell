@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/17 14:13:34 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:33:27 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,13 @@ char				*skip_redir_and_filename(char *str);
 char				*remove_space_before_redir(char *str);
 int					skip_quotes(char *input, int i);
 char				*ft_strjoin_three(char *s1, char *s2, char *s3);
+int					get_filename(t_chevron *stru, t_parser *info);
+int					get_files(t_parser *info, int i, char **pipes);
+int					redir_to_file(t_chevron *stru, int (*fd)[2], int i,
+						t_parser *info);
+int					parse_chevron_type(char **tmp, char chevron, t_parser *info,
+						int *append);
+int					process_chevrons(char **pipes, int i, int (*fd)[2],
+						t_parser *info);
 
 #endif
