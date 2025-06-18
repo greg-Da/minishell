@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 13:07:45 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 14:37:09 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:16:10 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,6 @@ int	get_home(t_minish *manager)
 	return (0);
 }
 
-
-
-static int	handle_go_home(t_minish *manager, char *pwd)
-{
-	char	*new_pwd;
-
-	if (get_home(manager) == 1)
-		return (1);
-	new_pwd = getcwd(NULL, 0);
-	update_pwd(new_pwd, pwd, manager);
-	free(pwd);
-	free(new_pwd);
-	return (0);
-}
-
-
 int	ft_cd(char **path, t_minish *manager)
 {
 	char	*pwd;
@@ -100,7 +84,7 @@ int	ft_cd(char **path, t_minish *manager)
 	if (status != -1)
 		return (status);
 	if (chdir(path[1]) == 0)
-		status = handle_default(path, pwd, manager);
+		status = handle_default(path, pwd, status, manager);
 	else
 	{
 		perror("cd");

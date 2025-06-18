@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 14:05:44 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:27:28 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,15 @@ int					parse_chevron_type(char **tmp, char chevron, t_parser *info,
 						int *append);
 int					process_chevrons(char **pipes, int i, int (*fd)[2],
 						t_parser *info);
+int					handle_special(char **path, t_minish *manager, char *pwd);
+int					handle_default(char **path, char *pwd, int status,
+						t_minish *manager);
+void				get_logical_parent(char *pwd, t_minish *manager);
+int					get_home(t_minish *manager);
+int					handle_go_back(char *cur, t_minish *manager);
+void				update_pwd(char *pwd, char *old_pwd, t_minish *manager);
+int					is_echo(const char *str);
+int					handle_exit(char *input, t_minish *manager);
+int					get_pipe_count(char *input);
 
 #endif

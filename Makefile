@@ -17,12 +17,14 @@ SRC = srcs/main.c \
 	srcs/builtins/env.c\
 	srcs/builtins/echo.c\
 	srcs/builtins/cd.c\
+	srcs/builtins/cd2.c\
 	srcs/builtins/export.c\
 	srcs/builtins/unset.c\
 	srcs/signals.c\
 	srcs/pipes.c\
 	srcs/utils.c\
-	srcs/interface.c\
+	srcs/handle_exit.c\
+	srcs/handle_cmd.c\
 	srcs/heredoc_quotes.c\
 	srcs/quotes.c\
 	srcs/chevron.c\

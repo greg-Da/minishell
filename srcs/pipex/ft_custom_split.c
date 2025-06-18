@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/18 12:39:25 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:18:17 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,6 @@ size_t	ft_get_str(const char *s, char c, t_custom_split *stru, char **arr)
 	next = ft_next_occurence(s, c, stru->i) - stru->i;
 	arr[stru->j] = ft_substr(s, (unsigned int)stru->i, next);
 	return (next);
-}
-
-int	is_echo(const char *str)
-{
-	while (*str == ' ')
-		str++;
-	if (!ft_strncmp((char *)str, "echo", 4))
-		return (1);
-	return (0);
 }
 
 char	**ft_custom_split(char *s, char c, t_minish *manager)

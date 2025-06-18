@@ -6,11 +6,24 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:33:02 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/18 14:37:28 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:14:56 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static int	handle_go_home(t_minish *manager, char *pwd)
+{
+	char	*new_pwd;
+
+	if (get_home(manager) == 1)
+		return (1);
+	new_pwd = getcwd(NULL, 0);
+	update_pwd(new_pwd, pwd, manager);
+	free(pwd);
+	free(new_pwd);
+	return (0);
+}
 
 int	handle_special(char **path, t_minish *manager, char *pwd)
 {
@@ -25,12 +38,12 @@ int	handle_special(char **path, t_minish *manager, char *pwd)
 	return (-1);
 }
 
-int	handle_default(char **path, char *pwd, t_minish *manager)
+int	handle_default(char **path, char *pwd, int status, t_minish *manager)
 {
 	char	*new_pwd;
 	char	*tmp;
-	int		status;
 
+	status = 0;
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 	{

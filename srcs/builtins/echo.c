@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:37 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 14:10:57 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:18:43 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@ int	check_new_line_flag(char **cmd, int *i)
 		}
 	}
 	return (1);
+}
+
+int	is_echo(const char *str)
+{
+	while (*str == ' ')
+		str++;
+	if (!ft_strncmp((char *)str, "echo", 4))
+		return (1);
+	return (0);
 }
 
 void	ft_echo(char **cmd)
