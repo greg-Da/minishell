@@ -5,7 +5,8 @@
         "stdint.h": "c",
         "stdio.h": "c",
         "type_traits": "c",
-        "wait.h": "c"
+        "wait.h": "c",
+        "minish_types.h": "c"
     },
     "makefile.configureOnOpen": false
 }

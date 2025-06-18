@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:16:14 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/05 18:34:38 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:12:00 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,11 @@ typedef struct s_minish
 	int		add_history;
 	int		nb_cmds;
 }			t_minish;
+
+typedef struct s_input
+{
+	char	*input;
+	int		*i;
+}			t_input;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:50:26 by quentin           #+#    #+#             */
-/*   Updated: 2025/06/18 11:09:14 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:18:48 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*expand_variable(char *var_name, t_minish *manager)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
 }
+
 static int	handle_dollar_question(char *result, int j, t_minish *manager)
 {
 	char	*var_value;
@@ -49,8 +50,7 @@ static int	handle_dollar_question(char *result, int j, t_minish *manager)
 	return (j);
 }
 
-static int	handle_dollar_variable(char *input, int *i, char *result, int j,
-		t_minish *manager)
+static int	handle_dollar(t_input input, char *result, int j, t_minish *manager)
 {
 	char	var_name[256];
 	char	*var_value;
@@ -58,8 +58,9 @@ static int	handle_dollar_variable(char *input, int *i, char *result, int j,
 	int		k;
 
 	k = 0;
-	while ((ft_isalnum(input[*i]) || input[*i] == '_') && k < 255)
-		var_name[k++] = input[(*i)++];
+	while ((ft_isalnum(input.input[*input.i]) || input.input[*input.i] == '_')
+		&& k < 255)
+		var_name[k++] = input.input[(*input.i)++];
 	var_name[k] = '\0';
 	var_value = expand_variable(var_name, manager);
 	if (var_value)
@@ -82,29 +83,31 @@ static int	handle_other_dollar_cases(char *input, int *i, char *result, int j)
 	return (j);
 }
 
-char	*expand_string(char *input, t_minish *manager)
+char	*expand_string(char *input, t_minish *m)
 {
-	char	result[2048] = {0};
-	int		i;
-	int		j;
+	char	result[2048];
+	int		i[2];
 
-	i = 0;
-	j = 0;
-	while (input[i])
+	i[0] = 0;
+	i[1] = 0;
+	while (input[i[0]])
 	{
-		if (input[i] == '$' && !is_between_char(input, i, '\''))
+		if (input[i[0]] == '$' && !is_between_char(input, i[0], '\''))
 		{
-			i++;
-			if (input[i] == '?')
-				j = handle_dollar_question(result, j, manager), i++;
-			else if (ft_isalpha(input[i]) || input[i] == '_')
-				j = handle_dollar_variable(input, &i, result, j, manager);
+			i[0]++;
+			if (input[i[0]] == '?')
+			{
+				i[1] = handle_dollar_question(result, i[1], m);
+				i[0]++;
+			}
+			else if (ft_isalpha(input[i[0]]) || input[i[0]] == '_')
+				i[1] = handle_dollar((t_input){input, &i[0]}, result, i[1], m);
 			else
-				j = handle_other_dollar_cases(input, &i, result, j);
+				i[1] = handle_other_dollar_cases(input, &i[0], result, i[1]);
 		}
-		else if ((size_t)(j + 1) < 2048)
-			result[j++] = input[i++];
+		else if ((size_t)(i[1] + 1) < 2048)
+			result[i[1]++] = input[i[0]++];
 	}
-	result[j] = '\0';
+	result[i[1]] = '\0';
 	return (ft_strdup(result));
 }

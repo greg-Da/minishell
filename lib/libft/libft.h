@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:09:04 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/18 12:51:08 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:33:39 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int					ft_strncmp(char *s1, char *s2, unsigned int n);
 int					ft_lstsize(t_list *lst);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_putchar_fd(char c, int fd);
-void				ft_putstr_fd(char *s, int fd);
+int					ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
