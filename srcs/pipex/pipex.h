@@ -103,5 +103,7 @@ int						get_outfile(t_parser *info, char **pipes, int i);
 int						get_infile(t_parser *info, char **pipes, int i, int j);
 int						is_builtins(char *str);
 void					reset_parser_fds(t_parser *info);
+void					ft_manage_exec(t_pipex *pipex, t_prev *prev,
+							char **envp);
 
 #endif

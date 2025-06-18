@@ -12,6 +12,7 @@ SRC = srcs/main.c \
 	srcs/pipex/fct_utils.c\
 	srcs/pipex/invalid.c\
 	srcs/pipex/exec_unix.c\
+	srcs/pipex/exec_loop.c\
 	srcs/pipex/init_struct.c\
 	srcs/builtins/pwd.c\
 	srcs/builtins/env.c\

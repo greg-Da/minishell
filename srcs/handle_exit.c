@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 15:26:44 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:37:02 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,3 @@ int	handle_exit(char *input, t_minish *manager)
 	}
 	return (handle_exit_inside(input, manager));
 }
-
-
-
-
-
-
