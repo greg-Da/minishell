@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:36:29 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 11:19:34 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	get_cmd(t_parser *info, char *pipe, int j)
 		exit(EXIT_FAILURE);
 	}
 }
+
 static int	process_single_pipe(t_parser *info, char **pipes, t_minish *manager,
 		int *cmd_index, int pipe_index)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 13:03:55 by gdalmass          #+#    #+#             */
-/*   Updated: 2024/11/19 13:04:44 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:06:56 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	*ft_strndup(char *src, size_t n)
 {
 	char	*str;
-	size_t		i;
-	size_t		length;
+	size_t	i;
+	size_t	length;
 
 	i = 0;
 	if (!src)
@@ -24,7 +24,7 @@ char	*ft_strndup(char *src, size_t n)
 	length = (size_t)ft_strlen(src);
 	if (n < length)
 		length = n;
-	str = malloc ((length + 1) * sizeof(char));
+	str = malloc((length + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	while (i < length)

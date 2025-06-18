@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:37:29 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/05 13:18:13 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 11:17:14 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static char	**ft_free(char **arr, int j)
 
 char	**ft_split(char const *s, char c)
 {
-	int		count;
-	int		i;
-	int		j;
+	int	count;
+	int	i;
+	int	j;
 	char	**arr;
 
 	if (!s)

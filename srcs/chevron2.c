@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 13:02:58 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 11:09:04 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
 int	open_chevron_fd(char chevron, int *current_fd, char *filename,
 		t_parser *info, int append)
 {
+	int	temp_fd;
+
 	if (chevron == '>')
 	{
 		if (append)
@@ -76,8 +78,7 @@ int	open_chevron_fd(char chevron, int *current_fd, char *filename,
 	{
 		if (info->here_doc)
 		{
-			int temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
+			temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (temp_fd == -1)
 			{
 				perror("open");

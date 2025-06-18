@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_quotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:49:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/11 17:35:24 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 11:15:40 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,12 @@ void	close_quotes(t_quotes *quotes, char **input)
 
 char	*remove_quotes(char *str)
 {
-	int i;
-	int j = 0;
-	char *result;
-	char quote_type;
+	int		i;
+	int		j;
+	char	*result;
+	char	quote_type;
 
+	j = 0;
 	if (!str)
 		return (NULL);
 	result = get_res_size(str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:08:00 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 13:10:13 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 11:18:13 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*get_next_chevron(char *str)
 	while (str[i])
 	{
 		if ((str[i] == '>' || str[i] == '<') && !is_between_char(str, i, '\'')
-				&& !is_between_char(str, i, '\"'))
+			&& !is_between_char(str, i, '\"'))
 		{
 			first = &str[i];
 			break ;
