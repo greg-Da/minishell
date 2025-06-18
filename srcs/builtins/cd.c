@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 13:07:45 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 12:42:23 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:23:05 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	handle_default(char **path, char *pwd, t_minish *manager)
 			tmp = ft_strjoin(pwd, "/..");
 			update_pwd(tmp, pwd, manager);
 			free(tmp);
-			perror("cd: error retrieving current directory: getcwd: cannot access parent directories");
+			perror("cd: error retrieving current directory");
 			status = 1;
 		}
 		else

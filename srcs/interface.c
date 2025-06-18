@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:43:26 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 13:34:06 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:05:44 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	get_pipe_count(char *input)
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && is_between_char(input, i, '\'') == 0
-				&& is_between_char(input, i, '"') == 0)
-			count++;
+		if (input[i] == '|' && is_between_char(input, i, '\'') == 0)
+			if (is_between_char(input, i, '"') == 0)
+				count++;
 		i++;
 	}
 	return (count);
@@ -56,19 +56,12 @@ static int	handle_err_exit(char *input, char *start)
 	return (0);
 }
 
-static int	handle_exit(char *input, t_minish *manager)
+static int	handle_exit_inside(char *input, t_minish *manager)
 {
+	int		err;
 	char	*tmp;
 	int		res;
-	int		err;
 
-	if (!input)
-	{
-		if (manager->last_cmd)
-			free(manager->last_cmd);
-		write(1, "exit\n", 5);
-		exit(0);
-	}
 	tmp = expand_string(input, manager);
 	tmp = remove_quotes(tmp);
 	free(input);
@@ -89,6 +82,18 @@ static int	handle_exit(char *input, t_minish *manager)
 	if (manager->last_cmd)
 		free(manager->last_cmd);
 	exit(res);
+}
+
+static int	handle_exit(char *input, t_minish *manager)
+{
+	if (!input)
+	{
+		if (manager->last_cmd)
+			free(manager->last_cmd);
+		write(1, "exit\n", 5);
+		exit(0);
+	}
+	return (handle_exit_inside(input, manager));
 }
 
 static void	maybe_add_history(char **input, t_minish *manager, int is_unclosed)
@@ -119,15 +124,38 @@ static char	*get_input_line(t_minish *manager)
 	return (input);
 }
 
+int	handle_cmd_inside(t_minish *manager, char *input)
+{
+	int		code;
+	char	**pipes;
+
+	pipes = NULL;
+	pipes = get_pipes(input, manager);
+	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
+	{
+		free_pipes(pipes);
+		return (handle_exit(input, manager));
+	}
+	g_is_in_execution = 1;
+	code = parser(pipes, manager, get_pipe_count(input));
+	g_is_in_execution = 0;
+	if (code == 130)
+	{
+		free_pipes(pipes);
+		free(input);
+		return (130);
+	}
+	free_pipes(pipes);
+	free(input);
+	return (code);
+}
+
 int	handle_cmd(t_minish *manager)
 {
 	char	*input;
-	char	**pipes;
-	int		code;
 	int		is_unclosed;
 	char	*tmp;
 
-	pipes = NULL;
 	input = get_input_line(manager);
 	if (!input)
 		return (0);
@@ -139,22 +167,5 @@ int	handle_cmd(t_minish *manager)
 	free(manager->last_cmd);
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);
-	pipes = get_pipes(input, manager);
-	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
-	{
-		free_pipes(pipes);
-		return (handle_exit(input, manager));
-	}
-	is_in_execution = 1;
-	code = parser(pipes, manager, get_pipe_count(input));
-	is_in_execution = 0;
-	if (code == 130)
-	{
-		free_pipes(pipes);
-		free(input);
-		return (130);
-	}
-	free_pipes(pipes);
-	free(input);
-	return (code);
+	return (handle_cmd_inside(manager, input));
 }

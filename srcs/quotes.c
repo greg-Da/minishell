@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 11:21:44 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:55:57 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,8 @@ char	*strip_quotes(char *str)
 	i = 0;
 	j = 0;
 	while (str[i])
-	{
-		if (str[i] != '"' && str[i] != '\'')
+		if (str[i++] != '"' && str[i - 1] != '\'')
 			len++;
-		i++;
-	}
 	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
@@ -114,6 +111,7 @@ int	is_between_char(char *str, int index, char quote)
 	}
 	return (in_quote);
 }
+
 char	**split_args_preserving_quotes(char *str)
 {
 	char	**args;

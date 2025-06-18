@@ -23,7 +23,7 @@ typedef struct s_pipex
 	int					*pids;
 	int					pids_size;
 	int					fd[2];
-	int (*fds)[2];
+	int					(*fds)[2];
 	char				**envp;
 	char				**cmd_path;
 	char				***cmd_args;
@@ -56,7 +56,7 @@ typedef struct s_pip_quotes
 typedef struct s_parser
 {
 	int					res;
-	int (*fd)[2];
+	int					(*fd)[2];
 	int					index[2];
 	char				*chevron;
 	char				*files[2];
@@ -66,6 +66,7 @@ typedef struct s_parser
 	int					here_doc;
 	t_minish			*manager;
 }						t_parser;
+
 typedef struct s_chevron
 {
 	char				*tmp;
@@ -83,8 +84,7 @@ void					ft_init_struct(t_pipex *pipex, int nmb, char **cmd,
 							t_minish *manager);
 int						ft_here_doc(int fd, char *limiter);
 void					ft_error(char *str);
-char					**ft_custom_split(char *s, char c,
-							t_minish *manager);
+char					**ft_custom_split(char *s, char c, t_minish *manager);
 char					**ft_free(char **arr, int j);
 size_t					ft_next_occurence(char const *s, char c, int index);
 char					*ft_remove_slash(char *str, int len);
