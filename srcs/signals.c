@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/18 11:09:55 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:58:23 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	handle_sigint(int sig)
 		}
 	}
 }
+
 void	setup_here_doc_signals(void)
 {
 	signal(SIGINT, handle_sigint_heredoc);
