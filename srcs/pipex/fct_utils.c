@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fct_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/03 08:20:16 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 14:25:36 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ char	*ft_remove_slash(char *str, int len)
 		return (str);
 	while (i < len)
 	{
-		if (str[i] == '\\' && (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i
-				+ 1] == '\\'))
+		if (str[i] == '\\' && (str[i + 1] == '\''
+				|| str[i + 1] == '\"' || str[i + 1] == '\\'))
 			i++;
 		if (i < len)
 			str[j++] = str[i++];
