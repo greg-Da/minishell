@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/18 14:04:46 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:15:35 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	here_doc_loop(int write_fd, char *delim)
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
-				delim);
+			printf("minishell: warning: here-document delimited by ");
+			printf("end-of-file (wanted `%s')\n", delim);
 			exit(0);
 		}
 		if (ft_strcmp(line, delim) == 0)
@@ -34,6 +34,7 @@ static void	here_doc_loop(int write_fd, char *delim)
 		free(line);
 	}
 }
+
 static int	wait_here_doc_child(int pid, int write_fd)
 {
 	int	status;
@@ -50,6 +51,7 @@ static int	wait_here_doc_child(int pid, int write_fd)
 	}
 	return (0);
 }
+
 int	ft_here_doc(int write_fd, char *delim)
 {
 	pid_t	pid;
