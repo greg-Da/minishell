@@ -22,6 +22,7 @@ SRC = srcs/main.c \
 	srcs/signals.c\
 	srcs/pipes.c\
 	srcs/utils.c\
+	srcs/utils2.c\
 	srcs/interface.c\
 	srcs/heredoc_quotes.c\
 	srcs/quotes.c\
@@ -53,7 +54,7 @@ all: lib/libft/libft.a ${NAME}
 
 lib/libft/libft.a:
 		$(call loading_bar, "Building libft")
-		@make -C lib/libft > /dev/null 2>&1
+		@make -C lib/libft 
 
 ${NAME}: lib/libft/libft.a ${OBJS}
 		$(call loading_bar, "Building minishell")

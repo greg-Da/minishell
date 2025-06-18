@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 14:05:44 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:30:18 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,5 @@ int					parse_chevron_type(char **tmp, char chevron, t_parser *info,
 						int *append);
 int					process_chevrons(char **pipes, int i, int (*fd)[2],
 						t_parser *info);
-
+void				display_err(char *str);
 #endif

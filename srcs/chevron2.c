@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 14:26:34 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:28:39 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,6 @@ char	*extract_filename(char *input)
 	res = ft_substr(trimmed, 0, i);
 	free(trimmed);
 	return (remove_quotes(res));
-}
-
-void	display_err(char *str)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("'\n", 2);
 }
 
 int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
