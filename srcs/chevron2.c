@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 13:28:38 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:26:34 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ char	*extract_filename(char *input)
 	return (remove_quotes(res));
 }
 
+void	display_err(char *str)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("'\n", 2);
+}
+
 int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
 {
 	char	*next;
@@ -47,57 +54,68 @@ int	handle_filename_error(char **pipes, int i, char *tmp, char *start)
 		ft_putstr_fd("'\n", 2);
 	}
 	else if (pipes[i + 1])
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+		display_err("|");
 	else
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-			2);
+		display_err("newline");
 	free(start);
 	return (-1);
 }
 
-int	open_chevron_fd(t_chevron stru, t_parser *info)
+static int	handle_redir_to(t_chevron *stru, t_parser *info)
+{
+	if (stru->append)
+		*stru->current_fd = open(stru->filename, O_WRONLY | O_CREAT | O_APPEND,
+				0644);
+	else
+		*stru->current_fd = open(stru->filename, O_WRONLY | O_CREAT | O_TRUNC,
+				0644);
+	if (*stru->current_fd == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(stru->filename);
+		info->manager->last_ex_code = 1;
+		return (1);
+	}
+	return (0);
+}
+
+static int	handle_here_doc(t_chevron *stru)
 {
 	int	temp_fd;
 
+	temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (temp_fd == -1)
+	{
+		perror("open");
+		return (-1);
+	}
+	if (ft_here_doc(temp_fd, stru->filename))
+	{
+		close(temp_fd);
+		unlink("here_doc.txt");
+		return (1);
+	}
+	close(temp_fd);
+	*stru->current_fd = open("here_doc.txt", O_RDONLY);
+	return (0);
+}
+
+int	open_chevron_fd(t_chevron stru, t_parser *info)
+{
 	if (stru.chevron == '>')
 	{
-		if (stru.append)
-			*stru.current_fd = open(stru.filename,
-					O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			*stru.current_fd = open(stru.filename, O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
-		if (*stru.current_fd == -1)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			perror(stru.filename);
-			info->manager->last_ex_code = 1;
+		if (handle_redir_to(&stru, info))
 			return (1);
-		}
 	}
 	else if (stru.chevron == '<')
 	{
 		if (info->here_doc)
 		{
-			temp_fd = open("here_doc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (temp_fd == -1)
-			{
-				perror("open");
-				return (-1);
-			}
-			if (ft_here_doc(temp_fd, stru.filename))
-			{
-				close(temp_fd);
-				unlink("here_doc.txt");
+			if (handle_here_doc(&stru))
 				return (1);
-			}
-			close(temp_fd);
-			*stru.current_fd = open("here_doc.txt", O_RDONLY);
 		}
 		else
-		{
 			*stru.current_fd = open(stru.filename, O_RDONLY);
-		}
 		if (*stru.current_fd == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
