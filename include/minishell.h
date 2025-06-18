@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 15:27:28 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:30:14 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ void				update_pwd(char *pwd, char *old_pwd, t_minish *manager);
 int					is_echo(const char *str);
 int					handle_exit(char *input, t_minish *manager);
 int					get_pipe_count(char *input);
-
+void				display_err(char *str);
 #endif
