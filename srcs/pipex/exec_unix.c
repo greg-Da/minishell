@@ -28,12 +28,20 @@ void	handle_exec_fail(int *std, int i, t_pipex *pip, t_prev prev)
 	exit(pip->exit_code);
 }
 
-void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
+void	exec_builtins(t_pipex *pip, int i, int std[2])
 {
-	int	std[2];
+	if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
+		pwd(pip->manager);
+	else if (!ft_strncmp(pip->cmd_args[i][0], "env", 3))
+		ft_env(pip);
+	else if (!ft_strncmp(pip->cmd_args[i][0], "echo", 4))
+		ft_echo(pip->cmd_args[i]);
+	default_std(std);
+	exit(0);
+}
 
-	std[0] = dup(STDIN_FILENO);
-	std[1] = dup(STDOUT_FILENO);
+void	handle_stdin(t_pipex *pip, t_prev prev)
+{
 	if (pip->fds[prev.i][0] != STDIN_FILENO)
 	{
 		if (pip->fds[prev.i][0] == -1)
@@ -43,9 +51,11 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 			close(pip->fds[prev.i][0]);
 	}
 	else if (prev.in != STDIN_FILENO && prev.in != -1)
-	{
 		dup2(prev.in, STDIN_FILENO);
-	}
+}
+
+void	handle_stdout(t_pipex *pip, t_prev prev, int std[2])
+{
 	if (pip->fds[prev.i][1] != STDOUT_FILENO)
 	{
 		if (pip->fds[prev.i][1] == -1)
@@ -58,24 +68,23 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 			close(pip->fds[prev.i][1]);
 	}
 	else if (prev.out != STDOUT_FILENO)
-	{
 		dup2(prev.out, STDOUT_FILENO);
-	}
+}
+
+void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
+{
+	int	std[2];
+
+	std[0] = dup(STDIN_FILENO);
+	std[1] = dup(STDOUT_FILENO);
+	handle_stdin(pip, prev);
+	handle_stdout(pip, prev, std);
 	if (prev.in != STDIN_FILENO)
 		close(prev.in);
 	if (prev.out != STDOUT_FILENO)
 		close(prev.out);
 	if (is_builtins(pip->cmd_args[i][0]))
-	{
-		if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
-			pwd(pip->manager);
-		else if (!ft_strncmp(pip->cmd_args[i][0], "env", 3))
-			ft_env(pip);
-		else if (!ft_strncmp(pip->cmd_args[i][0], "echo", 4))
-			ft_echo(pip->cmd_args[i]);
-		default_std(std);
-		exit(0);
-	}
+		exec_builtins(pip, i, std);
 	if (execve(pip->cmd_path[i], pip->cmd_args[i], envp) == -1)
 		handle_exec_fail(std, i, pip, prev);
 }
