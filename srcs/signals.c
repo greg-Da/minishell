@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/16 13:13:40 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 11:09:55 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 sig_atomic_t	is_in_execution = 0;
 
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -27,21 +27,21 @@ void handle_sigint(int sig)
 		}
 		else if (is_in_execution == 2)
 		{
-			return;
+			return ;
 		}
 	}
 }
-void setup_here_doc_signals(void)
+void	setup_here_doc_signals(void)
 {
 	signal(SIGINT, handle_sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void handle_sigint_heredoc(int sig)
+void	handle_sigint_heredoc(int sig)
 {
-    (void)sig;
-    write(1, "\n", 1);
-    exit(1);
+	(void)sig;
+	write(1, "\n", 1);
+	exit(1);
 }
 
 void	init_signals(void)
@@ -58,4 +58,3 @@ void	init_signals(void)
 	sa_quit.sa_flags = 0;
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
-

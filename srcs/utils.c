@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/16 11:44:32 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 11:10:11 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,3 @@ char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 	ft_strlcat(res, s3, len1 + len2 + len3 + 1);
 	return (res);
 }
-
-
-
-
-
