@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_custom_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:08:24 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/11 17:31:33 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/18 12:39:25 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	is_echo(const char *str)
 	return (0);
 }
 
-char	**ft_custom_split(char const *s, char c, t_minish *manager)
+char	**ft_custom_split(char *s, char c, t_minish *manager)
 {
 	t_custom_split	stru;
 	char			**arr;
