@@ -25,6 +25,7 @@ SRC = srcs/main.c \
 	srcs/pipes.c\
 	srcs/utils.c\
 	srcs/utils2.c\
+	srcs/utils3.c\
 	srcs/handle_exit.c\
 	srcs/handle_cmd.c\
 	srcs/heredoc_quotes.c\

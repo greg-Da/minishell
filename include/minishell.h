@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 16:52:07 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:57:51 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,8 @@ void				ft_free_array(char **arr);
 void				free_args(char **args);
 void				count_args_inside(char *str, int *in_quote, char *quote,
 						int *i);
-
+void				handle_exec_fail(int *std, int i, t_pipex *pip,
+						t_prev prev);
+void				default_std(int *std);
+void				ft_exec(t_prev prev, t_pipex *pip, int i, char **envp);
 #endif

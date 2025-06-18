@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:17:58 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/18 15:42:02 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:50:12 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ int	exit_case(t_prev *prev, t_pipex *pipex)
 			return (1);
 	}
 	return (0);
+}
+
+void	ft_manage_exec(t_pipex *pipex, t_prev *prev, char **envp)
+{
+	if (prev->i == pipex->cmd_count - 1)
+		prev->out = pipex->fds[pipex->cmd_count - 1][1];
+	else
+		prev->out = pipex->fd[1];
+	ft_exec(*prev, pipex, prev->i, envp);
 }
 
 void	ft_loop(t_pipex *pipex, t_prev *prev, char **envp)

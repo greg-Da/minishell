@@ -12,22 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	default_std(int *std)
-{
-	dup2(std[0], STDIN_FILENO);
-	dup2(std[1], STDOUT_FILENO);
-	close(std[0]);
-	close(std[1]);
-}
-
-void	handle_exec_fail(int *std, int i, t_pipex *pip, t_prev prev)
-{
-	default_std(std);
-	(void)i;
-	ft_invalid_cmd(pip, &prev);
-	exit(pip->exit_code);
-}
-
 void	exec_builtins(t_pipex *pip, int i, int std[2])
 {
 	if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
@@ -107,13 +91,4 @@ void	ft_exec(t_prev prev, t_pipex *pip, int i, char **envp)
 	pip->pids = ft_realloc(pip->pids, (pip->pids_size) * sizeof(int),
 			(pip->pids_size + 1) * sizeof(int));
 	pip->pids[pip->pids_size - 1] = pid;
-}
-
-void	ft_manage_exec(t_pipex *pipex, t_prev *prev, char **envp)
-{
-	if (prev->i == pipex->cmd_count - 1)
-		prev->out = pipex->fds[pipex->cmd_count - 1][1];
-	else
-		prev->out = pipex->fd[1];
-	ft_exec(*prev, pipex, prev->i, envp);
 }
