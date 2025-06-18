@@ -6,110 +6,103 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 13:55:57 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:51:24 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*strip_quotes(char *str)
+char	*extract_arg(char *str, int len)
 {
-	int		len;
-	char	*res;
-	int		i;
+	char	*arg;
 	int		j;
 
-	len = 0;
-	i = 0;
+	arg = malloc(len + 1);
 	j = 0;
-	while (str[i])
-		if (str[i++] != '"' && str[i - 1] != '\'')
-			len++;
-	res = malloc(len + 1);
-	if (!res)
+	if (!arg)
 		return (NULL);
+	while (j < len)
+	{
+		arg[j] = str[j];
+		j++;
+	}
+	arg[j] = '\0';
+	return (arg);
+}
+
+int	get_arg_length(char *str)
+{
+	int		in_quote;
+	char	quote;
+	int		i;
+
+	in_quote = 0;
+	quote = 0;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != '"' && str[i] != '\'')
-			res[j++] = str[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
-}
-
-int	is_unclosed_quotes(char *input)
-{
-	int	i;
-	int	single_quote;
-	int	double_quote;
-
-	i = 0;
-	single_quote = 0;
-	double_quote = 0;
-	while (input[i])
-	{
-		if (input[i] == '\'' && double_quote == 0)
-			single_quote = ft_abs(single_quote - 1);
-		else if (input[i] == '"' && single_quote == 0)
-			double_quote = ft_abs(double_quote - 1);
-		i++;
-	}
-	if (single_quote || double_quote)
-		return (1);
-	return (0);
-}
-
-char	*first_quotes(char *a, char *b)
-{
-	if (a == NULL)
-		return (b);
-	if (b == NULL)
-		return (a);
-	if (a <= b)
-		return (a);
-	return (b);
-}
-
-int	check_quotes(char **input, t_minish *manager)
-{
-	char		*d_quotes;
-	char		*s_quotes;
-	t_quotes	quotes;
-
-	(void)manager;
-	s_quotes = ft_strchr(*input, '\'');
-	d_quotes = ft_strchr(*input, '"');
-	while (d_quotes || s_quotes)
-	{
-		quotes.open = first_quotes(s_quotes, d_quotes);
-		quotes.close = ft_strchr(quotes.open + 1, *quotes.open);
-		if (!quotes.close)
+		if (!in_quote && (str[i] == '\'' || str[i] == '"'))
 		{
-			close_quotes(&quotes, input);
-			return (1);
+			in_quote = 1;
+			quote = str[i++];
 		}
-		s_quotes = ft_strchr(quotes.close + 1, '\'');
-		d_quotes = ft_strchr(quotes.close + 1, '"');
+		else if (in_quote && str[i] == quote)
+		{
+			in_quote = 0;
+			i++;
+		}
+		else if (!in_quote && ft_is_space(str[i]))
+			break ;
+		else
+			i++;
 	}
-	return (0);
+	return (i);
 }
 
-int	is_between_char(char *str, int index, char quote)
+int	fill_args_array(char *str, char **args)
 {
-	int	i;
-	int	in_quote;
+	int	arg_idx;
+	int	len;
 
-	i = 0;
-	in_quote = 0;
-	while (str[i] && i < index)
+	arg_idx = 0;
+	while (*str)
 	{
-		if (str[i] == quote)
-			in_quote = !in_quote;
-		i++;
+		while (ft_is_space(*str))
+			str++;
+		if (!*str)
+			break ;
+		len = get_arg_length(str);
+		args[arg_idx] = extract_arg(str, len);
+		if (!args[arg_idx])
+			return (0);
+		str += len;
+		arg_idx++;
 	}
-	return (in_quote);
+	args[arg_idx] = NULL;
+	return (1);
+}
+
+int	count_args(char *str)
+{
+	int		i;
+	int		count;
+	int		in_quote;
+	char	quote;
+
+	in_quote = 0;
+	quote = 0;
+	count = 0;
+	i = 0;
+	while (str[i])
+	{
+		while (ft_is_space(str[i]))
+			i++;
+		if (!str[i])
+			break ;
+		count++;
+		count_args_inside(str, &in_quote, &quote, &i);
+	}
+	return (count);
 }
 
 char	**split_args_preserving_quotes(char *str)
@@ -118,86 +111,19 @@ char	**split_args_preserving_quotes(char *str)
 	int		count;
 	int		in_quote;
 	char	quote;
-	int		i;
-	int		start;
-	int		arg_idx;
-	int		j;
+	int		in_count;
 
-	count = 0;
+	quote = '\0';
 	in_quote = 0;
-	quote = 0;
-	i = 0;
-	start = 0;
-	while (str[i])
-	{
-		while (ft_is_space(str[i]))
-			i++;
-		if (!str[i])
-			break ;
-		start = i;
-		while (str[i])
-		{
-			if (!in_quote && (str[i] == '\'' || str[i] == '"'))
-			{
-				in_quote = 1;
-				quote = str[i++];
-			}
-			else if (in_quote && str[i] == quote)
-			{
-				in_quote = 0;
-				i++;
-			}
-			else if (!in_quote && ft_is_space(str[i]))
-				break ;
-			else
-				i++;
-		}
-		count++;
-	}
-	args = malloc(sizeof(char *) * (count + 1));
+	count = 0;
+	in_count = count_args(str);
+	args = malloc(sizeof(char *) * (in_count + 1));
 	if (!args)
 		return (NULL);
-	i = 0;
-	arg_idx = 0;
-	while (*str)
+	if (!fill_args_array(str, args))
 	{
-		while (ft_is_space(*str))
-			str++;
-		if (!*str)
-			break ;
-		start = 0;
-		in_quote = 0;
-		quote = 0;
-		while (str[start])
-		{
-			if (!in_quote && (str[start] == '\'' || str[start] == '"'))
-			{
-				in_quote = 1;
-				quote = str[start++];
-			}
-			else if (in_quote && str[start] == quote)
-			{
-				in_quote = 0;
-				start++;
-			}
-			else if (!in_quote && ft_is_space(str[start]))
-				break ;
-			else
-				start++;
-		}
-		args[arg_idx] = malloc(start + 1);
-		if (!args[arg_idx])
-			return (NULL);
-		j = 0;
-		while (j < start)
-		{
-			args[arg_idx][j] = str[j];
-			j++;
-		}
-		args[arg_idx][j] = '\0';
-		str += start;
-		arg_idx++;
+		free_args(args);
+		return (NULL);
 	}
-	args[arg_idx] = NULL;
 	return (args);
 }

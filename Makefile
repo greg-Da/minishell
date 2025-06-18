@@ -29,6 +29,7 @@ SRC = srcs/main.c \
 	srcs/handle_cmd.c\
 	srcs/heredoc_quotes.c\
 	srcs/quotes.c\
+	srcs/quotes2.c\
 	srcs/chevron.c\
 	srcs/chevron2.c\
 	srcs/expand.c\

@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 15:30:14 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:52:07 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,9 @@ int					is_echo(const char *str);
 int					handle_exit(char *input, t_minish *manager);
 int					get_pipe_count(char *input);
 void				display_err(char *str);
+void				ft_free_array(char **arr);
+void				free_args(char **args);
+void				count_args_inside(char *str, int *in_quote, char *quote,
+						int *i);
+
 #endif
