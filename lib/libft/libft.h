@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:09:04 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/18 11:31:11 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:51:08 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_list
 }					t_list;
 
 int					ft_abs(int nb);
-char				**ft_nsplit(char const *s, char c, size_t limit);
+char				**ft_nsplit(char *s, char c, size_t limit);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_atoi(const char *str);
 int					ft_toupper(int c);
