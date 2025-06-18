@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:46:30 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 11:10:11 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 11:37:18 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,18 @@ char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 	ft_strlcat(res, s2, len1 + len2 + 1);
 	ft_strlcat(res, s3, len1 + len2 + len3 + 1);
 	return (res);
+}
+void	free_split(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
