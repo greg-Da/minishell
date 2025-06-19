@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 10:35:03 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/19 14:47:39 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ void	ft_cleanup(t_pipex *pipex)
 	free(pipex->cmd_args);
 }
 
-void	ft_wait_children(t_pipex *pipex, t_prev prev, int i)
+void	ft_wait_children(t_pipex *pipex, int i)
 {
 	int	status;
 	int	sig;
 
-	(void)prev;
 	while (pipex->pids_size > ++i)
 	{
 		waitpid(pipex->pids[i], &status, 0);
@@ -70,7 +69,7 @@ int	pipex(int nmb, char **cmd, t_minish *manager, int (*fd)[2])
 	prev.i = -1;
 	ft_loop(&pipex, &prev, pipex.envp);
 	i = -1;
-	ft_wait_children(&pipex, prev, i);
+	ft_wait_children(&pipex, i);
 	ft_cleanup(&pipex);
 	return (pipex.exit_code);
 }
