@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:25:33 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 13:25:56 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:33:11 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_trailing_pipe(char *input, char **pipes)
 	char	*trimmed;
 
 	trimmed = ft_strtrim(input, " \f\t\n\r\v");
-	if (trimmed[ft_strlen(trimmed) - 1] == '|')
+	if (trimmed && *trimmed && trimmed[ft_strlen(trimmed) - 1] == '|')
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		free(pipes);
