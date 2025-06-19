@@ -23,7 +23,7 @@ typedef struct s_pipex
 	int					*pids;
 	int					pids_size;
 	int					fd[2];
-	int					(*fds)[2];
+	int (*fds)[2];
 	char				**envp;
 	char				**cmd_path;
 	char				***cmd_args;
@@ -52,6 +52,13 @@ typedef struct s_pip_quotes
 	int					s_quotes;
 	int					d_quotes;
 }						t_pip_quotes;
+
+typedef struct s_pipes
+{
+	int					i;
+	int					j;
+	int					start;
+}						t_pipes;
 
 typedef struct s_parser
 {
@@ -105,5 +112,7 @@ int						is_builtins(char *str);
 void					reset_parser_fds(t_parser *info);
 void					ft_manage_exec(t_pipex *pipex, t_prev *prev,
 							char **envp);
+int						check_trailing_pipe(char *input, char **pipes);
+char					**validate_pipes(char **pipes, char *input);
 
 #endif

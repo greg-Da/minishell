@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:19:37 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/18 15:23:44 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/19 12:49:09 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	handle_cmd_inside(t_minish *manager, char *input)
 	char	**pipes;
 
 	pipes = NULL;
+	code = 0;
 	pipes = get_pipes(input, manager);
 	if (strncmp(input, "exit", 4) == 0 && manager->nb_cmds == 1)
 	{
@@ -53,7 +54,8 @@ int	handle_cmd_inside(t_minish *manager, char *input)
 		return (handle_exit(input, manager));
 	}
 	g_is_in_execution = 1;
-	code = parser(pipes, manager, get_pipe_count(input));
+	if (pipes != NULL)
+		code = parser(pipes, manager, get_pipe_count(input));
 	g_is_in_execution = 0;
 	if (code == 130)
 	{
