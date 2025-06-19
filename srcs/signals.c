@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/19 14:57:37 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:46:54 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	handle_sigint(int sig)
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
+			g_is_in_execution = 3;
 		}
 		else if (g_is_in_execution == 2)
 		{

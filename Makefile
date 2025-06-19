@@ -3,9 +3,9 @@ CFLAGS = -Wall -Werror -Wextra -Ilib/libft -I./srcs/pipex -fsanitize=address -g
 LDFLAGS = -lreadline
 NAME = minishell
 
-SRC = srcs/main.c \
-	srcs/parser.c \
-	srcs/parser2.c \
+SRC = srcs/main.c\
+	srcs/parser.c\
+	srcs/parser2.c\
 	srcs/pipex/pipex.c\
 	srcs/pipex/here_doc.c\
 	srcs/pipex/ft_custom_split.c\

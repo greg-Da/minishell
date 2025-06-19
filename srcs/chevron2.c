@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 14:28:39 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:26:38 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	handle_redir_to(t_chevron *stru, t_parser *info)
 	return (0);
 }
 
-static int	handle_here_doc(t_chevron *stru)
+static int	handle_here_doc(t_chevron *stru, t_minish *manager)
 {
 	int	temp_fd;
 
@@ -82,7 +82,7 @@ static int	handle_here_doc(t_chevron *stru)
 		perror("open");
 		return (-1);
 	}
-	if (ft_here_doc(temp_fd, stru->filename))
+	if (ft_here_doc(temp_fd, stru->filename, manager))
 	{
 		close(temp_fd);
 		unlink("here_doc.txt");
@@ -104,7 +104,7 @@ int	open_chevron_fd(t_chevron stru, t_parser *info)
 	{
 		if (info->here_doc)
 		{
-			if (handle_here_doc(&stru))
+			if (handle_here_doc(&stru, info->manager))
 				return (1);
 		}
 		else

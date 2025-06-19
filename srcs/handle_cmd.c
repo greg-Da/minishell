@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:19:37 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/19 12:49:09 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:50:48 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ static char	*get_input_line(t_minish *manager)
 	char	*input;
 
 	(void)manager;
+	g_is_in_execution = 0;
 	input = readline("minishell > ");
 	if (!input)
 		handle_exit(NULL, manager);
+	if (g_is_in_execution == 3)
+		manager->last_ex_code = 130;
 	if (*input == '\0')
 	{
 		free(input);
