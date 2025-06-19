@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:13:26 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/18 14:12:42 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/19 14:13:15 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_valid_identifier(const char *str)
 	return (1);
 }
 
-void	handle_export_key_only(t_minish *manager, char *arg, int *status)
+void	handle_export_Makefilekey_only(t_minish *manager, char *arg, int *status)
 {
 	if (!is_valid_identifier(arg))
 	{
@@ -102,6 +102,11 @@ int	ft_export(t_minish *manager, char *arg)
 		arg += 6;
 		while (*arg == ' ')
 			arg++;
+		if (*arg == '\0')
+		{
+			ft_env(manager->envp, 1);
+			return (0);
+		}
 	}
 	args = split_args_preserving_quotes(arg);
 	if (!args)

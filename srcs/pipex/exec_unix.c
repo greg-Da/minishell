@@ -17,7 +17,7 @@ void	exec_builtins(t_pipex *pip, int i, int std[2])
 	if (!ft_strncmp(pip->cmd_args[i][0], "pwd", 3))
 		pwd(pip->manager);
 	else if (!ft_strncmp(pip->cmd_args[i][0], "env", 3))
-		ft_env(pip);
+		ft_env(pip->envp, 0);
 	else if (!ft_strncmp(pip->cmd_args[i][0], "echo", 4))
 		ft_echo(pip->cmd_args[i]);
 	default_std(std);

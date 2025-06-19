@@ -59,7 +59,7 @@ all: lib/libft/libft.a ${NAME}
 
 lib/libft/libft.a:
 		$(call loading_bar, "Building libft")
-		@make -C lib/libft 
+		@make -C lib/libft --quiet
 
 ${NAME}: lib/libft/libft.a ${OBJS}
 		$(call loading_bar, "Building minishell")
