@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/18 15:50:35 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:41:20 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ int					is_echo(const char *str);
 int					handle_exit(char *input, t_minish *manager);
 int					get_pipe_count(char *input);
 void				display_err(char *str);
-
+void				ft_free_array(char **arr);
+void				free_args(char **args);
+void				count_args_inside(char *str, int *in_quote, char *quote,
+						int *i);
 void				handle_exec_fail(int *std, int i, t_pipex *pip,
 						t_prev prev);
 void				default_std(int *std);

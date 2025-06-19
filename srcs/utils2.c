@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:29:13 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 13:21:05 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 13:25:06 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,50 +19,48 @@ void	display_err(char *str)
 	ft_putstr_fd("'\n", 2);
 }
 
-void	default_std(int *std)
+void	ft_free_array(char **arr)
 {
-	dup2(std[0], STDIN_FILENO);
-	dup2(std[1], STDOUT_FILENO);
-	close(std[0]);
-	close(std[1]);
+	int	i;
+
+	if (!arr)
+		return ;
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
 }
 
-void	handle_exec_fail(int *std, int i, t_pipex *pip, t_prev prev)
+void	free_args(char **args)
 {
-	default_std(std);
-	(void)i;
-	ft_invalid_cmd(pip, &prev);
-	exit(pip->exit_code);
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
 
-int	check_trailing_pipe(char *input, char **pipes)
+void	count_args_inside(char *str, int *in_quote, char *quote, int *i)
 {
-	char	*trimmed;
-
-	trimmed = ft_strtrim(input, " \f\t\n\r\v");
-	if (trimmed[ft_strlen(trimmed) - 1] == '|')
+	while (str[*i])
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-		free(pipes);
-		free(trimmed);
-		return (0);
+		if (!*in_quote && (str[*i] == '\'' || str[*i] == '"'))
+		{
+			*in_quote = 1;
+			*quote = str[(*i)++];
+		}
+		else if (*in_quote && str[*i] == *quote)
+		{
+			*in_quote = 0;
+			(*i)++;
+		}
+		else if (!*in_quote && ft_is_space(str[*i]))
+			break ;
+		else
+			(*i)++;
 	}
-	free(trimmed);
-	return (1);
-}
-
-char	**validate_pipes(char **pipes, char *input)
-{
-	if (!pipes)
-	{
-		free(input);
-		return (NULL);
-	}
-	if (!pipes[0])
-	{
-		free_pipes(pipes);
-		free(input);
-		return (NULL);
-	}
-	return (pipes);
 }

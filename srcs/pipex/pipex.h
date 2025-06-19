@@ -23,7 +23,7 @@ typedef struct s_pipex
 	int					*pids;
 	int					pids_size;
 	int					fd[2];
-	int (*fds)[2];
+	int					(*fds)[2];
 	char				**envp;
 	char				**cmd_path;
 	char				***cmd_args;

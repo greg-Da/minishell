@@ -6,23 +6,11 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:42:37 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/06 14:29:06 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:57:47 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static void	ft_free_array(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-}
 
 char	*ft_get_cmd_path(char **arr, char *cmd)
 {
@@ -69,28 +57,10 @@ char	*ft_get_path_env(char **envp)
 	return (path);
 }
 
-void	ft_init_part2(t_pipex *pip, int nmb, char **cmd)
+void	ft_init_part3(t_pipex *pip, char **path_arr, char **cmd)
 {
-	int		i;
-	char	**path_arr;
+	int	i;
 
-	if (!cmd || !*cmd)
-	{
-		pip->cmd_count = 0;
-		pip->cmd_args = NULL;
-		pip->cmd_path = NULL;
-		return ;
-	}
-	pip->cmd_count = nmb;
-	path_arr = ft_split(ft_get_path_env(pip->envp), ':');
-	if (!path_arr)
-		return ;
-	pip->cmd_args = malloc((pip->cmd_count + 1) * sizeof(char **));
-	if (!pip->cmd_args)
-	{
-		ft_free_array(path_arr);
-		return ;
-	}
 	pip->cmd_path = malloc((pip->cmd_count + 1) * sizeof(char *));
 	if (!pip->cmd_path)
 	{
@@ -110,6 +80,30 @@ void	ft_init_part2(t_pipex *pip, int nmb, char **cmd)
 			pip->cmd_path[i] = NULL;
 	}
 	ft_free_array(path_arr);
+}
+
+void	ft_init_part2(t_pipex *pip, int nmb, char **cmd)
+{
+	char	**path_arr;
+
+	if (!cmd || !*cmd)
+	{
+		pip->cmd_count = 0;
+		pip->cmd_args = NULL;
+		pip->cmd_path = NULL;
+		return ;
+	}
+	pip->cmd_count = nmb;
+	path_arr = ft_split(ft_get_path_env(pip->envp), ':');
+	if (!path_arr)
+		return ;
+	pip->cmd_args = malloc((pip->cmd_count + 1) * sizeof(char **));
+	if (!pip->cmd_args)
+	{
+		ft_free_array(path_arr);
+		return ;
+	}
+	ft_init_part3(pip, path_arr, cmd);
 }
 
 void	ft_init_struct(t_pipex *pipex, int nmb, char **cmd, t_minish *manager)

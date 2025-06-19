@@ -59,6 +59,8 @@ void	ft_exec_child(t_prev prev, t_pipex *pip, int i, char **envp)
 {
 	int	std[2];
 
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
 	handle_stdin(pip, prev);

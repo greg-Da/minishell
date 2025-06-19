@@ -25,10 +25,12 @@ SRC = srcs/main.c \
 	srcs/pipes.c\
 	srcs/utils.c\
 	srcs/utils2.c\
+	srcs/utils3.c\
 	srcs/handle_exit.c\
 	srcs/handle_cmd.c\
 	srcs/heredoc_quotes.c\
 	srcs/quotes.c\
+	srcs/quotes2.c\
 	srcs/chevron.c\
 	srcs/chevron2.c\
 	srcs/expand.c\
