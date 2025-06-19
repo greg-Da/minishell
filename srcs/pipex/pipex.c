@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 14:47:39 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:53:14 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ void	ft_wait_children(t_pipex *pipex, int i)
 	while (pipex->pids_size > ++i)
 	{
 		waitpid(pipex->pids[i], &status, 0);
+		if (pipex->pids_size - 1 == i)
+			pipex->exit_code = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
 		{
 			sig = WTERMSIG(status);
 			if (sig == SIGQUIT)
+			{
 				write(2, "Quit (core dumped)\n", 20);
+				pipex->exit_code = 131;
+			}
 		}
-		if (pipex->pids_size - 1 == i)
-			pipex->exit_code = WEXITSTATUS(status);
 	}
 	g_is_in_execution = 0;
 }
