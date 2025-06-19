@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 15:35:25 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/19 16:43:19 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,18 @@ static int	wait_here_doc_child(int pid, int write_fd)
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	signal(SIGINT, handle_sigint);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		write(1, "\n", 1);
-		close(write_fd);
-		unlink("here_doc.txt");
-		return (1);
-	}
-	return (0);
+if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+{
+	write(1, "\n", 1);
+	close(write_fd);
+	unlink("here_doc.txt");
+	return (130);
+}
+else if (WIFEXITED(status))
+{
+	return (WEXITSTATUS(status));
+}
+return (1); 
 }
 
 int	ft_here_doc(int write_fd, char *delim)

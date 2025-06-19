@@ -6,7 +6,7 @@
 /*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:28:40 by greg              #+#    #+#             */
-/*   Updated: 2025/06/19 15:26:38 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/19 16:15:00 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	handle_redir_to(t_chevron *stru, t_parser *info)
 	return (0);
 }
 
-static int	handle_here_doc(t_chevron *stru, t_minish *manager)
+static int	handle_here_doc(t_chevron *stru)
 {
 	int	temp_fd;
 
@@ -82,7 +82,7 @@ static int	handle_here_doc(t_chevron *stru, t_minish *manager)
 		perror("open");
 		return (-1);
 	}
-	if (ft_here_doc(temp_fd, stru->filename, manager))
+	if (ft_here_doc(temp_fd, stru->filename))
 	{
 		close(temp_fd);
 		unlink("here_doc.txt");
@@ -104,7 +104,7 @@ int	open_chevron_fd(t_chevron stru, t_parser *info)
 	{
 		if (info->here_doc)
 		{
-			if (handle_here_doc(&stru, info->manager))
+			if (handle_here_doc(&stru))
 				return (1);
 		}
 		else

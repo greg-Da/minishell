@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 14:53:14 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:57:26 by qbaret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	ft_wait_children(t_pipex *pipex, int i)
 				write(2, "Quit (core dumped)\n", 20);
 				pipex->exit_code = 131;
 			}
+			else if (sig == SIGINT)
+				pipex->exit_code = 130;
 		}
 	}
 	g_is_in_execution = 0;
