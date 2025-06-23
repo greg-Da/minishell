@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/23 12:20:35 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/23 19:29:29 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int process_single_pipe(t_parser *info, char **pipes, int *cmd_index,
 {
 	char *pipe_copy;
 	char *trimmed;
+	int tmp = 0;
 
 	pipe_copy = ft_strdup(pipes[pipe_index]);
 	if (!pipe_copy)
@@ -67,11 +68,13 @@ static int process_single_pipe(t_parser *info, char **pipes, int *cmd_index,
 		return (1);
 	}
 	get_files(info, pipe_index, pipes);
-	printf("glob: %d\n", g_is_in_execution);
-	if (g_is_in_execution > 1)
+	if (g_sig > 0)
 	{
 		free(trimmed);
-		return (g_is_in_execution + 128);
+		tmp = g_sig + 128;
+		g_sig = 0;
+		clean_after_pipex(info);
+		return (tmp);
 	}
 	get_cmd(info, pipes[pipe_index], *cmd_index);
 	(*cmd_index)++;

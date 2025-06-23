@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:19:37 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/19 12:49:09 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:26:36 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,30 @@ static char	*get_input_line(t_minish *manager)
 {
 	char	*input;
 
+	*(g_is_in_execution()) = 0;
 	(void)manager;
 	input = readline("minishell > ");
-	if (!input)
-		handle_exit(NULL, manager);
+	if (!input || g_sig == 2)
+	{ 
+		if(!input)
+			handle_exit(NULL, manager);
+		manager->last_ex_code = 128 + g_sig;
+		
+		if (input)
+		{
+			free(input);
+			g_sig = 0;
+			input = ft_strdup(rl_line_buffer);
+			return (input);
+		}
+		g_sig = 0;
+		return (NULL); 
+	}
 	if (*input == '\0')
 	{
 		free(input);
+		// manager->last_ex_code = 0;
+		g_sig = 0;
 		return (0);
 	}
 	return (input);
@@ -53,10 +70,10 @@ int	handle_cmd_inside(t_minish *manager, char *input)
 		free_pipes(pipes);
 		return (handle_exit(input, manager));
 	}
-	g_is_in_execution = 1;
+	*(g_is_in_execution()) = 1;
 	if (pipes != NULL)
 		code = parser(pipes, manager, get_pipe_count(input));
-	g_is_in_execution = 0;
+	*(g_is_in_execution()) = 0;
 	if (code == 130)
 	{
 		free_pipes(pipes);
@@ -85,5 +102,6 @@ int	handle_cmd(t_minish *manager)
 	free(manager->last_cmd);
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);
+
 	return (handle_cmd_inside(manager, input));
 }

@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/23 12:08:23 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/23 19:30:24 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_quotes
 	char			*close;
 
 }					t_quotes;
+
+extern sig_atomic_t	g_sig;
 
 char				**get_pipes(char *input, t_minish *manager);
 int					get_files(t_parser *info, int i, char **pipes);
@@ -62,7 +64,6 @@ int					is_valid_identifier(const char *str);
 int					ft_export(t_minish *manager, char *arg);
 int					ft_unset(t_minish *manager, char *name);
 char				**ft_realloc_env(char **envp, char *new_entry);
-extern sig_atomic_t	g_is_in_execution;
 int					check_quotes(char **input, t_minish *manager);
 int					is_between_char(char *str, int index, char quote);
 char				*remove_quotes(char *str);
@@ -72,7 +73,7 @@ int					set_env_key_value(t_minish *manager, char *key,
 						char *value);
 void				free_split(char **arr);
 char				**split_args_preserving_quotes(char *str);
-
+sig_atomic_t		*g_is_in_execution(void);
 char				*get_next_chevron(char *str);
 int					is_between_any_quotes(char *str, int i);
 char				*skip_redir_and_filename(char *str);
@@ -106,4 +107,5 @@ void				handle_exec_fail(int *std, int i, t_pipex *pip,
 						t_prev prev);
 void				default_std(int *std);
 void				ft_exec(t_prev prev, t_pipex *pip, int i, char **envp);
+void	clean_after_pipex(t_parser *info);
 #endif

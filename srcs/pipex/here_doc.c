@@ -6,7 +6,7 @@
 /*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/23 12:17:29 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/23 19:13:45 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,9 @@ static int	wait_here_doc_child(int pid, int write_fd)
 {
 	int	status;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, handle_sigint);
 	waitpid(pid, &status, 0);
+	signal(SIGINT, handle_sigint);
 	close(write_fd);
-	if (WIFSIGNALED(status))
-	{
-		int sig = WTERMSIG(status);
-		if (sig == SIGINT)
-		{
-			if (g_is_in_execution == 2)
-				return (130);
-		}
-	}
 	return (0);
 }
 
@@ -60,7 +50,6 @@ int	ft_here_doc(int write_fd, char *delim)
 	pid_t	pid;
 	int		ret;
 
-	g_is_in_execution = 1;
 	pid = fork();
 	if (pid < 0)
 		ft_error("fork failed");
@@ -71,6 +60,5 @@ int	ft_here_doc(int write_fd, char *delim)
 		setup_here_doc_signals();
 	}
 	ret = wait_here_doc_child(pid, write_fd);
-	g_is_in_execution -= 1;
 	return (ret);
 }

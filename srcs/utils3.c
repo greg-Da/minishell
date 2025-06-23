@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbaret <qbaret@student.42.fr>              +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:55:49 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/18 16:57:58 by qbaret           ###   ########.fr       */
+/*   Updated: 2025/06/23 17:19:55 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,9 @@ void	handle_exec_fail(int *std, int i, t_pipex *pip, t_prev prev)
 	(void)i;
 	ft_invalid_cmd(pip, &prev);
 	exit(pip->exit_code);
+}
+sig_atomic_t	*g_is_in_execution(void)
+{
+	static sig_atomic_t	variable;
+	return (&variable);
 }
