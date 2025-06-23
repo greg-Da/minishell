@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 15:02:13 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:17:29 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,17 @@ static int	wait_here_doc_child(int pid, int write_fd)
 	int	status;
 
 	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
 	signal(SIGINT, handle_sigint);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	waitpid(pid, &status, 0);
+	close(write_fd);
+	if (WIFSIGNALED(status))
 	{
-		write(1, "\n", 1);
-		close(write_fd);
-		unlink("here_doc.txt");
-		return (1);
+		int sig = WTERMSIG(status);
+		if (sig == SIGINT)
+		{
+			if (g_is_in_execution == 2)
+				return (130);
+		}
 	}
 	return (0);
 }
@@ -55,14 +58,19 @@ static int	wait_here_doc_child(int pid, int write_fd)
 int	ft_here_doc(int write_fd, char *delim)
 {
 	pid_t	pid;
+	int		ret;
 
+	g_is_in_execution = 1;
 	pid = fork();
 	if (pid < 0)
 		ft_error("fork failed");
 	if (pid == 0)
 	{
-		setup_here_doc_signals();
+		signal(SIGINT, SIG_DFL);
 		here_doc_loop(write_fd, delim);
+		setup_here_doc_signals();
 	}
-	return (wait_here_doc_child(pid, write_fd));
+	ret = wait_here_doc_child(pid, write_fd);
+	g_is_in_execution -= 1;
+	return (ret);
 }

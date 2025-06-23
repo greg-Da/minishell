@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:15:38 by greg              #+#    #+#             */
-/*   Updated: 2025/06/18 13:53:38 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:20:35 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	reset_parser_fds(t_parser *info)
+void reset_parser_fds(t_parser *info)
 {
-	int	i;
+	int i;
 
 	i = -1;
 	while (++i < info->cmd_nb)
@@ -27,9 +27,9 @@ void	reset_parser_fds(t_parser *info)
 	free(info->fd);
 }
 
-void	clean_handle_cmd(t_parser *info)
+void clean_handle_cmd(t_parser *info)
 {
-	int	j;
+	int j;
 
 	j = -1;
 	while (info->cmd[++j])
@@ -37,7 +37,7 @@ void	clean_handle_cmd(t_parser *info)
 	free(info->cmd);
 }
 
-void	get_cmd(t_parser *info, char *pipe, int j)
+void get_cmd(t_parser *info, char *pipe, int j)
 {
 	info->cmd[j] = sanitize_str(ft_strdup(pipe));
 	info->cmd[j] = skip_redir_and_filename(info->cmd[j]);
@@ -48,11 +48,11 @@ void	get_cmd(t_parser *info, char *pipe, int j)
 	}
 }
 
-static int	process_single_pipe(t_parser *info, char **pipes, int *cmd_index,
-		int pipe_index)
+static int process_single_pipe(t_parser *info, char **pipes, int *cmd_index,
+							   int pipe_index)
 {
-	char	*pipe_copy;
-	char	*trimmed;
+	char *pipe_copy;
+	char *trimmed;
 
 	pipe_copy = ft_strdup(pipes[pipe_index]);
 	if (!pipe_copy)
@@ -67,17 +67,23 @@ static int	process_single_pipe(t_parser *info, char **pipes, int *cmd_index,
 		return (1);
 	}
 	get_files(info, pipe_index, pipes);
+	printf("glob: %d\n", g_is_in_execution);
+	if (g_is_in_execution > 1)
+	{
+		free(trimmed);
+		return (g_is_in_execution + 128);
+	}
 	get_cmd(info, pipes[pipe_index], *cmd_index);
 	(*cmd_index)++;
 	free(trimmed);
 	return (info->res);
 }
 
-int	parser(char **pipes, t_minish *manager, int pipe_nb)
+int parser(char **pipes, t_minish *manager, int pipe_nb)
 {
-	t_parser	info;
-	int			pipe_index;
-	int			cmd_index;
+	t_parser info;
+	int pipe_index;
+	int cmd_index;
 
 	pipe_index = 0;
 	cmd_index = 0;

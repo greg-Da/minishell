@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:54:38 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/19 14:53:14 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:25:38 by quentin8340      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,25 @@ void	ft_wait_children(t_pipex *pipex, int i)
 	{
 		waitpid(pipex->pids[i], &status, 0);
 		if (pipex->pids_size - 1 == i)
-			pipex->exit_code = WEXITSTATUS(status);
-		if (WIFSIGNALED(status))
-		{
-			sig = WTERMSIG(status);
-			if (sig == SIGQUIT)
-			{
-				write(2, "Quit (core dumped)\n", 20);
-				pipex->exit_code = 131;
-			}
-		}
+        {
+            if (WIFSIGNALED(status))
+            {
+                sig = WTERMSIG(status);
+                if (sig == SIGQUIT)
+                {
+                    write(2, "Quit (core dumped)\n", 20);
+                    pipex->exit_code = 131;
+                }
+                else if (sig == SIGINT)
+                {
+                    pipex->exit_code = 130;
+                }
+            }
+            else
+            {
+                pipex->exit_code = WEXITSTATUS(status);
+            }
+        }
 	}
 	g_is_in_execution = 0;
 }
