@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/23 19:09:03 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/24 12:06:39 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-sig_atomic_t g_sig;
+sig_atomic_t	g_sig;
 
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		if (*(g_is_in_execution()) < 2)
+			write(1, "\n", 1);
 		if (*(g_is_in_execution()) == 0)
 		{
 			rl_on_new_line();
@@ -33,23 +34,23 @@ void handle_sigint(int sig)
 	}
 }
 
-void setup_here_doc_signals(void)
+void	setup_here_doc_signals(void)
 {
 	signal(SIGINT, handle_sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void handle_sigint_heredoc(int sig)
+void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
-	exit(1);
+	exit(130);
 }
 
-void init_signals(void)
+void	init_signals(void)
 {
-	struct sigaction sa_int;
-	struct sigaction sa_quit;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
 	sa_int.sa_handler = handle_sigint;
 	sigemptyset(&sa_int.sa_mask);

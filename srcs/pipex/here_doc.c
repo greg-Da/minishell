@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:44:44 by gdalmass          #+#    #+#             */
-/*   Updated: 2025/06/23 19:13:45 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/24 12:10:20 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,20 @@ int	ft_here_doc(int write_fd, char *delim)
 {
 	pid_t	pid;
 	int		ret;
+	int		tmp;
 
+	tmp = *(g_is_in_execution());
+	*(g_is_in_execution()) = 2;
 	pid = fork();
 	if (pid < 0)
 		ft_error("fork failed");
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		here_doc_loop(write_fd, delim);
 		setup_here_doc_signals();
+		here_doc_loop(write_fd, delim);
 	}
 	ret = wait_here_doc_child(pid, write_fd);
+	*(g_is_in_execution()) = tmp;
 	return (ret);
 }
