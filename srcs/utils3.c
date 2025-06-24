@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:55:49 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/24 12:32:40 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:37:04 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	handle_sig(char *trimmed, t_parser *info)
 
 	free(trimmed);
 	tmp = g_sig + 128;
-	g_sig = 0;
 	clean_after_pipex(info);
 	return (tmp);
 }

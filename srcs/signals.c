@@ -6,7 +6,7 @@
 /*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:21:51 by quentin8340       #+#    #+#             */
-/*   Updated: 2025/06/24 12:06:39 by gdalmass         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:37:47 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	handle_sigint(int sig)
 	{
 		if (*(g_is_in_execution()) < 2)
 			write(1, "\n", 1);
+		g_sig = 2;
 		if (*(g_is_in_execution()) == 0)
 		{
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
-			g_sig = 2;
 		}
-		else if (*g_is_in_execution() == 1)
-		{
-			g_sig = 2;
-		}
+		// else if (*g_is_in_execution() == 1)
+		// {
+		// 	g_sig = 2;
+		// }
 	}
 }
 
