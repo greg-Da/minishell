@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:19:37 by qbaret            #+#    #+#             */
-/*   Updated: 2025/06/23 19:26:36 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/24 12:25:49 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ static void	maybe_add_history(char **input, t_minish *manager, int is_unclosed)
 	}
 }
 
+char	*handle_input(char *input)
+{
+	free(input);
+	g_sig = 0;
+	input = ft_strdup(rl_line_buffer);
+	return (input);
+}
+
 static char	*get_input_line(t_minish *manager)
 {
 	char	*input;
@@ -32,25 +40,21 @@ static char	*get_input_line(t_minish *manager)
 	(void)manager;
 	input = readline("minishell > ");
 	if (!input || g_sig == 2)
-	{ 
-		if(!input)
+	{
+		if (!input)
 			handle_exit(NULL, manager);
 		manager->last_ex_code = 128 + g_sig;
-		
 		if (input)
 		{
-			free(input);
-			g_sig = 0;
-			input = ft_strdup(rl_line_buffer);
+			input = handle_input(input);
 			return (input);
 		}
 		g_sig = 0;
-		return (NULL); 
+		return (NULL);
 	}
 	if (*input == '\0')
 	{
 		free(input);
-		// manager->last_ex_code = 0;
 		g_sig = 0;
 		return (0);
 	}
@@ -102,6 +106,5 @@ int	handle_cmd(t_minish *manager)
 	free(manager->last_cmd);
 	manager->last_cmd = ft_strdup(input);
 	input = sanitize_str(input);
-
 	return (handle_cmd_inside(manager, input));
 }

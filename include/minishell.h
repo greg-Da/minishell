@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:47:00 by dfeve             #+#    #+#             */
-/*   Updated: 2025/06/23 19:30:24 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/24 12:32:14 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_quotes
 
 extern sig_atomic_t	g_sig;
 
+int					handle_sig(char *trimmed, t_parser *info);
 char				**get_pipes(char *input, t_minish *manager);
 int					get_files(t_parser *info, int i, char **pipes);
 char				*extract_filename(char *tmp);
@@ -107,5 +108,5 @@ void				handle_exec_fail(int *std, int i, t_pipex *pip,
 						t_prev prev);
 void				default_std(int *std);
 void				ft_exec(t_prev prev, t_pipex *pip, int i, char **envp);
-void	clean_after_pipex(t_parser *info);
+void				clean_after_pipex(t_parser *info);
 #endif

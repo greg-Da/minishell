@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quentin83400 <quentin83400@student.42.f    +#+  +:+       +#+        */
+/*   By: gdalmass <gdalmass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:45:59 by greg              #+#    #+#             */
-/*   Updated: 2025/06/23 10:31:06 by quentin8340      ###   ########.fr       */
+/*   Updated: 2025/06/24 12:32:26 by gdalmass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ char	**split_args_preserving_quotes(char *str)
 {
 	char	**args;
 	int		in_count;
-
 
 	in_count = count_args(str);
 	args = malloc(sizeof(char *) * (in_count + 1));
